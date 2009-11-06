@@ -1,0 +1,7 @@
+Changes
+MANIFEST
+Makefile.PL
+README
+lib/POD2/PT_BR.pm
+lib/POD2/PT_BR/perlintro.pod
+t/00-load.t
