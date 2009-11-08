@@ -14,7 +14,7 @@ WriteMakefile(
     PREREQ_PM => {
         'Test::More' => 0,
         'POD2::Base' => 0.043,
-        'POD2::Perldoc' => 3.15,
+        'POD::Perldoc' => 3.15,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'POD2-PT_BR-*' },
