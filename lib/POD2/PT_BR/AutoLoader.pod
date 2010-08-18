@@ -1,4 +1,4 @@
-d1 NOME
+=head1 NOME
 
 AutoLoader - carrega subrotinas sob demanda (apenas quando são executadas)
 
