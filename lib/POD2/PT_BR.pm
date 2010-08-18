@@ -12,12 +12,22 @@ sub search_perlfunc_re {
 }
 
 sub pod_info {
-#    perldsc   => '5.10.1',
-#    perlutil  => '5.10.1',
-#    perlstyle => '5.10.1',
-#    perlboot  => '5.10.1',
-#    perlrequick => '5.10.1',
-    perlintro => '5.10.1',
+    autoloader   => '5.8.7',
+    filespecunix => '5.8.7',
+    iofile       => '5.8.7',
+    iohandle     => '5.8.7',
+    iopipe       => '5.8.7',
+    iosocket     => '5.8.7',
+    listutil     => '5.8.7',
+#    perldsc      => '5.10.1',
+#    perlutil     => '5.10.1',
+#    perlstyle    => '5.10.1',
+#    perlboot     => '5.10.1',
+#    perlrequick  => '5.10.1',
+    perlintro    => '5.10.1',
+    perlutil     => '5.8.7',
+    scalarutil   => '5.8.7',
+    textwrap     => '5.8.7',    
 }
 
 42;
