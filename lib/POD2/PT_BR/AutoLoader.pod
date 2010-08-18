@@ -1,0 +1,161 @@
+d1 NOME
+
+AutoLoader - carrega subrotinas sob demanda (apenas quando são executadas)
+
+=head1 SINOPSE
+
+    package Foo;
+        use AutoLoader 'AUTOLOAD';   # importa a subrotina padrão AUTOLOAD
+
+	    package Bar;
+	        use AutoLoader;              # Não importa AUTOLOAD, definiremos o nosso
+		    sub AUTOLOAD {
+		            ...
+			            $AutoLoader::AUTOLOAD = "...";
+				            goto &AutoLoader::AUTOLOAD;
+					        }
+
+=head1 DESCRIÇÃO
+
+O módulo B<AutoLoader> funciona em conjunto com o módulo B<AutoSplit> e a 
+marca C<__END__> para atrasar o carregamento de algumas subrotinas até que eles 
+sejam usados, ao invés de carregá-los todos de uma vez.
+
+Para usar o B<AutoLoader>, o autor de um módulo precisa colocar as definições
+de subrotinas a serem autocarregadas ("autoloaded") depois da marca C<__END__>.
+(Veja L<perldata>.) O módulo B<AutoSplit> pode então ser executado manualmente
+para extrair as definições para arquivos individuais F<auto/funcname.al>.
+
+B<AutoLoader> implementa uma subrotina C<AUTOLOAD>. Quando uma subrotina indefinida
+é chamada em um módulo cliente de B<AutoLoader>, a subrotina C<AUTOLOAD> tenta localizar
+a subrotina em um arquivo com nome relacionado com a localização do arquivo a partir
+do qual o módulo cliente foi lido. Apenas como exemplo, se F<POSIX.pm> estiver localizado em 
+F</usr/local/lib/perl5/POSIX.pm>, B<AutoLoader> vai procurar pelas subrotinas B<POSIX>
+em F</usr/local/lib/perl5/auto/POSIX/*.al>, onde o arquivo C<.al> tem o mesmo nome
+da subrotina, sem o pacote. Se tal arquivo existir, C<AUTOLOAD> irá ler e avaliar (eval)
+seu conteúdo, definindo assim, a subrotina necessária. C<AUTOLOAD> salta então 
+(C<goto>) para a subrotina recém-definida.
+
+Uma vez que este processo tenha sido completado para uma dada função, ela está
+definida, de maneira que as futuras chamadas para a subrotina não precisarão passar
+pelo mecanismo de C<AUTOLOAD>.
+
+=head2 Subroutine Stubs
+
+Para fazer a busca nos métodos do objeto e/ou checagem de protótipos funcionarem
+corretamente mesmo quando os métodos não foram ainda definidos é necessário 
+declarar previamente cada subrotina (como em C<sub NAME;>). Veja L<perlsub/"SYNOPSIS">.
+Tal declaração prévia cria uma 'topografia da subrotina', que declaram a função sem código.
+
+Os módulos AutoSplit e B<AutoLoader> automatizam a criação de declarações prontas.
+O módulo AutoSplit cria um arquivo de 'índice' contendo todas as declarações prontas
+de todas as subrotinas do AutoSplit. Quando o módulo AutoLoader é usado (utilizando C<use>),
+essas declarações são carregadas no pacote que o chamou.
+
+Por causa desse mecanismo é importante que B<AutoLoader> seja sempre
+usado (usando C<use>) e não requirido (usando C<require>).
+
+=head2 Usando a subrotina AUTOLOAD de B<AutoLoader>
+
+Para poder usar a subrotina AUTOLOAD de B<AutoLoader> você I<deve>
+explicitamente importá-la.
+
+    use AutoLoader 'AUTOLOAD';
+
+=head2 Re-escrevendo a rotina AUTOLOAD de B<AutoLoader>'s
+
+Alguns módulos, principalmente extensões, provêm sua própria subrotina AUTOLOAD.
+Eles tipicamente precisam checar por alguns casos especiais (como constantes)
+e então voltar para o AUTOLOAD de B<AutoLoader> para o resto.
+
+Tais módulos I<não> devem importar a subrotina AUTOLOAD de B<autoLoader>
+Em vez disso, eles devem definir sua própria subrotina AUTOLOAD com essas linhas:
+
+    use AutoLoader;
+        use Carp;
+
+	    sub AUTOLOAD {
+	            my $sub = $AUTOLOAD;
+		            (my $constname = $sub) =~ s/.*:://;
+			            my $val = constant($constname, @_ ? $_[0] : 0);
+				            if ($! != 0) {
+					                if ($! =~ /Invalid/ || $!{EINVAL}) {
+							                $AutoLoader::AUTOLOAD = $sub;
+									                goto &AutoLoader::AUTOLOAD;
+											            }
+												                else {
+														                croak "Your vendor has not defined constant $constname";
+																            }
+																	            }
+																		            *$sub = sub { $val }; # same as: eval "sub $sub { $val }";
+																			            goto &$sub;
+																				        }
+
+																					Se qualquer AUTOLOAD próprio de uma subrotina de um módulo não precisar
+																					voltar para o AUTOLOAD do B<AutoLoader> (porquê não tem nenhuma subrotina AutoSplit),
+																					então o módulo B<NÃO> deve usar B<AutoLoader>.
+
+=head2 Léxicos no pacote
+
+Léxicos do pacote declarados com C<my> no bloco principal do pacote
+usando B<AutoLoader> não serão visíveis para as subrotinas automaticamente carregas, dado o fato
+que os escopos dados terminam no marcador C<__END__>. Um módulo usando
+tais variáveis como globais não vai funcionar corretamente com o B<AutoLoader>.
+
+O I<pragma> C<vars> (veja L<perlmod/"vars">) pode ser usado em tais
+situações como uma alternativa para qualificar explicitamente todas as variáveis
+globais no I<namespace> do pacote. Variáveis pré-declaradas com este I<pragma>
+estarão visíveis para qualquer subrotina automaticamente carregada (mas não estarão
+invisíveis fora do pacote, infelizmente).
+
+=head2 Não usando AutoLoader
+
+Você pode parar de usar o AutoLoad simplesmente utilizando:
+
+	no AutoLoader;
+
+=head2 B<AutoLoader> vs. B<SelfLoader>
+
+O B<AutoLoader> é similar em objetivo ao B<SelfLoader>: ambos atrasam o carregamento de
+carregar subrotinas.
+
+B<SelfLoader> usa o  marcador C<__DATA__> em vez de C<__END__>.
+Enquanto isso evita o uso da hierarquia dos arquivos em disco e o I<open/close>
+de cada rotina é carregado, B<SelfLoader> sofre de uma desvantagem no tempo
+de inicialização no I<parsing> feito de uma vez só das linhas após C<__DATA__>, no qual suas
+rotinas estão no cache. B<SelfLoader> pode também lidar com múltiplos pacotes em um arquivo.
+
+B<AutoLoader> somente lê código quando é requisitado, e em muitos casos
+deve ser rápido, mas requer que um mecanismo como B<AutoSplit> seja
+usado para criar arquivos individuais. L<ExtUtilsMakeMaker> irá invocar
+B<AutoSplit> automaticamente se B<AutoLoader> for usado em um código-fonte de um módulo.
+
+=head1 PROBLEMAS
+
+AutoLoaders antes de Perl 5.002 tinham uma interface ligeiramente diferente.
+Quaisquer módulos antigos que usem AutoLoader devem ser modificados para
+o novo estilo de chamada. Isso tipicamente significa apenas mudar um "require"
+para "use", adicionar a importação de C<'AUTOLOAD'> explícita se necessário,
+e remover AutoLoader de C<@ISA>.
+
+Em sistemas com restrições no comprimento de nomes de arquivos, o arquivo
+correspondente a uma subrotina pode ter um nome mais curto do que a subrotina
+em si. Isso pode levar a nomes conflitantes. O pacote AutoSplit avisará sobre
+estes possíveis conflitos quando for usado para dividir um módulo.
+
+AutoLoader pode não conseguir encontrar os arquivos de autosplit (ou mesmo
+encontrar arquivos errados) em casos em que C<@INC> contenha caminhos 
+relativos B<e> o programa execute um C<chdir>.
+
+=head1 VEJA TAMBÉM
+
+L<SelfLoader> - um autoloader que não usa arquivos externos
+
+=head1 TRADUÇÃO
+
+NicholasAmorim <nicholasamorim@gmail.com>
+
+Nelson Ferraz <nferraz@gmail.com>
+
+=cut
+

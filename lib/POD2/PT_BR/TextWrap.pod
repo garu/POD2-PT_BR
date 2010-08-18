@@ -1,0 +1,76 @@
+=head1 NOME
+
+Text::Wrap - quebras de linha para formar parágrafos
+
+=head1 SINOPSE
+
+B<Exemplo 1>
+
+  use Text::Wrap
+
+  $tab_inicial = "\t";	# Coloca um 'tab' no início do parágrafo
+  $tab_subsequente = "";	# Todas outras linhas alinhadas à esquerda
+
+  print wrap($tab_inicial, $tab_subsequente, @texto);
+  print fill($tab_inicial, $tab_subsequente, @texto);
+
+  $linhas = wrap($tab_inicial, $tab_subsequente, @texto);
+
+  @paragrafos = fill($tab_inicial, $tab_subsequente, @texto);
+
+B<Exemplo 2>
+
+  use Text::Wrap qw(wrap $columns $huge);
+
+  $columns = 132;		# Quebra a linha em 132 colunas
+  $huge = 'die';
+  $huge = 'wrap';
+  $huge = 'overflow';
+
+B<Exemplo 3>
+
+  use Text::Wrap
+
+  $Text::Wrap::columns = 72;
+  print wrap('', '', @texto);
+
+=head1 DESCRIÇÃO
+
+C<Text::Wrap::wrap()> é um formatador de parágrafos. Ele formata um parágrafo por vez quebrando as linhas respeitando um tamanho de colunas configurável. A indentação é controlada para a primeira linha, com a variável C<$tab_inicial> e todas as linhas subsequentes, através da variável C<$tab_subsequente>, independentemente. Preste atenção no fato que C<$tab_inicial> e C<$tab_subsequente> são strings literais: dificilmente você irá atribuir um número a elas.
+
+C<Text::Wrap::fill()> é um formatador de múltiplos parágrafos. Ele formata cada parágrafo separadamente e então os junta quando estiver pronto. Ele irá destruir qualquer espaço em branco adicional no texto original. Ele quebra o texto em parágrafos procurando por um espaço em branco após uma nova linha. Em outros aspectos, ele executa as mesmas funções de C<wrap()>.
+
+=head1 CONFIGURAÇÃO
+
+C<Text::Wrap::wrap()> possui diversas variáveis que controlam seu comportamento. Você não deve modificar o conteúdo destas variáveis, pois outros módulos podem utilizar C<Text::Wrap::wrap()>. Caso você necessite modificar alguma de suas variáveis, então você deve utilizar C<local $Text::Wrap::VARIAVEL = SEUVALOR>, para que o valor original seja restaurado após sair do escopo onde a variável é atribuída. A dica de utilização de C<local()> não irá funcionar se você importar a variável em seu próprio I<namespace>.
+
+As linhas são divididas na coluna C<$Text::Wrap::columns>. Esta variável deve ser configurada para o tamanho máximo do seu dispositivo de saída. Toda linha processada terá como tamanho não mais de C<$columns - 1>.
+
+É possível controlar quais caracteres terminam palavras modificando a variável C<$Text::Wrap::break>. Atribua à ela uma string como C<'[\s:]'> para quebrar a linha antes de espaços e dois-pontos) ou uma expressão regular pré-compilada, como C<qr/[\s']/> para quebrar antes de espaços ou apóstrofes. O valor inicial para esta variável é C<'\s'>; isto é, palavras que são terminadas com um espaço. Isto significa, entre outras coisas, que pontuação como ponto-final ou vírgulas ficam com as palavras que elas estão "coladas".
+
+Nota para principiantes: No exemplo 2, a variável C<$columns> é importada no I<namespace> local, e atribuída localmente. No exemplo 3, C<$Text::Wrap::columns> é atribuída em seu próprio I<namespace>, sem importá-la.
+
+A função C<Text::Wrap::wrap()> começa seu trabalho expandindo todos os caracteres de tabulação em espaços, sem alterar o texto original. A última operação que ele faz é transformar espaços em tabulação, de volta. No caso de você não querer tabulação nos seus resultados, atribua um valor falso à C<$Text::Wrap::unexpand>. Você pode também modificar o tamanho das tabulações (I<tabstops>), atribuindo à variável C<$Text::Wrap::tabstop> o número de caracteres que você deseja.
+
+Se você necessitar separar suas linhas com um caractere diferente de C<\n>, atribua à C<$Text::Wrap::separator> o valor de sua preferência.
+
+Quando palavras mais longas que C<$columns> são encontradas, elas são quebradas, adicionando um caractere C<\n" na coluna C<$columns>. Este comportamento pode ser modificado configurando a variável C<$huge> para 'die' ou 'overflow'. Quando configurado como 'die', C<wrap()> executará C<die()> quando encontrar uma palavra com estas características. Quando configurado como 'overflow', estas palavras serão mantidas intactas.
+
+Notas históricas: 'die' era o valor inicial de C<$huge>. Agora o valor inicial é 'wrap'.
+
+=head1 EXEMPLO
+
+  print wrap("\t","","Este é um pedaço de texto com a
+      formatação normal de um livro");
+
+=head1 AUTOR
+
+David Muir Sharnoff <muir@idiom.com> com ajuda de Tim Pierce e muitos outros.
+
+=head1 TRADUÇÃO
+
+Igor Sutton <igor@izut.com>
+
+=cut
+
+

@@ -1,0 +1,102 @@
+=head1 NOME
+
+IO::Pipe - provê métodos de objetos para redirecionamentos
+
+=head1 SINOPSE
+
+	use IO::Pipe;
+
+	$pipe = new IO::Pipe;
+
+	if($pid = fork()) { # Parent
+	    $pipe->reader();
+
+	    while(<$pipe>) {
+		...
+	    }
+
+	}
+	elsif(defined $pid) { # Child
+	    $pipe->writer();
+
+	    print $pipe ...
+	}
+
+	or
+
+	$pipe = new IO::Pipe;
+
+	$pipe->reader(qw(ls -l));
+
+	while(<$pipe>) {
+	    ...
+	}
+
+=head1 DESCRIÇÃO
+
+C<IO::Pipe> provê uma interface para criar I<pipes> (redirecionamentos)
+entre processos.
+
+=head1 CONSTRUTOR
+
+=over 4
+
+=item new ( [READER, WRITER] )
+
+Cria um C<IO::Pipe>, o qual é referenciado para um novo símbolo criado
+(veja o pacote C<Symbol>. Opcionalmente, C<IO::Pipe::new> pega
+dois argumentos, que devem ser objetos de C<IO::Handle>, ou uma 
+subclasse do mesmo. Esses dois objetos serão usados para fazer uma 
+chamada ao sistema (I<system call>) a C<pipe>. Se nenhum argumento
+é passado, então C<handles> é chamado no novo objeto C<IO::Pipe>.
+
+Esses dois I<handles> são colocados no I<array> como parte do GLOB
+até que C<reader> ou C<writer> seja chamado.
+
+=back
+
+=head1 MÉTODOS
+
+=over 4
+
+=item reader ([ARGS])
+
+O objeto é recolocado em uma subclasse de C<IO::Handle>, e se torna um
+I<handle> para ler o fim do I<pipe>. Se C<ARGS> é dado, então C<fork>
+é chamado e C<ARGS> é passado para I<exec>.
+
+=item writer ([ARGS])
+
+O objeto é recolocado em uma subclasse de C<IO::Handle>, e se torna um
+I<handle> para ler o fim do I<pipe>. Se C<ARGS> é dado, então C<fork>
+é chamado e C<ARGS> é passado para I<exec>.
+
+=item handles ()
+
+Esse método é chamado durante a construção do C<IO::Pipe::new>
+no objeto C<IO::Pipe> criado. Retorna um array de dois objetos colocados em
+C<IO::Pipe::End>, ou uma subclasse do mesmo.
+
+=back
+
+=head1 VEJA TAMBÉM
+
+L<IO::Handle>
+
+=head1 TRADUÇÃO
+
+NicholasAmorim <nicholasamorim@gmail.com>
+
+=head1 AUTOR
+
+Graham Barr. Atualmente mantido por Perl Porters. Por favor, notifique todos
+os bugs para <perl5-porters@perl.org>.
+
+=head1 DIREITOS AUTORAIS
+
+Copyright (c) 1996-8 Graham Barr <gbarr@pobox.com>. Todos os direitos reservados.
+Este programa é software livre; você pode redistribuir ele e/ou
+modificar sob os mesmos termos a que Perl está sujeito.
+
+=cut
+
