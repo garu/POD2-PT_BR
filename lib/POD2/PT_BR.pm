@@ -5,29 +5,15 @@ use strict;
 use utf8;
 use base 'POD2::Base';
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub search_perlfunc_re {
     return 'Listagem Alfabética das Funções do Perl';
 }
 
 sub pod_info {
-    autoloader   => '5.8.7',
-    filespecunix => '5.8.7',
-    iofile       => '5.8.7',
-    iohandle     => '5.8.7',
-    iopipe       => '5.8.7',
-    iosocket     => '5.8.7',
-    listutil     => '5.8.7',
-#    perldsc      => '5.10.1',
-#    perlutil     => '5.10.1',
-#    perlstyle    => '5.10.1',
-#    perlboot     => '5.10.1',
-#    perlrequick  => '5.10.1',
     perlintro    => '5.10.1',
     perlutil     => '5.8.7',
-    scalarutil   => '5.8.7',
-    textwrap     => '5.8.7',    
 }
 
 42;
@@ -36,37 +22,39 @@ __END__
 
 POD2::PT_BR - Brazilian portuguese translation of Perl core documentation
 
-=head1 SYNOPSIS
+=head1 NOME
 
-From the command line
+POD2::PT_BR - Tradução da documentação do Perl para português brasileiro
+
+=head1 SINOPSE
+
+Na linha de comando
 
   > perldoc POD2::PT_BR::<podpage>
 
-Or, the more user friendly way:
+ou, a maneira mais amigável de chamar a versão em português:
 
   > perldoc -L PT_BR <podpage>
-  > perldoc -L PT_BR -f <function>
+  > perldoc -L PT_BR -f <função>
   > perldoc -L PT_BR -q <FAQregex>
 
-If the documentation (POD) is not available in PT_BR yet, it falls back to the original. So you can just create an alias for it to avoid all the typing:
+Se a documentação (POD) ainda não estiver disponível em português, ele exibe a versão original. Assim, podemos simplesmente criar um "alias" e evitar ter que digitar o "-L PT_BR" sempre que quisermos ver a documentação:
 
   > alias perldoc='perldoc -L PT_BR'
 
-And this would show the docs in portuguese whenever available!
+E assim veremos a documentação em português sempre que disponível!
 
   > perldoc <podpage> 
 
-This module is intended to be used associated with the C<perldoc> command. Please refer to L<< POD2::Base >> documentation usage as a module.
+Esse módulo foi feito para ser usado associado ao comando C<perldoc>, como mostrado acima. Por favor consulte a documentação do L<< POD2::Base >> para uso como um módulo.
 
-=head1 DESCRIPTION
+=head1 DESCRIÇÃO
 
-This is a materialization of the brazilian translation project of core Perl pods. 
-This has been (and currently still is) a very big work! :-) 
+Esse é o resultado do projeto de tradução para o português brasileiro da documentação oficial do Perl. Foi - e ainda é - um enorme trabalho! :-)
 
-See L<< http://perldoc.perl.org.br >> for more details about the project.
+Veja L<< http://perldoc.perl.org.br >> para mais detalhes sobre o projeto, e como ajudar você também.
 
-Once the package has been installed, the translated documentation can be
-accessed just like the synopsis mentioned.
+Uma vez instalado, a documentação traduzida pode ser acessada como mencionado na sinopse deste documento.
 
 =head1 Como funciona o projeto
 
@@ -81,11 +69,12 @@ Basta criar seu usuário em nossa wiki e editar os documentos. Não esqueça de
 adicionar seu nome na lista de tradutores!
 
 
-=head1 AUTHORS
+=head1 AUTHORS / AUTORES
 
 The Brazilian Perl Community / Comunidade Brasileira de Perl
 
-Current Translators (in alphabetical order)
+Translators (in alphabetical order):
+Tradutores (em ordem alfabética):
 
 =over 4
 
