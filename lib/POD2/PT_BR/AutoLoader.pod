@@ -5,15 +5,15 @@ AutoLoader - carrega subrotinas sob demanda (apenas quando são executadas)
 =head1 SINOPSE
 
     package Foo;
-        use AutoLoader 'AUTOLOAD';   # importa a subrotina padrão AUTOLOAD
+    use AutoLoader 'AUTOLOAD';   # importa a subrotina padrão AUTOLOAD
 
-	    package Bar;
-	        use AutoLoader;              # Não importa AUTOLOAD, definiremos o nosso
-		    sub AUTOLOAD {
-		            ...
-			            $AutoLoader::AUTOLOAD = "...";
-				            goto &AutoLoader::AUTOLOAD;
-					        }
+    package Bar;
+    use AutoLoader;              # Não importa AUTOLOAD, definiremos o nosso
+    sub AUTOLOAD {
+        ...
+        $AutoLoader::AUTOLOAD = "...";
+        goto &AutoLoader::AUTOLOAD;
+    }
 
 =head1 DESCRIÇÃO
 
@@ -72,28 +72,28 @@ Tais módulos I<não> devem importar a subrotina AUTOLOAD de B<autoLoader>
 Em vez disso, eles devem definir sua própria subrotina AUTOLOAD com essas linhas:
 
     use AutoLoader;
-        use Carp;
+    use Carp;
 
-	    sub AUTOLOAD {
-	            my $sub = $AUTOLOAD;
-		            (my $constname = $sub) =~ s/.*:://;
-			            my $val = constant($constname, @_ ? $_[0] : 0);
-				            if ($! != 0) {
-					                if ($! =~ /Invalid/ || $!{EINVAL}) {
-							                $AutoLoader::AUTOLOAD = $sub;
-									                goto &AutoLoader::AUTOLOAD;
-											            }
-												                else {
-														                croak "Your vendor has not defined constant $constname";
-																            }
-																	            }
-																		            *$sub = sub { $val }; # same as: eval "sub $sub { $val }";
-																			            goto &$sub;
-																				        }
+    sub AUTOLOAD {
+        my $sub = $AUTOLOAD;
+        (my $constname = $sub) =~ s/.*:://;
+        my $val = constant($constname, @_ ? $_[0] : 0);
+        if ($! != 0) {
+            if ($! =~ /Invalid/ || $!{EINVAL}) {
+                $AutoLoader::AUTOLOAD = $sub;
+                goto &AutoLoader::AUTOLOAD;
+            }
+            else {
+                croak "Your vendor has not defined constant $constname";
+            }
+        }
+        *$sub = sub { $val }; # same as: eval "sub $sub { $val }";
+        goto &$sub;
+    }
 
-																					Se qualquer AUTOLOAD próprio de uma subrotina de um módulo não precisar
-																					voltar para o AUTOLOAD do B<AutoLoader> (porquê não tem nenhuma subrotina AutoSplit),
-																					então o módulo B<NÃO> deve usar B<AutoLoader>.
+Se qualquer AUTOLOAD próprio de uma subrotina de um módulo não precisar
+voltar para o AUTOLOAD do B<AutoLoader> (porquê não tem nenhuma subrotina AutoSplit),
+então o módulo B<NÃO> deve usar B<AutoLoader>.
 
 =head2 Léxicos no pacote
 
@@ -158,4 +158,3 @@ NicholasAmorim <nicholasamorim@gmail.com>
 Nelson Ferraz <nferraz@gmail.com>
 
 =cut
-

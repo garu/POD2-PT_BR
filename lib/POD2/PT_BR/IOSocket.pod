@@ -139,4 +139,3 @@ Graham Barr. atmark() por Lincoln Stein. Atualmente mantido por Perl Porters. Po
 Copyright (c) 1997-8 Graham Barr <gbarr@pobox.com>. Todos os direitos reservados. Este programa é software livre; Você pode redistribuir e/ou modificar estando sujeito aos mesmos termos que Perl está.
 
 A implementação atmark(): Copyright 2001, Lincoln Stein <lstein@cshl.org>. Este módulo é distribuído sob os mesmos termos que o Perl em si. Sinta-se livre para usar, modificar e redistribuir no entanto que se mantenha os créditos corretos.
-

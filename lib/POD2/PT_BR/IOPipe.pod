@@ -99,4 +99,3 @@ Este programa é software livre; você pode redistribuir ele e/ou
 modificar sob os mesmos termos a que Perl está sujeito.
 
 =cut
-

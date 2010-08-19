@@ -177,4 +177,3 @@ Código derivado de FileHandle.pm por Graham Barr <gbarr@pobox.com>
 Igor Sutton <igor@izut.com>
 
 =cut
-
