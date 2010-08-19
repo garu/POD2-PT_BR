@@ -15,6 +15,7 @@ sub pod_info {
     perlintro    => '5.10.1',
     perlutil     => '5.8.7',
     perlboot     => '5.10.1',
+    perlbook     => '5.10.1',
 }
 
 42;
@@ -81,15 +82,24 @@ Tradutores (em ordem alfabética):
 
 =item * Breno G. de Oliveira
 
+=item * Daniel Mantovani
+
+=item * Eden Cardim
+
+=item * Igor Sutton
+
+=item * Joênio Costa Marques
+
 =item * Marco Lima
 
 =item * Nicholas Amorim
 
 =item * Nelson Ferraz
 
+=item * Roan Brasil Monteiro
+
 =item * Ronaldo Lima
 
-=item * Igor Sutton
 
 =back
 

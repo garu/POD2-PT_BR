@@ -1,7 +1,9 @@
 Revision history for POD2-PT_BR
 
 0.02    2010-08-19
-        added perlutil (GabrielVieira)
+        added perlutil
+        added perlboot
+        added perlbook
 
 0.01    2009-12-28
         First version, released on an unsuspecting world.
