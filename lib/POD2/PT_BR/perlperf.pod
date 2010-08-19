@@ -21,55 +21,53 @@ Talvez o erro mais comum que um programador comete é tentar optmizar o código
 antes do programa fazer alguma coisa útil - essa é uma péssima idéia.
 Não tem sentido ter um programa extremamente rápido que não funcione. A
 primeira tarefa é pegar um programa que funcione I<corretamente> para fazer algo I<proveitoso>.
-(sem falar garantindo que a suite de testes é completamente funcionar )  e apenas então considerar
+(sem falar garantindo que a suite de testes é completamente funcional)  e apenas então considerar
 optimizar isso. Tendo decidido optmizar código em funcionamento, há 
 algo importantemente simples mas essenciais passos para considerar que são intrínsecos para qualquer
 processo de optimização.
 
 =head2 UM PASSO PARA O LADO
 
-Firstly, you need to establish a baseline time for the existing code, which
 Primeiro, você precisa estabelecer uma linha do tempo do código existente, que
-timing needs to be reliable and repeatable.  You'll probably want to use the
-C<Benchmark> or C<Devel::DProf> modules, or something similar, for this step,
-or perhaps the unix system C<time> utility, whichever is appropriate.  See the
-base of this document for a longer list of benchmarking and profiling modules,
-and recommended further reading.
+o calendário precisa ser confiável e repetível. Você provavelmente quer usar os módulos
+C<Benchmark> ou C<Devel::DProf>, or qualquer coisa similar, para este passo,
+ou talvez o utilitário do sistema unix C<time>, conforme o caso. Veja a base
+desse documento para uma lista mais completa de módulos de benchmarking e desempenho.
 
-=head2 ONE STEP FORWARD
+=head2 UM PASSO PARA FRENTE
 
-Next, having examined the program for I<hot spots>, (places where the code
-seems to run slowly), change the code with the intention of making it run
-faster.  Using version control software, like C<subversion>, will ensure no
-changes are irreversible.  It's too easy to fiddle here and fiddle there -
-don't change too much at any one time or you might not discover which piece of
-code B<really> was the slow bit.
+Próximo, tendo examinado o programa por I<gargalos>, (lugares aonde o código
+parece rodar mais devagar), mude o código com a intenção de fazer isso rodar rápido.
+Usando software de controle de versão, como C<github>, irá assegurar que as
+mudanças serão irrelevantes. Isso facilita para mexer aqui mexer ali - 
+não mude muito por vez ou você talvez não irá descobrir que parte do 
+código estatava B<realmente> lenta.
 
-=head2 ANOTHER STEP SIDEWAYS
+=head2 OUTRO PASSO PARA O LADO
 
-It's not enough to say: "that will make it run faster", you have to check it.
-Rerun the code under control of the benchmarking or profiling modules, from the
-first step above, and check that the new code executed the B<same task> in
-I<less time>.  Save your work and repeat...
+Isso não é o suficiente para dizer: "isto vai fazer isso rodar rápido", você tem que checar isso.
+reprisar o código sobre benchmarking ou sobre módulos de avaliação, vindo do
+primeiro passo acima, e checar se esse novo código executa o B<mesmo código> em
+I<menos tempo>. Salve o seu trabalho e repita...
 
-=head1 GENERAL GUIDELINES
+=head1 ORIENTAÇÕES GERAIS
 
-The critical thing when considering performance is to remember there is no such
-thing as a C<Golden Bullet>, which is why there are no rules, only guidelines.
+Uma coisa crítica quando consideramos performance é lembrar que não existe
+coisas como a C<Bala Dourada>, e é por isso que não existem regras, apenas orientações.
+É claro que o código inline vai ser mais rápido que uma sub-rotina ou chama de métodos,
 
-It is clear that inline code is going to be faster than subroutine or method
-calls, because there is less overhead, but this approach has the disadvantage
-of being less maintainable and comes at the cost of greater memory usage -
-there is no such thing as a free lunch.  If you are searching for an element in
-a list, it can be more efficient to store the data in a hash structure, and
-then simply look to see whether the key is defined, rather than to loop through
-the entire array using grep() for instance.  substr() may be (a lot) faster
-than grep() but not as flexible, so you have another trade-off to access.  Your
-code may contain a line which takes 0.01 of a second to execute which if you
-call it 1,000 times, quite likely in a program parsing even medium sized files
-for instance, you already have a 10 second delay, in just one single code
-location, and if you call that line 100,000 times, your entire program will
-slow down to an unbearable crawl.
+porque código inline gera menos sobregarga, mas essa aproximação tem desvantagem
+de ser menos mantível e vir a custar uma grande utilização de memória - 
+não há coisas como almoço grátis. Se você está procurando por um elemento numa lista,
+pode ser mais eficiente guardar os dados em uma estrutura de hash, e
+então simplesmente olhar para ver se a chave está definida, ao invés do loop atravessar
+todo o array usando grep() por exemplo. substr() pode ser (muito) mais rápido
+do que grep() mas não tão flexível, então você tem outra trade-off para acessar. Seu
+código pode conter linhas que demoram 0.01 segundos para executar, se você
+chamar isso 1.000 vezes, como em um programa processando arquivos de médio porte
+por exemplo, você já tenha um atrasado de 10 segundos, em apenas um único lugar
+do código, e se você chamar essa linha 100,000 vezes, todo o seu programa
+irá ficar lento como um verme rastejante.
 
 Using a subroutine as part of your sort is a powerful way to get exactly what
 you want, but will usually be slower than the built-in I<alphabetic> C<cmp> and
