@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NOME
 
 perlutil - utilidades que vem embutida na distribuição Perl

@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NOME
 
 File::Spec::Unix - Especialização do módulo File::Spec para sistemas Unix, base para outros módulos do pacote File::Spec

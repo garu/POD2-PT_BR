@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NOME
 
 IO::Pipe - provê métodos de objetos para redirecionamentos

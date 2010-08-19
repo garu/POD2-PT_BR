@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 IO::Handle - fornece métodos de objeto para manipulação de I/O handles

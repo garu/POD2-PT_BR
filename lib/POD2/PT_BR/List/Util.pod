@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NOME
 
 List::Util - Uma coleção de funções úteis para manipulação de listas

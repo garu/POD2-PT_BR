@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NOME
 
 Text::Wrap - quebras de linha para formar parágrafos

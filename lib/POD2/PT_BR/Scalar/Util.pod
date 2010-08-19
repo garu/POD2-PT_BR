@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NOME
 
 Scalar::Util - Uma coleção de funções úteis para manipulação de variáveis scalar subroutines

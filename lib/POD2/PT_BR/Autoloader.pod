@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NOME
 
 AutoLoader - carrega subrotinas sob demanda (apenas quando são executadas)
