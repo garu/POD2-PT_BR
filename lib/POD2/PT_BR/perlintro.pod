@@ -2,7 +2,7 @@
 
 =head1 NOME
 
-perlintro -- uma breve introdução ao Perl
+perlintro - uma breve introdução ao Perl
 
 =head1 DESCRIÇÃO
 
