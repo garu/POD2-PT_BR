@@ -14,6 +14,7 @@ sub search_perlfunc_re {
 sub pod_info {
     perlintro    => '5.10.1',
     perlutil     => '5.8.7',
+    perlboot     => '5.10.1',
 }
 
 42;
