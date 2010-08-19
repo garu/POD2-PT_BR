@@ -1,0 +1,179 @@
+=head1 NAME
+
+IO::Handle - fornece métodos de objeto para manipulação de I/O handles
+
+=head1 SINOPSE
+
+    use IO::Handle;
+
+    $io = new IO::Handle;
+    if ($io->fdopen(fileno(STDIN),"r")) {
+        print $io->getline;
+        $io->close;
+    }
+
+    $io = new IO::Handle;
+    if ($io->fdopen(fileno(STDOUT),"w")) {
+        $io->print("Some text\n");
+    }
+
+    # setvbuf não está disponível por padrão no Perl 5.8.0 e posterior
+    use IO::Handle '_IOLBF';
+    $io->setvbuf($buffer_var, _IOLBF, 1024);
+
+    undef $io;       # fecha o arquivo automaticamente caso este esteja aberto
+
+    autoflush STDOUT 1;
+
+=head1 DESCRIÇÃO
+
+A classe C<IO::Handle> é a classe base para todas as outras classes de manipulação de IO. Não é intencionado que objetos de C<IO::Handle> devam ser criados diretamente, por este motivo C<IO::Handle> é herdado por diversas outras classes pertencentes à hierarquia de classes de IO.
+
+Se você está lendo esta documentação, procurando por um substituto para o pacote C<FileHandle>, então sugerimos que você leia a documentação de C<IO::File> também.
+
+=head1 CONSTRUTOR
+
+=over 4
+
+=item new ()
+
+Cria um novo objeto C<IO::Handle>.
+
+=item new_from_fd ( FD, MODE )
+
+Cria um novo C<IO::Handle>, exatamente como C<new> faz. Este método necessita dois parâmetros, que são passados para o método C<fdopen>. Em caso de uma falha de C<fdopen>, o objeto é destruído. Caso contrário, o objeto é retornado para a rotina que o chamou.
+
+=back
+
+=head1 MÉTODOS
+
+Veja L<perlfunc> para uma descrição completa de cada um dos métodos suportados pelo C<IO::Handle>, que são apenas interfaces para as funções de Perl correspondentes:
+
+    $io->close
+    $io->eof
+    $io->fileno
+    $io->format_write( [FORMAT_NAME] )
+    $io->getc
+    $io->read ( BUF, LEN, [OFFSET] )
+    $io->print ( ARGS )
+    $io->printf ( FMT, [ARGS] )
+    $io->stat
+    $io->sysread ( BUF, LEN, [OFFSET] )
+    $io->syswrite ( BUF, [LEN, [OFFSET]] )
+    $io->truncate ( LEN )
+
+Veja L<perlvar> para descrição completa de cada um dos seguintes métodos de C<IO::Handle>. Todos eles retornarão o valor do atributo e podem ter um argumento único que atribuirá o valor da variável. Caso nenhum argumento seja passado, o valor da variável é mantido (exceto para C<< $io->autoflush >> que é ativado por padrão).
+
+    $io->autoflush ( [BOOL] )                         $|
+    $io->format_page_number( [NUM] )                  $%
+    $io->format_lines_per_page( [NUM] )               $=
+    $io->format_lines_left( [NUM] )                   $-
+    $io->format_name( [STR] )                         $~
+    $io->format_top_name( [STR] )                     $^
+    $io->input_line_number( [NUM])                    $.
+
+Os seguintes métodos não são suportados em objetos instanciados.
+
+    IO::Handle->format_line_break_characters( [STR] ) $:
+    IO::Handle->format_formfeed( [STR])               $^L
+    IO::Handle->output_field_separator( [STR] )       $,
+    IO::Handle->output_record_separator( [STR] )      $\
+    IO::Handle->input_record_separator( [STR] )       $/
+
+Para operações normais de I/O, você irá precisar destes métodos:
+
+=over 4
+
+=item $io->fdopen ( FD, MODE )
+
+O método C<fdopen> é similar ao método C<open>, exceto pelo seu primeiro parâmetro não ser um nome de arquivo mas sim um nome de um _filehandle_, um objeto do tipo C<IO::Handle> ou um número de um descritor de arquivo.
+
+=item $io->opened
+
+Retorna verdadeiro caso o objeto seja um descritor de arquivos válido, caso contrário retorna falso.
+
+=item $io->getline
+
+Este método funciona como C<< <$io> >> descrito em L<perlop/"I/O Operators">, exceto pelo fato de ser mais legível e pode ser utilizado em um contexto de listas, e devolverá apenas uma linha.
+
+=item $io->getlines
+
+Este método funciona como C<< <$io> >> quando utilizado em contexto de lista, para ler todas as linhas restantes de um arquivo, exceto pelo fato de ser mais legível. Ele irá também chamar C<croak()> se for acidentalmente executado em um contexto escalar.
+
+=item $io->ungetc ( ORD )
+
+Adiciona um caractere com o valor ordinal passado como argumento de volta ao _input stream_ do _filehandle_. Apenas um caractere por _handle_ é garantido. (N.T.: Tentar melhorar o contexto desta frase.)
+
+=item $io->write ( BUF, LEN [, OFFSET ] )
+
+O método C<write> funciona como a função C<write> encontrada no C, que é o oposto de C<read>. A interface para a função C<write> do Perl é chamada C<format_write>.
+
+=item $io->error
+
+Retorna um valor verdadeiro se o _handle_ obteve algum erro desde que foi aberto ou desde a última chamada à C<clreaerr>, ou caso o _handle_ for inválido. Ele apenas retorna false para um _handle_ válido sem nenhum erro.
+
+=item $io->clearerr
+
+Limpa o indicador de erros do _handle_. Retorna -1 se o _handle_ é inválido, caso contrário 0.
+
+=item $io->sync
+
+O método C<sync> sincroniza o conteúdo de um arquivo que está em memória com aquele que está em uma mídia física. C<sync> não opera no nível da API de C<perlio>, porém opera no descritor de arquivo (similar a C<sysread>, C<sysseek> e C<systell>). Isto significa que todo dado que estiver no nível da API de C<perlio> não irá ser sincronizada. Para sincronizar estes dados que estão bufferizados no nível da API do C<perlio>, você precisa utilizar o método C<flush>. C<sync> não é implementado em todas as plataformas. Ele retorna 0 em caso de sucesso, C<undef> em caso de erros e _handle_ inválido. Veja L<fsync(3c)>.
+
+=item $io->flush
+
+C<flush> faz com que o Perl despeje todos os dados bufferizados no nível da API do C<perlio>. Todo dado não lido do _buffer_ será descartado, e qualquer dado que não tenha sido escrito será escrito no descritor de arquivos correspondente. Retorna 0 em caso de sucesso, C<undef> em caso de erro.
+
+=item $io->printflush ( ARGS )
+
+Ativa _autoflush_, imprime ARGS e então restaura o status do _autoflush_ do objeto C<IO::Handle>. Retorna o valor repassado por C<print>.
+
+=item $io->blocking ( [ BOOL ] )
+
+Caso seja chamado com um argumento, o método C<blocking> irá ativar o IO não bloqueante se C<BOOL> for falso, e desativá-lo caso C<BOOL> seja verdadeiro.
+
+C<blocking> irá retornar o valor da configuração anterior, ou da configuração atual caso C<BOOL> não seja informado.
+
+Caso um erro ocorra, C<blocking> retornará C<undef> e C<$!> será atribuído.
+
+=back
+
+Caso as funções C C<setbuf()> e/ou C<setvbuf()> estejam disponíveis, então os métodos C<IO::Handle::setbuf> e C<IO::Handle::setvbuf> configurarão a política para o C<IO::Handle>. A sequência de chamadas para as funções Perl são as mesmas do que as C -- incluindo as constantes C<_IOFBF>, C<_IOLBF>, e C<_IONBF> para C<setvbuf()> -- exceto que os parâmetros do buffer especificam uma variável scalar para usar como buffer. Você deve apenas modificar antes de qualquer operação de I/O, ou imediatamente após executar um flush.
+
+ATENÇÃO: A função C<IO::Handle::setvbuf()> não está disponível por padrão no Perl 5.8.0 e atuais porque C<setvbuf()> necessita da biblioteca stdio, enquanto Perl prefere o novo subsistema C<perlio>.
+
+ATENÇÃO: Uma variável utilizada com buffer pelo C<setbuf> ou C<setvbuf> B<não devem ser modificadas> de qualquer maneira até que C<IO::Handle> esteja fechado ou C<setbuf> ou C<setvbuf> sejam chamados novamente, ou uma corrupção de memoria poderá acontecer! Lembre-se que a ordem de destruição global é indefinida, então mesmo que sua variável de buffer permaneça no escopo até a finalização do programa, ela pode ser indefinida antes do IO::Handle ser fechado. Note que você precisa importar as constantes C<_IOFBF>, C<_IOLBF> e C<_IONBF> explicitamente. Como C, C<setbuf> não retorna nada. C<setvbuf> retorna 0, em caso de sucesso e C<undef> em caso de falha.
+
+Finalmente, há um método especial para trabalhar em _tainted mode_ (B<-T>) e scripts que utilizam setuid/gid:
+
+=over 4
+
+=item $io->untaint
+
+Marca o objeto como limpo, e os dados lidos a partir dele serão considerados também limpos. Note que esta é uma ação de confiança que deve ser tomada, e consideração apropriada da fonte dos dados e uma potencial vulnerabilidade deve ser lembrada. Retorna 0 em caso de sucesso, -1 se a marcação falhar (por exemplo, um _handle_ inválido).
+
+=back
+
+=head1 NOTA
+
+Um objeto do tipo C<IO::Handle> é uma referência para uma referência de símbolo ou GLOB (veja o pacote C<Symbol>). Alguns módulos que estendem C<IO::Handle> podem manter variáveis relacionadas ao objetos na tabela hash do GLOB. Como uma tentativa para prevenir que os módulos interfiram entre si, proponho que estes módulos devem prefixar suas variáveis com seus próprios nomes separados por C<_>. Por exemplo, o módulo C<IO::Socket> mantém uma variável C<timeout> como 'io_socket_timeout'.
+
+=head1 VEJA TAMBÉM
+
+L<perlfunc>, 
+L<perlop/"I/O Operators">,
+L<IO::File>
+
+=head1 BUGS
+
+Devido à compatibilidade com versões anteriores, todos os filehandles assemelham-se a objetos da classe C<IO::Handle> ou classes derivadas desta, porém não são. Isto significa que você não pode derivar sua classe de C<IO::Handle> e herdar os métodos.
+
+=head1 HISTORY
+
+Código derivado de FileHandle.pm por Graham Barr <gbarr@pobox.com>
+
+=head1 TRADUÇÃO
+
+Igor Sutton <igor@izut.com>
+
+=cut

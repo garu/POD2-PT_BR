@@ -1,0 +1,153 @@
+=head1 NOME
+
+Scalar::Util - Uma coleção de funções úteis para manipulação de variáveis scalar subroutines
+
+=head1 SINOPSE
+
+    use Scalar::Util qw(blessed dualvar isweak readonly refaddr reftype tainted 
+                        weaken isvstring looks_like_number set_prototype);
+
+=head1 DESCRIÇÃO
+
+O módulo C<Scalar::Util> contém uma coleção de funções úteis que diversas pessoas acham interessante existir no core do Perl, porém a utilização não é grande o suficiente para justificar o uso de uma palavra reservada (keyword), e seu tamanho é tão insignificante que também não justifica a existência de um módulo individual para cada uma delas.
+
+Por padrão, o módulo C<Scalar::Util> não exporta nenhuma função. As funções definidas em C<Scalar::Util> são:
+
+=over 4
+
+=item blessed EXPR
+
+Se a avaliação de EXPR resultar em uma referência abençoada (I<blessed>), o nome do pacote que a abençoou é devolvido. É devolvido C<undef> caso contrário.
+
+   $scalar = "foo";
+   $class  = blessed $scalar;           # undef
+
+   $ref    = [];
+   $class  = blessed $ref;              # undef
+
+   $obj    = bless [], "Foo";
+   $class  = blessed $obj;              # "Foo"
+
+=item dualvar NUM, STRING
+
+Devolve uma variável scalar que possui o valor NUM em um contexto numérico e o valor STRING em um contexto textual.
+
+    $foo = dualvar 10, "Hello";
+    $num = $foo + 2;                    # 12
+    $str = $foo . " world";             # Hello world
+
+=item isvstring EXPR
+
+Caso EXPR seja avaliada como uma variável scalar que foi codificada como um vstring, o valor devolvido é verdadeiro.
+
+    $vs   = v49.46.48;
+    $fmt  = isvstring($vs) ? "%vd" : "%s"; #true
+    printf($fmt,$vs);
+
+=item isweak EXPR
+
+Se a avaliação de EXPR retornar em uma variável scalar que representa uma referência fraca (I<weak reference>), o valor devolvido é verdadeiro.
+
+    $ref  = \$foo;
+    $weak = isweak($ref);               # falso
+    weaken($ref);
+    $weak = isweak($ref);               # verdadeiro
+
+=item looks_like_number EXPR
+
+Devolve um valor verdadeiro caso Perl ache que EXPR seja um número. Veja L<perlapi/looks_like_number>.
+
+=item openhandle FH
+
+Devolve FH caso FH possa ser utilizada como um I<filehandle> e esteja aberto, ou seja um I<tied handle>. É devolvido C<undef> caso contrário.
+
+    $fh = openhandle(*STDIN);		# \*STDIN
+    $fh = openhandle(\*STDIN);		# \*STDIN
+    $fh = openhandle(*NOTOPEN);		# undef
+    $fh = openhandle("scalar");		# undef
+    
+=item readonly SCALAR
+
+Devolve um valor verdadeiro caso a variável scalar SCALAR seja somente leitura.
+
+    sub foo { readonly($_[0]) }
+
+    $readonly = foo($bar);              # falso
+    $readonly = foo(0);                 # verdadeiro
+
+=item refaddr EXPR
+
+Se a avaliação de EXPR resultar em uma referência, o endereço de memória interno do valor referido é devolvido. Caso contrário, é devolvido C<undef>.
+
+    $addr = refaddr "string";           # undef
+    $addr = refaddr \$var;              # eg 12345678
+    $addr = refaddr [];                 # eg 23456784
+
+    $obj  = bless {}, "Foo";
+    $addr = refaddr $obj;               # eg 88123488
+
+=item reftype EXPR
+
+Se a avaliação de EXPR resultar em uma referência, o tipo da variável referenciada é devolvido. Caso contrário, é devolvido C<undef>.
+
+    $type = reftype "string";           # undef
+    $type = reftype \$var;              # SCALAR
+    $type = reftype [];                 # ARRAY
+
+    $obj  = bless {}, "Foo";
+    $type = reftype $obj;               # HASH
+
+=item set_prototype CODEREF, PROTOTYPE
+
+Atribui o protótipo PROTOTYPE na referência da função CODEREF, ou a remove caso PROTOTYPE seja C<undef>. Devolve a referência da função CODEREF.
+
+    set_prototype \&foo, '$$';
+
+=item tainted EXPR
+
+Devolve verdadeiro caso o resultado da expressão EXPR esteja marcado (I<tainted>).
+
+    $taint = tainted("constant");       # falso
+    $taint = tainted($ENV{PWD});        # verdadeiro se acionada a opção -T
+
+=item weaken REF
+
+A referência REF será transformada em uma referência fraca (I<weak reference>). Isto significa que elá não manterá uma contagem de referências no objeto a que ela se referencia. Outro aspecto importante é que, quando a contagem de referências naquele objeto chegar em zero, à referência REF será atribuído o valor C<undef>.
+
+Isto é útil para manter cópias de referências, porém você não quer que este objeto não seja destruído.
+
+    {
+      my $var;
+      $ref = \$var;
+      weaken($ref);                     # Transforma $ref em uma referência fraca (weak reference)
+    }
+    # $ref é indefinida, agora
+
+=back
+
+=head1 BUGS CONHECIDOS
+
+Há um bug no Perl 5.6.0 com UVs que são maiores ou iguais a 1<<31. Isto será informado quanto os testes 8 e 9 de dualvar.t falharem.
+
+=head1 COPYRIGHT
+
+Copyright (c) 1997-2004 Graham Barr <gbarr@pobox.com>. All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+Exceto weaken e isweak que são de
+
+Copyright (c) 1999 Tuomas J. Lukka <lukka@iki.fi>. All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as perl itself.
+
+=head1 BLATANT PLUG
+
+As funções weaken e isweak deste módulo, e o patch para o core do Perl foram escritos em conjunto com o livro da APress 'Definitive Guide to Object-Oriented Programming in Perl', de Tuomas J. Lukka, para evitar ter que explicar por que algumas coisas tem que serem feitas de maneiras tão incômodas.
+
+=head1 TRADUÇÃO
+
+Igor Sutton <igor@izut.com>
+
+=cut
+
