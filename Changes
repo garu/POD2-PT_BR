@@ -2,6 +2,7 @@ Revision history for POD2-PT_BR
 
 0.03    2010-08-20
         updating Manifest to include all new files from previous release :)
+        adding utf8 encoding for module's own pod
 
 0.02    2010-08-19
         added perlutil

@@ -21,6 +21,8 @@ sub pod_info {
 
 42;
 __END__
+=encoding utf8
+
 =head1 NAME
 
 POD2::PT_BR - Brazilian portuguese translation of Perl core documentation
