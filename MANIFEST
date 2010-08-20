@@ -4,4 +4,7 @@ Makefile.PL
 README
 lib/POD2/PT_BR.pm
 lib/POD2/PT_BR/perlintro.pod
+lib/POD2/PT_BR/perlbook.pod
+lib/POD2/PT_BR/perlboot.pod
+lib/POD2/PT_BR/perldsc.pod
 t/00-load.t
