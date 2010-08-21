@@ -164,7 +164,7 @@ L<< http://perldoc.perl.org.br >>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2009 The Brazilian Perl Community.
+Copyright 2009-2010 The Brazilian Perl Community.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of either: the GNU General Public License as published
