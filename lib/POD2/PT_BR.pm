@@ -155,7 +155,7 @@ and to the nice people involved in the translation effort worldwide.
 
 L<< POD2::Base >>
 
-L<< POD2::IT >>, L<< POD2::FR >>, L<< POD2::LT >>, L<< POD2::CN >>, L<< POD2::CN >>, L<< POD2::DE >>, L<< POD2::ES >>.
+L<< POD2::IT >>, L<< POD2::FR >>, L<< POD2::LT >>
 
 L<< http://pod2.perl.org >>
 
