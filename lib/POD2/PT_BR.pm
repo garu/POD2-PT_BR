@@ -17,6 +17,7 @@ sub pod_info {
     perlboot     => '5.10.1',
     perlbook     => '5.10.1',
     perldsc      => '5.8.7',
+    perlstyle    => '5.10.1',
 }
 
 42;

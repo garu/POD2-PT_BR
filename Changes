@@ -1,5 +1,8 @@
 Revision history for POD2-PT_BR
 
+0.05    2010-08-23
+        added perlstyle
+
 0.04    2010-08-20
         updating copyright notice
         removing unexisting references on pod (which also fixes RT54353)
