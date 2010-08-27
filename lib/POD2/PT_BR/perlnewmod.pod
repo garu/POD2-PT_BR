@@ -1,0 +1,27 @@
+=encoding utf8
+
+=head1 NOME
+
+perlnewmod - preparando um novo módulo para distribuição
+
+=head1 DESCRIÇÃO
+
+=head1 AUTOR
+
+Simon Cozens, C<simon@cpan.org>
+
+Atualizado por Kirrily "Skud" Robert, C<skud@cpan.org>
+
+=head1 TRADUÇÃO
+
+Wallace Reis <wreis@cpan.org>
+
+=head1 VEJA TAMBÉM
+
+L<perlmod>, L<perlmodlib>, L<perlmodinstall>, L<h2xs>, L<strict>,
+L<Carp>, L<Exporter>, L<perlpod>, L<Test::Simple>, L<Test::More>
+L<ExtUtils::MakeMaker>, L<Module::Build>, L<Module::Starter>
+http://www.cpan.org/ , Ken Williams' tutorial on building your own
+module at http://mathforum.org/~ken/perl_modules.html
+
+=cut
