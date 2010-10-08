@@ -1,70 +1,70 @@
 
 =head1 NAME
 
-perlfunc - FunÁıes internas do Perl
+perlfunc - Fun√ß√µes internas do Perl
 
-=head1 DESCRI«√O
+=head1 DESCRI√á√ÉO
 
-As funÁıes nesta seÁ„o podem servir como condiÁıes em uma express„o. Elas se
-dividem em duas importantes categorias: operadores lista e operadores un·rios
-nomeados. Elas diferem entre si pela seu relacionamento de precedÍncia com a
-vÌrgula seguinte. (Veja a tabela de precedÍncia em L<perlop>.) Operadores lista
-aceitam mais de um argumento, enquanto operadores un·rios nunca podem aceitar
-mais de um argumento. Logo, uma vÌrgula termina o argumento de um operador
-un·rio, porÈm meramente separa os argumentos de um operador lista. Um operador
-un·rio geralmente provÍ um contexto escalar para seu argumento, enquanto um
+As fun√ß√µes nesta se√ß√£o podem servir como condi√ß√µes em uma express√£o. Elas se
+dividem em duas importantes categorias: operadores lista e operadores un√°rios
+nomeados. Elas diferem entre si pela seu relacionamento de preced√™ncia com a
+v√≠rgula seguinte. (Veja a tabela de preced√™ncia em L<perlop>.) Operadores lista
+aceitam mais de um argumento, enquanto operadores un√°rios nunca podem aceitar
+mais de um argumento. Logo, uma v√≠rgula termina o argumento de um operador
+un√°rio, por√©m meramente separa os argumentos de um operador lista. Um operador
+un√°rio geralmente prov√™ um contexto escalar para seu argumento, enquanto um
 operador lista pode prover ambos contextos escalar e de lista para seus
 argumentos. Se ambos, os argumentos escalares vem primeiro, e o argumento lista
 vem em seguida. (Note que jamais pode ser apenas um argumento de sta lista.)
-Por exemplo, splice() tem trÍs argumentos escalares seguidos por uma lista, ao
+Por exemplo, splice() tem tr√™s argumentos escalares seguidos por uma lista, ao
 passo que gethostbyname() tem 4 argumentos escalares.
 
-Nas descriÁıes sint·ticas que se seguem, operadores lista que esperam um lista
-(e proveem contexto de lista para os elementos da lista) s„o mostrados com
-LISTA como um argumento. Essa lista pode consistir de qualquer combinaÁ„o de
-argumentos escalares ou valores lista; os valores lista sempre s„o incluÌdos na
+Nas descri√ß√µes sint√°ticas que se seguem, operadores lista que esperam um lista
+(e proveem contexto de lista para os elementos da lista) s√£o mostrados com
+LISTA como um argumento. Essa lista pode consistir de qualquer combina√ß√£o de
+argumentos escalares ou valores lista; os valores lista sempre s√£o inclu√≠dos na
 lista como se cada elemento individual fosse interpolado naquele momento na
 lista, formando um longo valor lista unidimensional. Elementos de um LISTA
-devem ser separados por vÌrgulas.
+devem ser separados por v√≠rgulas.
 
-Qualquer funÁ„o na lista abaixo pode ser usada com ou sem parÍntesis ao redor
-de seus argumentos. (As descriÁıes sint·ticas omitem os parÍnteses.) Se vocÍ
-usa os parÍnteses, a simples (mas por vezes surpreendente) regra È esta:
-I<Assemelha-se> a uma funÁ„o, portanto I<È> uma funÁ„o, e precedÍncia n„o vem
-ao caso. Em outros casos isto È um operador lista ou operador un·rio, e
-precedÍncia vem ao caso. E espaÁo em branco entre a funÁ„o e o parentese
-esquerdo n„o conta -- assim vocÍ precisa ser cuidados ‡s vezes:
+Qualquer fun√ß√£o na lista abaixo pode ser usada com ou sem par√™ntesis ao redor
+de seus argumentos. (As descri√ß√µes sint√°ticas omitem os par√™nteses.) Se voc√™
+usa os par√™nteses, a simples (mas por vezes surpreendente) regra √© esta:
+I<Assemelha-se> a uma fun√ß√£o, portanto I<√©> uma fun√ß√£o, e preced√™ncia n√£o vem
+ao caso. Em outros casos isto √© um operador lista ou operador un√°rio, e
+preced√™ncia vem ao caso. E espa√ßo em branco entre a fun√ß√£o e o parentese
+esquerdo n√£o conta -- assim voc√™ precisa ser cuidados √†s vezes:
 
     print 1+2+4;        # Imprime 7.
     print(1+2) + 4;     # Imprime 3.
-    print (1+2)+4;      # TambÈm imprime 3!
+    print (1+2)+4;      # Tamb√©m imprime 3!
     print +(1+2)+4;     # Imprime 7.
     print ((1+2)+4);    # Imprime 7.
 
-Se vocÍ executa Perl com a opÁ„o B<-w> ele pode advertir vocÍ sobre isso. Por
+Se voc√™ executa Perl com a op√ß√£o B<-w> ele pode advertir voc√™ sobre isso. Por
 exemplo a terceira linha acima produz:
 
     print (...) interpreted as function at - line 1.
     Useless use of integer addition in void context at - line 1.
 
-Algumas funÁıes n„o recebem absolutamente nenhum argumento, e portanto n„o
-trabalham com un·rios nem operadores lista. Isto inclui funÁıes como C<time> e
+Algumas fun√ß√µes n√£o recebem absolutamente nenhum argumento, e portanto n√£o
+trabalham com un√°rios nem operadores lista. Isto inclui fun√ß√µes como C<time> e
 C<endpwent>. Por exemplo, C<time+86_400> sempre que dizer o mesmo que
 C<time() + 86_400>.
 
-Para funÁıes que podem ser usadas em ambos contexto escalar e de lista, falhas
-n„o abortivas s„o geralmente indicadas em um contexto escalar por retornar um
+Para fun√ß√µes que podem ser usadas em ambos contexto escalar e de lista, falhas
+n√£o abortivas s√£o geralmente indicadas em um contexto escalar por retornar um
 valor indefinido, e em um contexto de lista por retornar uma lista nula.
 
-Lembre a importante regra a seguir: N„o h· B<nenhuma regra> que relaciona o
-comportamento de uma express„o num contexto de lista com o seu comportamento em
+Lembre a importante regra a seguir: N√£o h√° B<nenhuma regra> que relaciona o
+comportamento de uma express√£o num contexto de lista com o seu comportamento em
 contexto escalar, ou vice versa. Poderiam fazer coisas completamente
-diferentes. Cada operador e funÁ„o decidem que tipo de valor seria mais
+diferentes. Cada operador e fun√ß√£o decidem que tipo de valor seria mais
 apropriado para retornar em contexto escalar. Alguns operadores retornam o
 tamanho da lista que teria sido retornada em contexto de lista. Outros
 operadores retornam o primeiro elemento da lista. Outros operadores retornam o
-˙ltimo valor da lista. Outros operadores retornam o quantidade de operaÁıes bem
-sucedidas. Em geral, eles fazer o que vocÍ quer, se vocÍ n„o quer consistÍncia.
+√∫ltimo valor da lista. Outros operadores retornam o quantidade de opera√ß√µes bem
+sucedidas. Em geral, eles fazer o que voc√™ quer, se voc√™ n√£o quer consist√™ncia.
 
 A named array in scalar context is quite different from what would at
 first glance appear to be a list in scalar context.  You can't get a list
@@ -73,50 +73,50 @@ the context at compile time.  It would generate the scalar comma operator
 there, not the list construction version of the comma.  That means it
 was never a list to start with.
 
-Em geral, funÁıes em Perl que servem como interface para chamadas de sistema de
+Em geral, fun√ß√µes em Perl que servem como interface para chamadas de sistema de
 mesmo nome (como chown(2), fork(2), closedir(2) etc. ) sempre retornam
-verdadeiro quando bem sucedidas e C<undef> pelo contr·rio, como È habitualmente
-mencionado nas descriÁıes abaixo. Isto È diferente das interfaces em C, que
-retornam C<-1> em falha. ExceÁıes para esta regra s„o C<wait>, C<waitpid>, and
-C<syscall>. Chamadas de sistemas tambÈm modificam a vari·vel especial C<$!> em
-falhas. Outras funÁıes n„o executam, exceto acidentalmente.
+verdadeiro quando bem sucedidas e C<undef> pelo contr√°rio, como √© habitualmente
+mencionado nas descri√ß√µes abaixo. Isto √© diferente das interfaces em C, que
+retornam C<-1> em falha. Exce√ß√µes para esta regra s√£o C<wait>, C<waitpid>, and
+C<syscall>. Chamadas de sistemas tamb√©m modificam a vari√°vel especial C<$!> em
+falhas. Outras fun√ß√µes n√£o executam, exceto acidentalmente.
 
-=head2 FunÁıes Perl por Categoria
+=head2 Fun√ß√µes Perl por Categoria
 
-Aqui est„o as funÁıes Perl (incluindo coisas que se parecem com funÁıes, como
+Aqui est√£o as fun√ß√µes Perl (incluindo coisas que se parecem com fun√ß√µes, como
 algumas palavras-chave e operadores nomeados) arranjados por categoria. Algumas
-funÁıes aparecem mais de uma vez.
+fun√ß√µes aparecem mais de uma vez.
 
 =over 4
 
-=item FunÁıes para ESCALARes ou strings
+=item Fun√ß√µes para ESCALARes ou strings
 
 C<chomp>, C<chop>, C<chr>, C<crypt>, C<hex>, C<index>, C<lc>, C<lcfirst>,
 C<length>, C<oct>, C<ord>, C<pack>, C<q/STRING/>, C<qq/STRING/>, C<reverse>,
 C<rindex>, C<sprintf>, C<substr>, C<tr///>, C<uc>, C<ucfirst>, C<y///>
 
-=item Expressıes regulares e combinaÁ„o de padrıes
+=item Express√µes regulares e combina√ß√£o de padr√µes
 
 C<m//>, C<pos>, C<quotemeta>, C<s///>, C<split>, C<study>, C<qr//>
 
-=item FunÁıes NumÈricas
+=item Fun√ß√µes Num√©ricas
 
 C<abs>, C<atan2>, C<cos>, C<exp>, C<hex>, C<int>, C<log>, C<oct>, C<rand>,
 C<sin>, C<sqrt>, C<srand>
 
-=item FunÁıes para @ARRAYs reais
+=item Fun√ß√µes para @ARRAYs reais
 
 C<pop>, C<push>, C<shift>, C<splice>, C<unshift>
 
-=item FunÁıes para lista de dados
+=item Fun√ß√µes para lista de dados
 
 C<grep>, C<join>, C<map>, C<qw/STRING/>, C<reverse>, C<sort>, C<unpack>
 
-=item FunÁıes para %HASHes reais
+=item Fun√ß√µes para %HASHes reais
 
 C<delete>, C<each>, C<exists>, C<keys>, C<values>
 
-=item FunÁıes de entrada e saÌda
+=item Fun√ß√µes de entrada e sa√≠da
 
 C<binmode>, C<close>, C<closedir>, C<dbmclose>, C<dbmopen>, C<die>, C<eof>,
 C<fileno>, C<flock>, C<format>, C<getc>, C<print>, C<printf>, C<read>,
@@ -124,11 +124,11 @@ C<readdir>, C<rewinddir>, C<seek>, C<seekdir>, C<select>, C<syscall>,
 C<sysread>, C<sysseek>, C<syswrite>, C<tell>, C<telldir>, C<truncate>,
 C<warn>, C<write>
 
-=item FunÁıes para dados de comprimento fixo ou registros
+=item Fun√ß√µes para dados de comprimento fixo ou registros
 
 C<pack>, C<read>, C<syscall>, C<sysread>, C<syswrite>, C<unpack>, C<vec>
 
-=item FunÁıes para filehandles, arquivos, ou diretÛrios
+=item Fun√ß√µes para filehandles, arquivos, ou diret√≥rios
 
 C<-I<X>>, C<chdir>, C<chmod>, C<chown>, C<chroot>, C<fcntl>, C<glob>,
 C<ioctl>, C<link>, C<lstat>, C<mkdir>, C<open>, C<opendir>,
@@ -144,44 +144,44 @@ C<goto>, C<last>, C<next>, C<redo>, C<return>, C<sub>, C<wantarray>
 
 C<caller>, C<import>, C<local>, C<my>, C<our>, C<package>, C<use>
 
-=item FunÁıes variadas
+=item Fun√ß√µes variadas
 
 C<defined>, C<dump>, C<eval>, C<formline>, C<local>, C<my>, C<our>, C<reset>,
 C<scalar>, C<undef>, C<wantarray>
 
-=item FunÁıes para processo e grupos de processos
+=item Fun√ß√µes para processo e grupos de processos
 
 C<alarm>, C<exec>, C<fork>, C<getpgrp>, C<getppid>, C<getpriority>, C<kill>,
 C<pipe>, C<qx/STRING/>, C<setpgrp>, C<setpriority>, C<sleep>, C<system>,
 C<times>, C<wait>, C<waitpid>
 
-=item Palavras-chave relacionadas a mÛdulos perl
+=item Palavras-chave relacionadas a m√≥dulos perl
 
 C<do>, C<import>, C<no>, C<package>, C<require>, C<use>
 
-=item Palavras-chave relacionadas a classes e orientaÁ„o a objetos
+=item Palavras-chave relacionadas a classes e orienta√ß√£o a objetos
 
 C<bless>, C<dbmclose>, C<dbmopen>, C<package>, C<ref>, C<tie>, C<tied>,
 C<untie>, C<use>
 
-=item FunÁıes socket baixo-nÌvel
+=item Fun√ß√µes socket baixo-n√≠vel
 
 C<accept>, C<bind>, C<connect>, C<getpeername>, C<getsockname>,
 C<getsockopt>, C<listen>, C<recv>, C<send>, C<setsockopt>, C<shutdown>,
 C<socket>, C<socketpair>
 
-=item FunÁıes de comunicaÁ„o inter processo System V
+=item Fun√ß√µes de comunica√ß√£o inter processo System V
 
 C<msgctl>, C<msgget>, C<msgrcv>, C<msgsnd>, C<semctl>, C<semget>, C<semop>,
 C<shmctl>, C<shmget>, C<shmread>, C<shmwrite>
 
-=item Adquirindo informaÁıes de usu·rio e grupo
+=item Adquirindo informa√ß√µes de usu√°rio e grupo
 
 C<endgrent>, C<endhostent>, C<endnetent>, C<endpwent>, C<getgrent>,
 C<getgrgid>, C<getgrnam>, C<getlogin>, C<getpwent>, C<getpwnam>,
 C<getpwuid>, C<setgrent>, C<setpwent>
 
-=item Adquirindo informaÁıes da rede
+=item Adquirindo informa√ß√µes da rede
 
 C<endprotoent>, C<endservent>, C<gethostbyaddr>, C<gethostbyname>,
 C<gethostent>, C<getnetbyaddr>, C<getnetbyname>, C<getnetent>,
@@ -189,21 +189,21 @@ C<getprotobyname>, C<getprotobynumber>, C<getprotoent>,
 C<getservbyname>, C<getservbyport>, C<getservent>, C<sethostent>,
 C<setnetent>, C<setprotoent>, C<setservent>
 
-=item FunÁıes relacionadas a tempo
+=item Fun√ß√µes relacionadas a tempo
 
 C<gmtime>, C<localtime>, C<time>, C<times>
 
-=item FunÁıes novas no perl5
+=item Fun√ß√µes novas no perl5
 
 C<abs>, C<bless>, C<chomp>, C<chr>, C<exists>, C<formline>, C<glob>,
 C<import>, C<lc>, C<lcfirst>, C<map>, C<my>, C<no>, C<our>, C<prototype>,
 C<qx>, C<qw>, C<readline>, C<readpipe>, C<ref>, C<sub*>, C<sysopen>, C<tie>,
 C<tied>, C<uc>, C<ucfirst>, C<untie>, C<use>
 
-* - C<sub> era uma palavra-chave no perl4, mas no perl5 È um operador, que pode
-ser usado em expressıes.
+* - C<sub> era uma palavra-chave no perl4, mas no perl5 √© um operador, que pode
+ser usado em express√µes.
 
-=item FunÁıes obsoletas no perl5
+=item Fun√ß√µes obsoletas no perl5
 
 C<dbmclose>, C<dbmopen>
 
@@ -212,9 +212,9 @@ C<dbmclose>, C<dbmopen>
 =head2 Portabilidade
 
 Perl nasceu no Unix e pode portanto acessar todas as chamadas de sistema comuns
-do Unix. Em ambientes n„o-Unix, a funcionalidade de algumas chamadas de sistema
-podem n„o estar disponÌveis, ou detalhes das funcionalidades disponÌveis podem
-ser ligeiramente diferentes. As funÁıes Perl afetadas por isto s„o:
+do Unix. Em ambientes n√£o-Unix, a funcionalidade de algumas chamadas de sistema
+podem n√£o estar dispon√≠veis, ou detalhes das funcionalidades dispon√≠veis podem
+ser ligeiramente diferentes. As fun√ß√µes Perl afetadas por isto s√£o:
 
 C<-X>, C<binmode>, C<chmod>, C<chown>, C<chroot>, C<crypt>,
 C<dbmclose>, C<dbmopen>, C<dump>, C<endgrent>, C<endhostent>,
@@ -234,10 +234,10 @@ C<stat>, C<symlink>, C<syscall>, C<sysopen>, C<system>,
 C<times>, C<truncate>, C<umask>, C<unlink>,
 C<utime>, C<wait>, C<waitpid>
 
-Para mais informaÁıes sobre a portabilidade destas funÁıes, veja
-L<perlport> e outras documentaÁıes plataforma-especÌficas acessÌveis.
+Para mais informa√ß√µes sobre a portabilidade destas fun√ß√µes, veja
+L<perlport> e outras documenta√ß√µes plataforma-espec√≠ficas acess√≠veis.
 
-=head2 Listagem AlfabÈtica das FunÁıes do Perl
+=head2 Listagem Alfab√©tica das Fun√ß√µes do Perl
 
 =over 8
 
@@ -247,14 +247,14 @@ L<perlport> e outras documentaÁıes plataforma-especÌficas acessÌveis.
 
 =item -X
 
-Um testador de arquivo, onde X È uma das letras listadas abaixo. Este operador
-un·rio recebe um argumento, ou um nome de arquivo ou um filehandle, e testa
-associaÁıes ao arquivo para ver se alguma coisa È verdade sobre ele. Se o
-argumento È omitido, testa C<$_>, exceto para C<-t>, que testa STDIN. A menos
-que documentado o contr·rio, ele retorna C<1> para verdadeiro e C<''> para
-falso, ou o valor indefinido se o arquivo n„o existe. Apesar dos nomes
-esquisitos, a precedÍncia È a mesma como qualquer outro operador un·rio, e o
-argumento pode ter parÍnteses como qualquer outro operador un·rio. O operador
+Um testador de arquivo, onde X √© uma das letras listadas abaixo. Este operador
+un√°rio recebe um argumento, ou um nome de arquivo ou um filehandle, e testa
+associa√ß√µes ao arquivo para ver se alguma coisa √© verdade sobre ele. Se o
+argumento √© omitido, testa C<$_>, exceto para C<-t>, que testa STDIN. A menos
+que documentado o contr√°rio, ele retorna C<1> para verdadeiro e C<''> para
+falso, ou o valor indefinido se o arquivo n√£o existe. Apesar dos nomes
+esquisitos, a preced√™ncia √© a mesma como qualquer outro operador un√°rio, e o
+argumento pode ter par√™nteses como qualquer outro operador un√°rio. O operador
 pode ser qualquer destes:
 X<-r>X<-w>X<-x>X<-o>X<-R>X<-W>X<-X>X<-O>X<-e>X<-z>X<-s>X<-f>X<-d>X<-l>X<-p>
 X<-S>X<-b>X<-c>X<-t>X<-u>X<-g>X<-k>X<-T>X<-B>X<-M>X<-A>X<-C>
@@ -262,36 +262,36 @@ X<-S>X<-b>X<-c>X<-t>X<-u>X<-g>X<-k>X<-T>X<-B>X<-M>X<-A>X<-C>
     -r         Arquivo pode ser lido pelo efetivo uid/gid.
     -w         Arquivo pode ser escrito pelo efetivo uid/gid.
     -x         Arquivo pode ser executado pelo efetivo uid/gid.
-    -o         Arquivo È propriedade do efetivo uid.
+    -o         Arquivo √© propriedade do efetivo uid.
 
     -R         Arquivo pode ser lido pelo real uid/gid.
     -W         Arquivo pode ser escrito pelo real uid/gid.
     -X         Arquivo pode ser executado pelo real uid/gid.
-    -O         Arquivo È propriedade do real uid.
+    -O         Arquivo √© propriedade do real uid.
 
     -e         Arquivo existe.
-    -z         Arquivo tem tamanho zero (È vazio).
-    -s         Arquivo tem tamanho n„o-zero (retorna o tamanho em bytes).
+    -z         Arquivo tem tamanho zero (√© vazio).
+    -s         Arquivo tem tamanho n√£o-zero (retorna o tamanho em bytes).
 
-    -f         Arquivo È um arquivo simples.
-    -d         Arquivo È um diretÛrio.
-    -l         Arquivo È um link simbÛlico.
-    -p         Arquivo È um pipe nomeado (FIFO)pipe (FIFO), or Filehandle È um pipe.
-    -S         Arquivo È um socket.
-    -b         Arquivo È um arquivo especial de bloco.
-    -c         Arquivo È um arquivo especial de caractere.
-    -t         Filehandle est· aberto para um tty.
+    -f         Arquivo √© um arquivo simples.
+    -d         Arquivo √© um diret√≥rio.
+    -l         Arquivo √© um link simb√≥lico.
+    -p         Arquivo √© um pipe nomeado (FIFO)pipe (FIFO), or Filehandle √© um pipe.
+    -S         Arquivo √© um socket.
+    -b         Arquivo √© um arquivo especial de bloco.
+    -c         Arquivo √© um arquivo especial de caractere.
+    -t         Filehandle est√° aberto para um tty.
 
     -u         Arquivo tem o bit setuid marcado.
     -g         Arquivo tem o bit setgid marcado.
     -k         Arquivo tem o bit sticky marcado.
 
-    -T         Arquivo È um arquivo de texto ASCII (avaliaÁ„o heurÌstica).
-    -B         Arquivo È um arquivo "bin·rio" (inverso de -T).
+    -T         Arquivo √© um arquivo de texto ASCII (avalia√ß√£o heur√≠stica).
+    -B         Arquivo √© um arquivo "bin√°rio" (inverso de -T).
 
-    -M         Data de inÌcio do script menos data de modificaÁ„o do arquivo, em dias.
+    -M         Data de in√≠cio do script menos data de modifica√ß√£o do arquivo, em dias.
     -A         O mesmo para data de acesso.
-    -C         O mesmo para data de alteraÁ„o do inode (Unix, pode divergir de outras plataformas)
+    -C         O mesmo para data de altera√ß√£o do inode (Unix, pode divergir de outras plataformas)
 
 Exemplo:
 
@@ -301,34 +301,34 @@ Exemplo:
          #...
     }
 
-A interpretaÁ„o dos operadores de permiss„o de arquivos C<-r>, C<-R>, C<-w>,
-C<-W>, C<-x>, e C<-X> s„o por padr„o baseados meramente no modo do arquivo e
-uids e gids do usu·rio. Haveria outras causas para vocÍ n„o conseguir
+A interpreta√ß√£o dos operadores de permiss√£o de arquivos C<-r>, C<-R>, C<-w>,
+C<-W>, C<-x>, e C<-X> s√£o por padr√£o baseados meramente no modo do arquivo e
+uids e gids do usu√°rio. Haveria outras causas para voc√™ n√£o conseguir
 efetivamente ler, escrever, ou executar o arquivo. Tais causas podem ser por
 exemplo controle de acesso em sistemas de arquivos em rede, ACLs (listas de
 controle de acesso), sistemas de arquivos somente-leitura, e formatos
-execut·veis desconhecidos.
+execut√°veis desconhecidos.
 
-Ainda tome nota que, para o superusu·rio no sistema de arquivos local, os
+Ainda tome nota que, para o superusu√°rio no sistema de arquivos local, os
 testes C<-r>, C<-R>, C<-w>, e C<-W> sempre retornam 1, e C<-x> e C<-X> retornam
-1 se algum bit execut·vel est· marcado no modo. Scripts executados pelo
-superusu·rio podem de algum modo necessitar fazer um stat() para determinar o
+1 se algum bit execut√°vel est√° marcado no modo. Scripts executados pelo
+superusu√°rio podem de algum modo necessitar fazer um stat() para determinar o
 modo atual do arquivo, ou temporariamente ajustar o efetivo uid para alguma
 coisa diferente.
 
-Se vocÍ est· usando ACLs, h· um pragma chamado C<filetest> que pode
-proporcionar resultados mais apurados que o b·sico modo de bits stat(). Quando
-sob o C<use filetest 'access'> os testes em arquivo acima mencionados testar„o
-se as permissıes podem (ou n„o) ser concedidas usando a famÌlia de chamadas de
-sistema access(). TambÈm note que se C<-x> e C<-X> podem sob este pragma
-retornar verdadeiro mesmo se n„o haja bits de permiss„o de execuÁ„o (nem
-qualquer extra permiss„o de execuÁ„o ACLs).
+Se voc√™ est√° usando ACLs, h√° um pragma chamado C<filetest> que pode
+proporcionar resultados mais apurados que o b√°sico modo de bits stat(). Quando
+sob o C<use filetest 'access'> os testes em arquivo acima mencionados testar√£o
+se as permiss√µes podem (ou n√£o) ser concedidas usando a fam√≠lia de chamadas de
+sistema access(). Tamb√©m note que se C<-x> e C<-X> podem sob este pragma
+retornar verdadeiro mesmo se n√£o haja bits de permiss√£o de execu√ß√£o (nem
+qualquer extra permiss√£o de execu√ß√£o ACLs).
 This strangeness is due to the underlying system calls' definitions.
-Leia a documentaÁ„o para o pragma C<filetest> para mais informaÁıes.
+Leia a documenta√ß√£o para o pragma C<filetest> para mais informa√ß√µes.
 
-Note que C<-s/a/b/> n„o faz executar uma substituiÁ„o negada. Foi proferido atÈ
+Note que C<-s/a/b/> n√£o faz executar uma substitui√ß√£o negada. Foi proferido at√©
 agora que C<-exp($foo)> trabalha como o esperado, contudo--somente letras
-˙nicas seguidas pelo hÌfen s„o interpretadas como testes em arquivo.
+√∫nicas seguidas pelo h√≠fen s√£o interpretadas como testes em arquivo.
 
 The C<-T> and C<-B> switches work as follows.  The first block or so of the
 file is examined for odd characters such as strange control codes or
@@ -342,12 +342,12 @@ read a file to do the C<-T> test, on most occasions you want to use a C<-f>
 against the file first, as in C<next unless -f $file && -T $file>.
 
 Se qualquer teste em arquivo (ou os operadores C<stat> ou C<lstat>) recebem um
-filehandle especial consistindo de um solit·rio underline, ent„o a estrutura
-stat do precedente teste em arquivo (ou operador stat) È usada, poupando uma
-chamada de sistema. (Isto n„o funciona com C<-t>, e vocÍ precisa se lembrar que
-lstat() e C<-l> testar„o valores na estrutura stat para ligaÁıes simbÛlicas,
-n„o o arquivo real.) (TambÈm, se a memÛria tempor·ria do stat estiver completa
-por uma chamada C<lstat>, C<-T> e C<-B> ir· apagar os resultados do C<stat _>).
+filehandle especial consistindo de um solit√°rio underline, ent√£o a estrutura
+stat do precedente teste em arquivo (ou operador stat) √© usada, poupando uma
+chamada de sistema. (Isto n√£o funciona com C<-t>, e voc√™ precisa se lembrar que
+lstat() e C<-l> testar√£o valores na estrutura stat para liga√ß√µes simb√≥licas,
+n√£o o arquivo real.) (Tamb√©m, se a mem√≥ria tempor√°ria do stat estiver completa
+por uma chamada C<lstat>, C<-T> e C<-B> ir√° apagar os resultados do C<stat _>).
 Exemplo:
 
     print "Can do.\n" if -r $a || -w _ || -x _;
@@ -366,7 +366,7 @@ Exemplo:
 
 =item abs
 
-Retorna o valor absoluto do seu argumento. Se VALOR È omitido, usa C<$_>.
+Retorna o valor absoluto do seu argumento. Se VALOR √© omitido, usa C<$_>.
 
 =item accept NEWSOCKET,GENERICSOCKET
 
@@ -592,34 +592,34 @@ previous time C<caller> was called.
 
 =item chdir EXPR
 
-Muda para o diretÛrio de trabalho para EXPR, se possÌvel. Se EXPR for omitido,
-muda para o diretÛrio especificado em C<$ENV{HOME}>, se definido; se n„o, muda
-para o diretÛrio especificado por C<$ENV{LOGDIR}>. (Sobre VMS, a vari·vel
-C<$ENV{SYS$LOGIN}> tambÈm È verificada, e usada se estiver definida.) Se
-nenhuma estiver definida, C<chdir> n„o faz nada. Ele retorna true em caso de
-sucesso, e falso do contr·rio. Veja o exemplo abaixo C<die>.
+Muda para o diret√≥rio de trabalho para EXPR, se poss√≠vel. Se EXPR for omitido,
+muda para o diret√≥rio especificado em C<$ENV{HOME}>, se definido; se n√£o, muda
+para o diret√≥rio especificado por C<$ENV{LOGDIR}>. (Sobre VMS, a vari√°vel
+C<$ENV{SYS$LOGIN}> tamb√©m √© verificada, e usada se estiver definida.) Se
+nenhuma estiver definida, C<chdir> n√£o faz nada. Ele retorna true em caso de
+sucesso, e falso do contr√°rio. Veja o exemplo abaixo C<die>.
 
 =item chmod LISTA
 
-Muda as permissıes de uma lista de arquivos. O primeiro elemento da lista deve
-ser o modo numÈrico, que deve ser provavelmente um n˙mero octal, e que
-definitivamente I<n„o> deve ser um string de dÌgitos octais: C<0644> est· de
-acordo, C<'0644'> n„o est·. Retorna o n˙mero de arquivos alterados com sucesso.
-Veja tambÈm L</oct>, se tudo que vocÍ tem È uma string.
+Muda as permiss√µes de uma lista de arquivos. O primeiro elemento da lista deve
+ser o modo num√©rico, que deve ser provavelmente um n√∫mero octal, e que
+definitivamente I<n√£o> deve ser um string de d√≠gitos octais: C<0644> est√° de
+acordo, C<'0644'> n√£o est√°. Retorna o n√∫mero de arquivos alterados com sucesso.
+Veja tamb√©m L</oct>, se tudo que voc√™ tem √© uma string.
 
     $cnt = chmod 0755, 'foo', 'bar';
     chmod 0755, @executables;
     $mode = '0644'; chmod $mode, 'foo';      # !!! muda o modo para
                                              # --w----r-T
     $mode = '0644'; chmod oct($mode), 'foo'; # Assim melhora
-    $mode = 0644;   chmod $mode, 'foo';      # Assim È melhor
+    $mode = 0644;   chmod $mode, 'foo';      # Assim √© melhor
 
-VocÍ tambÈm pode importar a constante simbÛlica C<S_I*> para o mÛdulo Fcntl:
+Voc√™ tamb√©m pode importar a constante simb√≥lica C<S_I*> para o m√≥dulo Fcntl:
 
     use Fcntl ':mode';
 
     chmod S_IRWXU|S_IRGRP|S_IXGRP|S_IROTH|S_IXOTH, @executables;
-    # Isto È idÍntico ao chmod 0755 dos exemplos acima.
+    # Isto √© id√™ntico ao chmod 0755 dos exemplos acima.
 
 =item chomp VARIAVEL
 
@@ -627,43 +627,43 @@ VocÍ tambÈm pode importar a constante simbÛlica C<S_I*> para o mÛdulo Fcntl:
 
 =item chomp
 
-Esta vers„o segura de L</chop> remove qualquer final de string que corresponder
-ao valor corrente de C<$/> (tambÈm conhecido como $INPUT_RECORD_SEPARATOR no
-mÛdulo C<English>). Ele retorna o n˙mero total de caracteres removidos para
-todos os seus argumentos. … frequentemente usado para remover a nova linha de
-final de um registro de entrada quando vocÍ est· preocupado que naquele final
-de registro estaria faltando sua nova linha. Quando em modo par·grafo (C<$/ =
+Esta vers√£o segura de L</chop> remove qualquer final de string que corresponder
+ao valor corrente de C<$/> (tamb√©m conhecido como $INPUT_RECORD_SEPARATOR no
+m√≥dulo C<English>). Ele retorna o n√∫mero total de caracteres removidos para
+todos os seus argumentos. √â frequentemente usado para remover a nova linha de
+final de um registro de entrada quando voc√™ est√° preocupado que naquele final
+de registro estaria faltando sua nova linha. Quando em modo par√°grafo (C<$/ =
 "">), remove-se todas as novas linhas finais da string. Quando em modo slurp
-(C<$/ = undef>) ou em modo de registro de comprimento-fixo (C<$/>) È uma
-referÍncia a um inteiro ou algo parecido, veja L<perlvar>) chomp() n„o remove
-nada. Se VARIAVEL È omitida, remove de <$_>. Exemplo:
+(C<$/ = undef>) ou em modo de registro de comprimento-fixo (C<$/>) √© uma
+refer√™ncia a um inteiro ou algo parecido, veja L<perlvar>) chomp() n√£o remove
+nada. Se VARIAVEL √© omitida, remove de <$_>. Exemplo:
 
     while (<>) {
-         chomp;         # previne \n no ˙ltimo campo
+         chomp;         # previne \n no √∫ltimo campo
          @array = split(/:/);
          # ...
     }
 
-Se VARIAVEL È um hash, remove dos valores do hash, mas n„o em suas chaves.
+Se VARIAVEL √© um hash, remove dos valores do hash, mas n√£o em suas chaves.
 
-Atualmente vocÍ pode usar chomp em alguma coisa que seja um lvalue, incluindo
-uma atribuiÁ„o:
+Atualmente voc√™ pode usar chomp em alguma coisa que seja um lvalue, incluindo
+uma atribui√ß√£o:
 
     chomp($cwd = `pwd`);
     chomp($answer = <STDIN>);
 
-Se vocÍ usar chomp numa lista, em cada elemento È aplicado chomp, e o n˙mero
-total de caracteres removidos È retornado.
+Se voc√™ usar chomp numa lista, em cada elemento √© aplicado chomp, e o n√∫mero
+total de caracteres removidos √© retornado.
 
-Se o pragma C<encoding> est· no escopo ent„o o comprimento retornado È
+Se o pragma C<encoding> est√° no escopo ent√£o o comprimento retornado √©
 calculado para o comprimento de C<$/> em caracteres Unicode, o qual nem sempre
-È o mesmo comprimento de C<$/> no encoding nativo.
+√© o mesmo comprimento de C<$/> no encoding nativo.
 
-Note que parÍnteses s„o necess·rio quando vocÍ est· usando chomp em qualquer
-coisa que n„o seja uma simples vari·vel. Isto È porque C<chomp $cwd = `pwd`;> È
-interpretado como C<(chomp $cwd) = `pwd`;>, ao invÈs de C<chomp( $cwd = `pwd`)>
-que vocÍ melhor esperava. Similarmente, C<chomp $a, $b> È interpretado como
-C<chomp($a), $b> ao invÈs de C<chomp($a, $b)>.
+Note que par√™nteses s√£o necess√°rio quando voc√™ est√° usando chomp em qualquer
+coisa que n√£o seja uma simples vari√°vel. Isto √© porque C<chomp $cwd = `pwd`;> √©
+interpretado como C<(chomp $cwd) = `pwd`;>, ao inv√©s de C<chomp( $cwd = `pwd`)>
+que voc√™ melhor esperava. Similarmente, C<chomp $a, $b> √© interpretado como
+C<chomp($a), $b> ao inv√©s de C<chomp($a, $b)>.
 
 =item chop VARIAVEL
 
@@ -671,26 +671,26 @@ C<chomp($a), $b> ao invÈs de C<chomp($a, $b)>.
 
 =item chop
 
-Remove o ˙ltimo caractere da string e retorna o caractere removido. … muito
-mais eficiente que C<s/.$//s> porque n„o examina nem copia a string. Se
-VARIAVEL È omitida, remove de C<$_>. Se VARIABLE È um hash, remove dos valores
-do hash, mas n„o de seus chaves. Atualmente vocÍ pode usar chop em qualquer
-coisa que seja um lvalue, incluindo uma atribuiÁ„o.
+Remove o √∫ltimo caractere da string e retorna o caractere removido. √â muito
+mais eficiente que C<s/.$//s> porque n√£o examina nem copia a string. Se
+VARIAVEL √© omitida, remove de C<$_>. Se VARIABLE √© um hash, remove dos valores
+do hash, mas n√£o de seus chaves. Atualmente voc√™ pode usar chop em qualquer
+coisa que seja um lvalue, incluindo uma atribui√ß√£o.
 
-Se vocÍ usar chop numa lista, em cada elemento È aplicado chop, Somente o valor
-do ˙ltimo C<chop> È retornado.
+Se voc√™ usar chop numa lista, em cada elemento √© aplicado chop, Somente o valor
+do √∫ltimo C<chop> √© retornado.
 
-Note que C<chop> retorna o ˙ltimo caractere. Para retornar todos menos o ˙ltimo
+Note que C<chop> retorna o √∫ltimo caractere. Para retornar todos menos o √∫ltimo
 caractere, use C<substr($string, 0, -1)>.
 
-Veja tambÈm L</chomp>.
+Veja tamb√©m L</chomp>.
 
 =item chown LISTA
 
-Modifica o propriet·rio (e grupo) de uma lista de arquivos. Os primeiros dois
-elementos da lista devem ser o uid e gid I<numÈricos>. nesta ordem. Um valor de
--1 em uma ou outra posiÁ„o È interpretada por muitos sistemas para deixar o
-valor inalterado. Retorna o n˙mero de arquivos modificados com sucesso.
+Modifica o propriet√°rio (e grupo) de uma lista de arquivos. Os primeiros dois
+elementos da lista devem ser o uid e gid I<num√©ricos>. nesta ordem. Um valor de
+-1 em uma ou outra posi√ß√£o √© interpretada por muitos sistemas para deixar o
+valor inalterado. Retorna o n√∫mero de arquivos modificados com sucesso.
 
     $cnt = chown $uid, $gid, 'foo', 'bar';
     chown $uid, $gid, @filenames;
@@ -708,11 +708,11 @@ Here's an example that looks up nonnumeric uids in the passwd file:
     @ary = glob($pattern);         # expande nomes de arquivo
     chown $uid, $gid, @ary;
 
-Em muitos sistemas, vocÍ n„o est· permitido a modificar a posse do arquivo a
-n„o ser que vocÍ seja o superusu·rio, ainda que vocÍ esteja habilitado a
-modificar o grupo para algum de seus grupos secund·rios. Em sistemas inseguros,
-essas restriÁıes podem ser abrandadas, mas isto n„o È uma suposiÁ„o port·vel.
-Em sistemas POSIX, vocÍ pode detectar esta condiÁ„o dessa forma:
+Em muitos sistemas, voc√™ n√£o est√° permitido a modificar a posse do arquivo a
+n√£o ser que voc√™ seja o superusu√°rio, ainda que voc√™ esteja habilitado a
+modificar o grupo para algum de seus grupos secund√°rios. Em sistemas inseguros,
+essas restri√ß√µes podem ser abrandadas, mas isto n√£o √© uma suposi√ß√£o port√°vel.
+Em sistemas POSIX, voc√™ pode detectar esta condi√ß√£o dessa forma:
 
     use POSIX qw(sysconf _PC_CHOWN_RESTRICTED);
     $can_chown_giveaway = not sysconf(_PC_CHOWN_RESTRICTED);
@@ -722,16 +722,16 @@ Em sistemas POSIX, vocÍ pode detectar esta condiÁ„o dessa forma:
 =item chr
 
 Retorna o caractere representado por NUMERO no conjunto de caracteres. Por
-exemplo, C<chr(65)> È C<"A> em ambos ASCII ou Unicode, e chr(0x263a) È um
-caractere sorriso Unicode. Note que caracteres de 128 a 255 (inclusive) s„o por padr„o n„o
-È codificado em UTF-8 Unicode para retardar motivos de compatibilidade (mas
+exemplo, C<chr(65)> √© C<"A> em ambos ASCII ou Unicode, e chr(0x263a) √© um
+caractere sorriso Unicode. Note que caracteres de 128 a 255 (inclusive) s√£o por padr√£o n√£o
+√© codificado em UTF-8 Unicode para retardar motivos de compatibilidade (mas
 veja L<encoding>).
 
-Se n˙mero È omitido, usa C<$_>.
+Se n√∫mero √© omitido, usa C<$_>.
 
 Para o inverso, use L</ord>.
 
-Note que sob o pragma C<bytes> o NUMERO È mascarado para baixo oito bits.
+Note que sob o pragma C<bytes> o NUMERO √© mascarado para baixo oito bits.
 
 Veja L<perlunicode> e L<encoding> para mais a cerca de Unicode.
 
@@ -751,8 +751,8 @@ omitted, does a C<chroot> to C<$_>.
 =item close
 
 Fecha o arquivo ou pipe associado ao file handle, retornando verdadeiro somente
-se a ·rea de memÛria de E/S for limpa e fechado o descritor de arquivo com
-sucesso. Fecha o filehandle corrente selecionado se o argumento È omitido.
+se a √°rea de mem√≥ria de E/S for limpa e fechado o descritor de arquivo com
+sucesso. Fecha o filehandle corrente selecionado se o argumento √© omitido.
 
 You don't have to close FILEHANDLE if you are immediately going to do
 another C<open> on it, because C<open> will close it for you.  (See
@@ -788,7 +788,7 @@ filehandle, usually the real filehandle name.
 
 =item closedir DIRHANDLE
 
-Fecha o diretÛrio aberto por C<opendir> e retorna o sucesso desta chamada de
+Fecha o diret√≥rio aberto por C<opendir> e retorna o sucesso desta chamada de
 sistema.
 
 =item connect SOCKET,NAME
@@ -2218,45 +2218,45 @@ reference.
 
 =item grep EXPR,LISTA
 
-Similar em espÌrito, mas n„o as mesma coisa que, grep(1) e seus parentes.
-Em particular, ele n„o È limitado ao uso de expressıes regulares.
+Similar em esp√≠rito, mas n√£o as mesma coisa que, grep(1) e seus parentes.
+Em particular, ele n√£o √© limitado ao uso de express√µes regulares.
 
 Avalia o BLOCO ou EXPR para cada elemento da LISTA (localmente referido por
 C<$_> para cada elemento) e retorna a valor da lista consistido daqueles
-elementos para os quais a express„o avaliou em verdadeiro. Em contexto
-escalar, retorna o n˙mero de vezes que a express„o resultou em verdadeiro.
+elementos para os quais a express√£o avaliou em verdadeiro. Em contexto
+escalar, retorna o n√∫mero de vezes que a express√£o resultou em verdadeiro.
 
-    @foo = grep(!/^#/, @bar);    # elimina coment·rios
+    @foo = grep(!/^#/, @bar);    # elimina coment√°rios
 
 ou equivalente,
 
-    @foo = grep {!/^#/} @bar;    # elimina coment·rios
+    @foo = grep {!/^#/} @bar;    # elimina coment√°rios
 
-Note que C<$_> È um apelido para o valor da lista, de modo que pode ser usado
-para modificar os elementos da LISTA. Embora seja ˙til e apoiado, isto causa
-resultados bizarros se os elementos da LISTA n„o s„o vari·veis. Similarmente,
-grep retorna apelidos dentro da lista original, muito mais como um Ìndice
-vari·vel apelidando os elementos da lista em um looping for. Tanto  È que,
+Note que C<$_> √© um apelido para o valor da lista, de modo que pode ser usado
+para modificar os elementos da LISTA. Embora seja √∫til e apoiado, isto causa
+resultados bizarros se os elementos da LISTA n√£o s√£o vari√°veis. Similarmente,
+grep retorna apelidos dentro da lista original, muito mais como um √≠ndice
+vari√°vel apelidando os elementos da lista em um looping for. Tanto  √© que,
 modificando um elemento da lista retornado pelo grep (for exemplo, em um
 C<foreach>, C<map> ou outro C<grep>) realmente modifica o elemento na lista
-original. Isto geralmente È evitado quando se escrever cÛdigo limpo.
+original. Isto geralmente √© evitado quando se escrever c√≥digo limpo.
 
-Veja tambÈm L</map> para uma lista composta dos resultados de BLOCO ou EXPR.
+Veja tamb√©m L</map> para uma lista composta dos resultados de BLOCO ou EXPR.
 
 =item hex EXPR
 
 =item hex
 
 Interpreta EXPR como uma string hex e retorna o valor correspondente. (Para 
-converter strings que podem comeÁar com C<0>, C<0x>, ou C<0b>, veja L</oct>.) 
+converter strings que podem come√ßar com C<0>, C<0x>, ou C<0b>, veja L</oct>.) 
 Se Expr for omitido, usa C<$_>.
 
     print hex '0xAf'; # imprime '175'
     print hex 'aF';   # idem
 
 Strings hex podem somente representar inteiros. Strings que possam causar 
-estouro de inteiros disparam uma advertÍncia. EspaÁos em branco em volta n„o 
-s„o removidos, diferente de oct(). Para apresentar algo como hex, olhe em 
+estouro de inteiros disparam uma advert√™ncia. Espa√ßos em branco em volta n√£o 
+s√£o removidos, diferente de oct(). Para apresentar algo como hex, olhe em 
 L</printf>, L</sprintf>, ou L</unpack>.
 
 =item import
@@ -2266,17 +2266,17 @@ method (subroutine) defined (or inherited) by modules that wish to export
 names to another module.  The C<use> function calls the C<import> method
 for the package used.  See also L</use>, L<perlmod>, and L<Exporter>.
 
-=item index STR,SUBSTR,POSI«√O
+=item index STR,SUBSTR,POSI√á√ÉO
 
 =item index STR,SUBSTR
 
-A funÁ„o index procura por uma string dentro de outra, mas sem o comportamento 
-parcido de caractere curinga de um completo padr„o de combinaÁ„o de express„o 
-regular. Retorna a posiÁ„o da primeira ocorrÍncia de SUBSTR em STR ou apÛs 
-POSI«√O. Se POSI«√O for omitido, comeÁa a procurando do inÌcio da string. O 
-valor de retorno È baseado no C<0> (ou o que quer que vocÍ defina na vari·vel 
-C<$[> -- mas n„o faÁa isso). Se a sub string n„o for encontrada, retorna um 
-subtraÌdo da base, geralmente C<-1>.
+A fun√ß√£o index procura por uma string dentro de outra, mas sem o comportamento 
+parcido de caractere curinga de um completo padr√£o de combina√ß√£o de express√£o 
+regular. Retorna a posi√ß√£o da primeira ocorr√™ncia de SUBSTR em STR ou ap√≥s 
+POSI√á√ÉO. Se POSI√á√ÉO for omitido, come√ßa a procurando do in√≠cio da string. O 
+valor de retorno √© baseado no C<0> (ou o que quer que voc√™ defina na vari√°vel 
+C<$[> -- mas n√£o fa√ßa isso). Se a sub string n√£o for encontrada, retorna um 
+subtra√≠do da base, geralmente C<-1>.
 
 =item int EXPR
 
@@ -2446,7 +2446,7 @@ C<redo> work.
 
 =item lc
 
-Retorna o vers„o min˙scula de EXPR. Esta È a funÁ„o interna que implementa o 
+Retorna o vers√£o min√∫scula de EXPR. Esta √© a fun√ß√£o interna que implementa o 
 escape C<\L> em strings entre aspas. Respeita o corrente locale LC_CTYPE se 
 C<use locale> obrigar. Veja L<perllocale> and L<perlunicode> para mais detalhes 
 sobre locale e suporte Unicode.
@@ -2457,7 +2457,7 @@ Se EXPR for omitido, usa C<$_>.
 
 =item lcfirst
 
-Retorna o valor de EXPR com o primeiro caracter em min˙sculo. Esta È a funÁ„o 
+Retorna o valor de EXPR com o primeiro caracter em min√∫sculo. Esta √© a fun√ß√£o 
 interna que implementa o escape C<\I> em strings entre aspas. Respeita o 
 corrente locale LC_CTYPE se C<use locale> orbigar. Veja L<perllocale> e 
 L<perlunicode> para mais detalhes sobre locale e suporte Unicode.
@@ -2469,18 +2469,18 @@ Se EXPR for omitido, usa C<$_>.
 =item length
 
 Retorna o comprimento em I<caracteres> do valor de EXPR. Se EXPR for omitido, 
-retorna o comprimento de C<$_>. Note que isto n„o pode ser usado sobre todo um 
+retorna o comprimento de C<$_>. Note que isto n√£o pode ser usado sobre todo um 
 array ou hash para determinar quantos elementos eles tem. Para tanto, use 
 C<scalar @array> e C<scalar keys %hash> respectivamente.
 
-Nota I<caracteres>: se a EXPR est· em Unicode, vocÍ ir· obter o n˙mero de 
-caracters, mas n„o o n˙mero de bytes. Para obter o comprimento em bytes, use 
+Nota I<caracteres>: se a EXPR est√° em Unicode, voc√™ ir√° obter o n√∫mero de 
+caracters, mas n√£o o n√∫mero de bytes. Para obter o comprimento em bytes, use 
 C<do { use bytes; length(EXPR) }>, veja L<bytes>.
 
 =item link VELHOARQUIVO,NOVOARQUIVO
 
 Cria um novo nome de arquivo vinculado ao velho nome de arquivo. Retorna 
-verdadeiro para sucesso, falso do contr·rio.
+verdadeiro para sucesso, falso do contr√°rio.
 
 =item listen SOCKET,QUEUESIZE
 
@@ -2767,15 +2767,15 @@ that executes once.  Thus C<next> will exit such a block early.
 See also L</continue> for an illustration of how C<last>, C<next>, and
 C<redo> work.
 
-=item no MÛdulo VERS√O LISTA
+=item no M√≥dulo VERS√ÉO LISTA
 
-=item no MÛdulo VERS√O
+=item no M√≥dulo VERS√ÉO
 
-=item no MÛdulo LISTA
+=item no M√≥dulo LISTA
 
-=item no MÛdulo 
+=item no M√≥dulo 
 
-Veja a funÁ„o C<use>, com C<no> È o seu oposto.
+Veja a fun√ß√£o C<use>, com C<no> √© o seu oposto.
 
 =item oct EXPR
 
@@ -2783,22 +2783,22 @@ Veja a funÁ„o C<use>, com C<no> È o seu oposto.
 
 Interpreta EXPR como uma strint octal e retorna o valor correspondente. (Se 
 EXPR iniciar com C<0x>, interpreta-a como uma string hex. Se EXPR iniciar com 
-C<0b>, È interpretado como uma string bin·ria. EspaÁos em branco em volta s„o 
-ignorados em todos os trÍs casos.) O seguinte ir· tratar de decimal, bin·rio, 
-octal, e hexadecimal no padr„o Perl ou notaÁ„o C:
+C<0b>, √© interpretado como uma string bin√°ria. Espa√ßos em branco em volta s√£o 
+ignorados em todos os tr√™s casos.) O seguinte ir√° tratar de decimal, bin√°rio, 
+octal, e hexadecimal no padr√£o Perl ou nota√ß√£o C:
 
     $val = oct($val) if $val =~ /^0/;
 
-Se EXPR for omitido, usa C<$_>. Para ir por outro caminho (produzir um n˙mero 
+Se EXPR for omitido, usa C<$_>. Para ir por outro caminho (produzir um n√∫mero 
 em octal), use sprintf() ou printf():
 
     $perms = (stat("filename"))[2] & 07777;
     $oct_perms = sprintf "%lo", $perms;
 
-A funÁ„o oct() È frequentemente usada quando uma string como C<644> necessita 
-ser convertida em um modo de arquivo, por exemplo. (Embora perl ir· 
-automaticamente converter strings em n˙meros conforme necess·rio, esta 
-convers„o autom·tica assume a base 10.)
+A fun√ß√£o oct() √© frequentemente usada quando uma string como C<644> necessita 
+ser convertida em um modo de arquivo, por exemplo. (Embora perl ir√° 
+automaticamente converter strings em n√∫meros conforme necess√°rio, esta 
+convers√£o autom√°tica assume a base 10.)
 
 =item open FILEHANDLE,EXPR
 
@@ -2810,130 +2810,129 @@ convers„o autom·tica assume a base 10.)
 
 =item open FILEHANDLE
 
-Opens the file whose filename is given by EXPR, and associates it with
-FILEHANDLE.
+Abre o arquivo cujo nome de arquivo √© dado por EXPR, e o associa com FILEHANDLE.
 
-(The following is a comprehensive reference to open(): for a gentler
-introduction you may consider L<perlopentut>.)
+(O s√©quito √© uma refer√™ncia abrangente de open(): para uma introdu√ß√£o mais
+suave, voc√™ pode considerar L<perlopentut>.)
 
-If FILEHANDLE is an undefined scalar variable (or array or hash element)
-the variable is assigned a reference to a new anonymous filehandle,
-otherwise if FILEHANDLE is an expression, its value is used as the name of
-the real filehandle wanted.  (This is considered a symbolic reference, so
-C<use strict 'refs'> should I<not> be in effect.)
+Se FILEHANDLE for uma vari√°vel escalar indefinida (ou um I<array> ou elemento de
+I<hash>) uma refer√™ncia a um novo I<filehandle> an√¥nimo √© designada √† vari√°vel,
+caso contr√°rio se FILEHANDLE √© uma express√£o, seu valor √© usado como o nome do
+I<filehandle> real desejado. (Isto √© considerado uma refer√™ncia simb√≥lica, ent√£o
+C<use strict 'refs'> B<n√£o> deve estar em efeito).
 
-If EXPR is omitted, the scalar variable of the same name as the
-FILEHANDLE contains the filename.  (Note that lexical variables--those
-declared with C<my>--will not work for this purpose; so if you're
-using C<my>, specify EXPR in your call to open.)
+Se EXPR for omitido, a vari√°vel escalar do mesmo nome que o FILEHANDLE cont√©m o
+nome de arquivo. (Note que vari√°veis l√©xicas -- as que s√£o declaradas com
+C<my>--n√£o funcionar√£o para este prop√≥sito; ent√£o se voc√™ estiver utilizando
+C<my>, especifique EXPR em na chamada para C<open>).
 
-If three or more arguments are specified then the mode of opening and
-the file name are separate. If MODE is C<< '<' >> or nothing, the file
-is opened for input.  If MODE is C<< '>' >>, the file is truncated and
-opened for output, being created if necessary.  If MODE is C<<< '>>' >>>,
-the file is opened for appending, again being created if necessary.
+Se tr√™s ou mais argumentos forem especificados ent√£o o modo de abertura e o nome
+do arquivo s√£o separados. Se MODE for C<< '<' >> ou nada, o arquivo √© aberto
+para entrada. Se MODE for C<< '>'>>, o arquivo √© truncado e aberto para sa√≠da,
+sendo criado se for necess√°rio. Se MODE for C<<< '>> ‚Äò>>>, o arquivo √© aberto
+para anexa√ß√£o, novamente sendo criado se for necess√°rio.
 
-You can put a C<'+'> in front of the C<< '>' >> or C<< '<' >> to
-indicate that you want both read and write access to the file; thus
-C<< '+<' >> is almost always preferred for read/write updates--the C<<
-'+>' >> mode would clobber the file first.  You can't usually use
-either read-write mode for updating textfiles, since they have
-variable length records.  See the B<-i> switch in L<perlrun> for a
-better approach.  The file is created with permissions of C<0666>
-modified by the process' C<umask> value.
+Voc√™ pode p√¥r um C<'+'> na frente do C<< '>'>> ou C<< '<' >> para indicar que
+deseja tanto acesso de escrita quanto de leitura ao arquivo; assim C<< '+<' >>
+quase sempre √© preferido para atualiza√ß√µes de leitura/escritas -- o modo C<<
+'+>'>> truncaria o arquivo primeiro. Voc√™ geralmente n√£o pode usar modo de
+leitura-escrita algum para atualizar arquivos texto, j√° que eles t√™m registros
+de comprimento vari√°vel. Veja o I<switch> B<-i> em L<perlrun> para uma abordagem
+melhor. O arquivo √© criado com permiss√µes de C<0666> modificado pelo valor
+C<umask> do processo.
 
-These various prefixes correspond to the fopen(3) modes of C<'r'>,
-C<'r+'>, C<'w'>, C<'w+'>, C<'a'>, and C<'a+'>.
+Estes prefixos variados correspondem aos modos C<'r'>, C<'r+'>, C<'w'>, C<'w+'>,
+C<'a'>, e C<'a+'> do C<fopen(3)>.
 
-In the 2-arguments (and 1-argument) form of the call the mode and
-filename should be concatenated (in this order), possibly separated by
-spaces.  It is possible to omit the mode in these forms if the mode is
-C<< '<' >>.
+Na forma de 2 argumentos (e de 1 argumento) da chamada o modo de abertura e o
+nome do arquivo devem ser concatenados (nesta ordem), possivelmente separados
+por espa√ßos. √â poss√≠vel omitir o modo nestas formas se o modo for C<< '<' >>.
 
-If the filename begins with C<'|'>, the filename is interpreted as a
-command to which output is to be piped, and if the filename ends with a
-C<'|'>, the filename is interpreted as a command which pipes output to
-us.  See L<perlipc/"Using open() for IPC">
-for more examples of this.  (You are not allowed to C<open> to a command
-that pipes both in I<and> out, but see L<IPC::Open2>, L<IPC::Open3>,
-and L<perlipc/"Bidirectional Communication with Another Process">
-for alternatives.)
+Se o nome do arquivo come√ßa com C<'|'>, ser√° interpretado como um comando para o
+qual ser√° feito I<piping> da sa√≠da, e se o nome de arquivo termina com um
+C<'|'>, ser√° interpretado como um comando do qual ser√° feito I<piping> de
+entrada. Veja L<perlipc/"Utilizando open() para realizar IPC"> para obter mais
+exemplos desse caso. (A invoca√ß√£o de C<open> a um comando que faz I<piping>
+tanto de entrada quanto de sa√≠da n√£o √© permitida, mas veja L<IPC::Open2>,
+L<IPC::Open3>, e L<perlipc/"Comunica√ß√£o Birecional Com Outro Processo"> para
+obter alternativas).
 
-For three or more arguments if MODE is C<'|-'>, the filename is
-interpreted as a command to which output is to be piped, and if MODE
-is C<'-|'>, the filename is interpreted as a command which pipes
-output to us.  In the 2-arguments (and 1-argument) form one should
-replace dash (C<'-'>) with the command.
-See L<perlipc/"Using open() for IPC"> for more examples of this.
-(You are not allowed to C<open> to a command that pipes both in I<and>
-out, but see L<IPC::Open2>, L<IPC::Open3>, and
-L<perlipc/"Bidirectional Communication"> for alternatives.)
+Para tr√™s ou mais argumentos, se MODE for C<'|-'>, o nome de arquivo √©
+interpretado como um comando para o qual ser√° feito I<piping> da sa√≠da, e se
+MODO √© C<'-|'>, o nome de arquivo ser√° interpretado como um comando do qual ser√°
+feito I<piping> de entrada. Na forma de 2 argumentos (e de 1 argumento) deve-se
+substituir o tra√ßo (C<'-'>) pelo comando. Veja L<perlipc/"Utilizando open() para
+realizar IPC"> para obter mais exemplos deste caso. (A invoca√ß√£o de C<open> a um
+comando que faz I<piping> tanto de entrada quanto de sa√≠da n√£o √© permitida, mas
+veja L<IPC::Open2>, L<IPC::Open3>, e L<perlipc/"Comunica√ß√£o Birecional Com Outro
+Processo"> para obter alternativas).
 
-In the three-or-more argument form of pipe opens, if LIST is specified
-(extra arguments after the command name) then LIST becomes arguments
-to the command invoked if the platform supports it.  The meaning of
-C<open> with more than three arguments for non-pipe modes is not yet
-specified. Experimental "layers" may give extra LIST arguments
-meaning.
+Nos na forma de tr√™s ou mais argumentos de abertura de I<pipe>, se LIST for
+especificado (argumentos extras ap√≥s o nome do comando) ent√£o LIST torna-se
+argumentos para o comando invocado, caso a plataforma tenha suporte. O
+significado de C<open> com mais de tr√™s argumentos para modos n√£o-I<pipe> ainda
+n√£o √© especificado. "Camadas" experimentais podem dar significado adicional aos
+argumentos em LIST.
 
-In the 2-arguments (and 1-argument) form opening C<'-'> opens STDIN
-and opening C<< '>-' >> opens STDOUT.
+Na forma de 2 argumentos (e de 1 argumento) a abertura de C<'-'> abre STDIN e
+abertura de C<< '>- '>> abre STDOUT.
 
-You may use the three-argument form of open to specify IO "layers"
-(sometimes also referred to as "disciplines") to be applied to the handle
-that affect how the input and output are processed (see L<open> and
-L<PerlIO> for more details). For example
+Voc√™ pode utilizar a forma de tr√™s argumentos de C<open()> para especificar
+"camadas" de IO (√†s vezes tamb√©m chamadas de "disciplinas") a serem aplicadoas
+ao I<handle> que afetam o processamento de entrada e sa√≠da (veja L<open> e
+L<PerlIO> para obter mais detalhes). Por exemplo:
 
-  open(FH, "<:utf8", "file")
+    open(FH, "<:utf8", "file") 
 
-will open the UTF-8 encoded file containing Unicode characters,
-see L<perluniintro>. (Note that if layers are specified in the
-three-arg form then default layers set by the C<open> pragma are
-ignored.)
+Ir√° abrir o arquivo codificado em UTF-8 contendo caracteres I<Unicode>, veja
+L<perluniintro>. (Observe que que se as camadas forem especificados na forma de
+tr√™s argumentos ent√£o as camadas padr√£o definidas pelo pragma C<open> s√£o
+ignorados).
 
-Open returns nonzero upon success, the undefined value otherwise.  If
-the C<open> involved a pipe, the return value happens to be the pid of
-the subprocess.
+C<open> retorna um valor n√£o-zero ap√≥s o √™xito da execu√ß√£o, caso contr√°rio,
+retorna C<undef>. Se a invoca√ß√£o de C<open> envolveu um C<pipe>, o valor de
+retorno ser√° o PID do subprocesso.
 
-If you're running Perl on a system that distinguishes between text
-files and binary files, then you should check out L</binmode> for tips
-for dealing with this.  The key distinction between systems that need
-C<binmode> and those that don't is their text file formats.  Systems
-like Unix, Mac OS, and Plan 9, which delimit lines with a single
-character, and which encode that character in C as C<"\n">, do not
-need C<binmode>.  The rest need it.
+Se estiver executando I<Perl> num sistema que distingue entre arquivos de texto
+e arquivos bin√°rios, investigue L</binmode> para obter dicas de como para lidar
+com este caso. A distin√ß√£o fundamental entre sistemas que necessitam de
+C<binmode> e os que n√£o, s√£o seus formatos de arquivo de texto. Todos os
+sistemas requerem C<binmode> exceto sistemas como I<Unix>, I<Mac OS>, e I<Plan
+9>, que delimitam linhas com um √∫nico car√°ter e codificam esse car√°ter em C como
+C<"\n">.
 
-When opening a file, it's usually a bad idea to continue normal execution
-if the request failed, so C<open> is frequently used in connection with
-C<die>.  Even if C<die> won't do what you want (say, in a CGI script,
-where you want to make a nicely formatted error message (but there are
-modules that can help with that problem)) you should always check
-the return value from opening a file.  The infrequent exception is when
-working with an unopened filehandle is actually what you want to do.
+Ao abrir um arquivo, √© geralmente uma m√° id√©ia continuar a execu√ß√£o normalmente
+se a pedido de abertura falhou, ent√£o C<open> freq√ºentemente √© usado em conjunto
+com L</die>. Mesmo nos casos onde C<die> n√£o far√° o que voc√™ quer (por exemplo,
+num I<script> CGI, onde voc√™ deseja exibir uma mensagem de erro bem-formatada,
+por√©m, h√° m√≥dulos que podem ajudar com esse problema) voc√™ sempre deve verificar
+o valor de retorno ao abrir um arquivo. A exce√ß√£o infreq√ºente √© quando voc√™
+realmente deseja trabalhar com um filehandle fechado.
 
-As a special case the 3 arg form with a read/write mode and the third
-argument being C<undef>:
+Como um caso especial, a forma de 3 argumentos combinada com o modo de
+leitura/escrita e um terceiro argumento C<undef>:
 
-    open(TMP, "+>", undef) or die ...
+    open(TMP, "+>", undef) or die ... 
 
-opens a filehandle to an anonymous temporary file.  Also using "+<"
-works for symmetry, but you really should consider writing something
-to the temporary file first.  You will need to seek() to do the
-reading.
+abre um I<filehandle> para um arquivo tempor√°rio an√¥nimo. A utiliza√ß√£o de "+<"
+funciona por simetria, por√©m voc√™ deve considerar a escrever para o arquivo
+tempor√°rio primeiro. A utiliza√ß√£o de C<seek()> ser√° necess√°ria antes de se
+realizar a leitura.
 
-Since v5.8.0, perl has built using PerlIO by default.  Unless you've
-changed this (ie Configure -Uuseperlio), you can open file handles to
-"in memory" files held in Perl scalars via:
+Desde a v.5.8.0, a utiliza√ß√£o de PerlIO √© inclu√≠da na compila√ß√£o de perl por
+padr√£o. A n√£o ser que voc√™ tenha mudado isso (ie Configure -Uuseperlio), voc√™
+pode abrir I<filehandles> para arquivos "in memory" residentes em escalares de
+perl via:
 
-    open($fh, '>', \$variable) || ..
+    open($fh, '>', \$variable) || .. 
 
-Though if you try to re-open C<STDOUT> or C<STDERR> as an "in memory"
-file, you have to close it first:
+Se voc√™ tentar reabrir C<STDOUT> ou C<STDERR> Como um arquivo "in memory", voc√™
+precisar√° fech√°-lo primeiro:
 
     close STDOUT;
     open STDOUT, '>', \$variable or die "Can't open STDOUT: $!";
 
-Examples:
+Exemplos:
 
     $ARTICLE = 100;
     open ARTICLE or die "Can't find article $ARTICLE: $!\n";
@@ -2986,20 +2985,20 @@ Examples:
          }
     }
 
-See L<perliol> for detailed info on PerlIO.
+Veja L<perliol> para obter informa√ß√£o detalhada a respeito de C<PerlIO>.
 
-You may also, in the Bourne shell tradition, specify an EXPR beginning
-with C<< '>&' >>, in which case the rest of the string is interpreted
-as the name of a filehandle (or file descriptor, if numeric) to be
-duped (as L<dup(2)>) and opened.  You may use C<&> after C<< > >>,
-C<<< >> >>>, C<< < >>, C<< +> >>, C<<< +>> >>>, and C<< +< >>.
-The mode you specify should match the mode of the original filehandle.
-(Duping a filehandle does not take into account any existing contents
-of IO buffers.) If you use the 3 arg form then you can pass either a
-number, the name of a filehandle or the normal "reference to a glob".
+Voc√™ pode tamb√©m, na tradi√ß√£o da C<Bourne shell>, especificar um come√ßo de EXPR
+com C<< '>& '>>, nesse caso o resto da I<string> √© interpretada como o nome de
+um filehandle (ou descritor de arquivo, caso seja num√©rico) a ser duplicado (com
+L<dup(2)>) e aberto. Voc√™ pode usar C<&> ap√≥s C<< > >>, C<<< >>>>>, C<< < >>,
+C<< +> >>, C<<< +>>>>>, e C<< +< >>. O modo que voc√™ especificar deve combinar
+com o modo do filehandle original. (Duplicar um filehandle n√£o leva em conta
+nenhum conte√∫do existente em buffers de IO). Se voc√™ usa a forma de 3 argumentos
+ent√£o voc√™ pode passar um n√∫mero, o nome de um filehandle ou a convencional
+"refer√™ncia a um glob".
 
-Here is a script that saves, redirects, and restores C<STDOUT> and
-C<STDERR> using various methods:
+Eis um script que salva, redireciona, e restaura C<STDOUT> e C<STDERR>
+utilizando v√°rios m√©todos:
 
     #!/usr/bin/perl
     open my $oldout, ">&STDOUT"     or die "Can't dup STDOUT: $!";
@@ -3020,10 +3019,10 @@ C<STDERR> using various methods:
     print STDOUT "stdout 2\n";
     print STDERR "stderr 2\n";
 
-If you specify C<< '<&=X' >>, where C<X> is a file descriptor number
-or a filehandle, then Perl will do an equivalent of C's C<fdopen> of
-that file descriptor (and not call L<dup(2)>); this is more
-parsimonious of file descriptors.  For example:
+Se voc√™ especificar C<< '<?=X' >>, onde C<X> √© o n√∫mero de um descritor de
+arquivo ou um I<filehandle>, Perl far√° o equivalente ao C<fdopen> do C sobre esse
+descritor de arquivo (sem invocar L<dup(2)>); Isto √© mais parcimonioso para
+descritores de arquivo. Por exemplo:
 
     # open for input, reusing the fileno of $fd
     open(FILEHANDLE, "<&=$fd")
@@ -3041,37 +3040,35 @@ or
 
     open(FH, ">>&=OLDFH")
 
-Being parsimonious on filehandles is also useful (besides being
-parsimonious) for example when something is dependent on file
-descriptors, like for example locking using flock().  If you do just
-C<< open(A, '>>&B') >>, the filehandle A will not have the same file
-descriptor as B, and therefore flock(A) will not flock(B), and vice
-versa.  But with C<< open(A, '>>&=B') >> the filehandles will share
-the same file descriptor.
+Ser parcimonioso com I<filehandles> √© tamb√©m √∫til, por exemplo, quando algo
+depende de descritores de arquivo, como I<locking> atrav√©s de C<flock()>. Se
+voc√™ meramente invocar C<< open(A, '>>&B')>>, o I<filehandle> A n√£o ter√° o mesmo
+descritor de arquivo que B, e portanto I<flock(A)> n√£o ir√° implicar em
+I<flock(B)>, e vice versa. Mas com C<< open(A, '>>&=B')>> o I<filehandles>
+compartilhar√° o mesmo descritor de arquivo.
 
-Note that if you are using Perls older than 5.8.0, Perl will be using
-the standard C libraries' fdopen() to implement the "=" functionality.
-On many UNIX systems fdopen() fails when file descriptors exceed a
-certain value, typically 255.  For Perls 5.8.0 and later, PerlIO is
-most often the default.
+Observe que se voc√™ utilizar Perls mais antigos que 5.8.0, Perl utilizar√°
+C<fdopen()> das bibliotecas normais de C para implementar a funcionalidade de
+"=". Em v√°rios sistemas de UNIX, C<fdopen()> falha quando descritores de arquivo
+excedem um certo valor, geralmente 255. Para Perls 5.8.0 e subsequentes, PerlIO
+√© utilizado por padr√£o com mais frequ√™ncia.
 
-You can see whether Perl has been compiled with PerlIO or not by
-running C<perl -V> and looking for C<useperlio=> line.  If C<useperlio>
-is C<define>, you have PerlIO, otherwise you don't.
+Voc√™ pode averiguar Perl foi compilado com PerlIO ou n√£o executando C<perl -V> e
+procurando a linha que cont√©m C<useperlio=>. Se C<useperlio> √© C<define>, Voc√™
+tem PerlIO, contrariamente voc√™ n√£o faz.
 
-If you open a pipe on the command C<'-'>, i.e., either C<'|-'> or C<'-|'>
-with 2-arguments (or 1-argument) form of open(), then
-there is an implicit fork done, and the return value of open is the pid
-of the child within the parent process, and C<0> within the child
-process.  (Use C<defined($pid)> to determine whether the open was successful.)
-The filehandle behaves normally for the parent, but i/o to that
-filehandle is piped from/to the STDOUT/STDIN of the child process.
-In the child process the filehandle isn't opened--i/o happens from/to
-the new STDOUT or STDIN.  Typically this is used like the normal
-piped open when you want to exercise more control over just how the
-pipe command gets executed, such as when you are running setuid, and
-don't want to have to scan shell commands for metacharacters.
-The following triples are more or less equivalent:
+Se voc√™ abrir um C<pipe> no comando C<'-'>, isto √©, qualquer um de C<'|-'> ou
+C<'-|'> a forma de 2 argumentos (ou 1 argumento) de C<open()>, ocorre um C<fork>
+implicitamente, e o valor de retorno de C<open> √© o PID do processo filho dentro
+do processo pai, e C<0> dentro do processo filho. (Use C<defined($pid)> para
+determinar se a abertura foi bem-sucedida). O C<filehandle> comporta-se
+normalmente para o pai, porem √© feito piping do I/O desse C<filehandle> para o
+STDOUT/STDIN do processo filho. No processo filho o C<filehandle> n√£o √© aberto
+-- o I/O acontece de/para o novo STDOUT ou STDIN. Geralmente isto √© usado como o
+C<open> normal com C<pipe> quando voc√™ quer exercitar mais controle sobre como o
+comando de C<pipe> √© executado, como quando voc√™ executa C<setuid>, e n√£o quer
+ter que escanear por meta-caracteres em comandos de shell. Os triplas a seguir
+s√£o mais ou menos equivalentes:
 
     open(FOO, "|tr '[a-z]' '[A-Z]'");
     open(FOO, '|-', "tr '[a-z]' '[A-Z]'");
@@ -3083,62 +3080,66 @@ The following triples are more or less equivalent:
     open(FOO, '-|') || exec 'cat', '-n', $file;
     open(FOO, '-|', "cat", '-n', $file);
 
-The last example in each block shows the pipe as "list form", which is
-not yet supported on all platforms.  A good rule of thumb is that if
-your platform has true C<fork()> (in other words, if your platform is
-UNIX) you can use the list form.
+O √∫ltimo exemplo em cada bloco mostra o C<pipe> em "forma de lista", que ainda
+n√£o tem suporte em todas as plataformas. Uma boa regra geral √© que se sua
+plataforma tem um C<fork()> verdadeiro (Em outras palavras, se sua plataforma √©
+UNIX) voc√™ pode usar a forma de lista.
 
-See L<perlipc/"Safe Pipe Opens"> for more examples of this.
+Veja L<perlipc/"Aberturas de Pipe Seguras"> para obter mais exemplos.
 
-Beginning with v5.6.0, Perl will attempt to flush all files opened for
-output before any operation that may do a fork, but this may not be
-supported on some platforms (see L<perlport>).  To be safe, you may need
-to set C<$|> ($AUTOFLUSH in English) or call the C<autoflush()> method
-of C<IO::Handle> on any open handles.
+A partir da v5.6.0, Perl tentar√° fazer I<flush> em todos os arquivos abertos
+para sa√≠da antes que qualquer opera√ß√£o que possa fazer um C<fork>, mas isto n√£o
+pode ser suportado em algumas plataformas (veja L<perlport>). Para ter certeza,
+ser√° necess√°rio definir C<$|> (ou $AUTOFLUSH em ingl√™s) ou invocar o m√©todo
+C<autoflush()> do C<IO::Handle> em quaisquer I<pipes> abertos.
 
-On systems that support a close-on-exec flag on files, the flag will
-be set for the newly opened file descriptor as determined by the value
-of $^F.  See L<perlvar/$^F>.
+Em sistemas que suportam um flag de I<close-on-exec> sobre arquivos, a flag ser√°
+definida para o descritor de arquivo rec√©m-aberto como determinado pelo valor de
+$^F. Veja L<perlvar/$^F>.
 
-Closing any piped filehandle causes the parent process to wait for the
-child to finish, and returns the status value in C<$?>.
+O fechamento de qualquer C<filehandle> de I<pipe> faz com que o processo pai
+espere que o processo filho termine, e retornar o valor de estado em C<$?>.
 
-The filename passed to 2-argument (or 1-argument) form of open() will
-have leading and trailing whitespace deleted, and the normal
-redirection characters honored.  This property, known as "magic open",
-can often be used to good effect.  A user could specify a filename of
-F<"rsh cat file |">, or you could change certain filenames as needed:
+O nome de arquivo passado √† forma de 2 argumentos (ou de 1 argumento) de open()
+ter√° o I<whitespace> removido do come√ßo e do fim da string, e os car√°teres
+normais de redirecionamento ser√£o preservados. Esta propriedade, conhecida como
+"magic open", pode ser usado a bom efeito. Um operador pode especificar F<"rsh
+cat file |"> como nome de arquivo, ou voc√™ pode alterar certos nomes de arquivo
+conforme necess√°rio:
 
     $filename =~ s/(.*\.gz)\s*$/gzip -dc < $1|/;
     open(FH, $filename) or die "Can't open $filename: $!";
 
-Use 3-argument form to open a file with arbitrary weird characters in it,
+Utilize a forma de 3 argumentos form para abrir um arquivo contendo carateres
+"estranhos" arbitr√°rios,
 
-    open(FOO, '<', $file);
+     open(FOO, '<', $file);
 
-otherwise it's necessary to protect any leading and trailing whitespace:
+caso contr√°rio ser√° necess√°rio proteger os C<whitespace> no come√ßo e no final da
+string.
 
     $file =~ s#^(\s)#./$1#;
     open(FOO, "< $file\0");
 
-(this may not work on some bizarre filesystems).  One should
-conscientiously choose between the I<magic> and 3-arguments form
-of open():
+(isso poder√° n√£o funcionar em alguns sistemas de arquivos bizarros). Deve-se
+conscientemente escolher entre a forma I<m√°gica> e a forma de 3 argumentos de
+C<open()>:
 
     open IN, $ARGV[0];
 
-will allow the user to specify an argument of the form C<"rsh cat file |">,
-but will not work on a filename which happens to have a trailing space, while
+permite que o usu√°rio especifique um argumento do forma C<"rsh cat file |">, mas
+n√£o funciona num nome de arquivo que por acaso tenha um espa√ßo no final,
+enquanto que
 
     open IN, '<', $ARGV[0];
 
-will have exactly the opposite restrictions.
+Ter√° as restri√ß√µes opostas.
 
-If you want a "real" C C<open> (see L<open(2)> on your system), then you
-should use the C<sysopen> function, which involves no such magic (but
-may use subtly different filemodes than Perl open(), which is mapped
-to C fopen()).  This is
-another way to protect your filenames from interpretation.  For example:
+Se voc√™ quer um C<open> C "verdadeiro" (veja L<open(2)> em seu sistema), utilize
+a fun√ß√£o C<sysopen>, que n√£o envolve nenhuma tal magia (mas poder√° utilizar
+filemodes com diferen√ßas sutis comparada a C<open()> de Perl, que √© equivalente
+a C<fopen()> de C). Isto √© outra maneira de impedir que seus nomes de arquivo
+sejam interpretados. Por exemplo:
 
     use IO::Handle;
     sysopen(HANDLE, $path, O_RDWR|O_CREAT|O_EXCL)
@@ -3148,10 +3149,12 @@ another way to protect your filenames from interpretation.  For example:
     seek(HANDLE, 0, 0);
     print "File contains: ", <HANDLE>;
 
-Using the constructor from the C<IO::Handle> package (or one of its
-subclasses, such as C<IO::File> or C<IO::Socket>), you can generate anonymous
-filehandles that have the scope of whatever variables hold references to
-them, and automatically close whenever and however you leave that scope:
+
+Utilizar o construtor do pacote C<IO::Handle> (ou uma de suas subclasses, tais
+como C<IO::File> ou C<IO::Socket>), voc√™ pode gerar C<filehandles> an√¥nimos que
+tem o escopo das vari√°veis contendo refer√™ncias a eles, e que automaticamente
+fecham sempre que voc√™ deixa o escopo:
+
 
     use IO::File;
     #...
@@ -3160,13 +3163,13 @@ them, and automatically close whenever and however you leave that scope:
          my $handle = new IO::File;
          open($handle, "myfile") or die "myfile: $!";
          $first = <$handle>
-             or return ();     # Automatically closed here.
-         mung $first or die "mung failed";         # Or here.
-         return $first, <$handle> if $ALL;         # Or here.
-         $first;                                             # Or here.
+             or return ();     # Fechado automaticamente aqui.
+         mung $first or die "mung failed";         # Ou aqui.
+         return $first, <$handle> if $ALL;         # Ou aqui.
+         $first;                                             # Ou aqui.
     }
 
-See L</seek> for some details about mixing reading and writing.
+Veja L</seek> para obter detalhes a respeito de como intercalar leitura e escrita. 
 
 =item opendir DIRHANDLE,EXPR
 
@@ -3182,7 +3185,7 @@ DIRHANDLEs have their own namespace separate from FILEHANDLEs.
 
 =item ord
 
-Retorna o valor numÈrico (o nativo encoding 8-bit, como ASCII ou EBCDIC, ou 
+Retorna o valor num√©rico (o nativo encoding 8-bit, como ASCII ou EBCDIC, ou 
 Unicode) para o primeiro caractere de EXPR. Se EXPR for omitido, usa C<$_>.
 
 Para o reverso, veja L</chr>. Veja L<perlunicode> e L<encoding> para mais 
@@ -3793,14 +3796,14 @@ you will have to use a block returning its value instead:
 =item printf FORMAT, LIST
 
 Equivalente a C<print FILEHANDLE sprintf(FORMATO, LISTA)>, exceto que C<$\> (o 
-separador de registro de saÌda) n„o È apensado. O primeiro argumento de lista 
-ser· interpretado como o formato C<printf>. Veja C<sprintf> para uma explanaÁ„o 
-do formato dos argumento. Se C<use locale> est· em aÁ„o, o caractere usado para 
-o ponto decimal em n˙meros reais formtados È afetado pelo LC_NUMERIC local. 
+separador de registro de sa√≠da) n√£o √© apensado. O primeiro argumento de lista 
+ser√° interpretado como o formato C<printf>. Veja C<sprintf> para uma explana√ß√£o 
+do formato dos argumento. Se C<use locale> est√° em a√ß√£o, o caractere usado para 
+o ponto decimal em n√∫meros reais formtados √© afetado pelo LC_NUMERIC local. 
 Veja L<perllocale>.
 
-N„o caia na armadilha de usar um C<printf> quando um simples C<print> resolver. 
-O C<print> È mais eficiente e menos propenso a erros.
+N√£o caia na armadilha de usar um C<printf> quando um simples C<print> resolver. 
+O C<print> √© mais eficiente e menos propenso a erros.
 
 =item prototype FUNCTION
 
@@ -4275,16 +4278,16 @@ Em contexto de lista, retorna um valor lista consistindo dos elementos de LISTA
 na ordem oposta. Em contexto escalar, concatena os elementos de LISTA e retorna 
 um valor string com todos os caracteres em ordem oposta.
 
-    print reverse <>;           # linha tac, ˙ltima linha primeira
+    print reverse <>;           # linha tac, √∫ltima linha primeira
 
-    undef $/;                   # para eficiÍncia do <>
-    print scalar reverse <>;    # caractere tac, ˙ltima linha primeira
+    undef $/;                   # para efici√™ncia do <>
+    print scalar reverse <>;    # caractere tac, √∫ltima linha primeira
 
 Usado sem argumentos em contexto escalar, reverse() reverte C<$_>.
 
-Este operdor È tambÈm cÙmodo para inverter um hash, embora existam algumas 
-advertÍncias. Se um valor est· duplicado em hash original, somente um dos dois 
-pode ser representado como uma chave no hash invertido. AlÈm disso, isto tem 
+Este operdor √© tamb√©m c√¥modo para inverter um hash, embora existam algumas 
+advert√™ncias. Se um valor est√° duplicado em hash original, somente um dos dois 
+pode ser representado como uma chave no hash invertido. Al√©m disso, isto tem 
 que desatar um hash e contruir um inteiro novo, que pode demorar algum tempo 
 sobre um hash enorme, como de um arquivo DBM.
 
@@ -4295,25 +4298,25 @@ sobre um hash enorme, como de um arquivo DBM.
 Sets the current position to the beginning of the directory for the
 C<readdir> routine on DIRHANDLE.
 
-=item rindex STR,SUBSTR, POSI«√O
+=item rindex STR,SUBSTR, POSI√á√ÉO
 
 =item rindex STR,SUBSTR
 
-Funciona exatemente como index() exceto que ele retorna a posiÁ„o da ⁄LTIMA
-ocorrÍncia de SUBSTR em STR. Se POSI«√O for especificada, retorna a ˙ltima
-ocorrÍncia atÈ ou antes daquela posiÁ„o.
+Funciona exatemente como index() exceto que ele retorna a posi√ß√£o da √öLTIMA
+ocorr√™ncia de SUBSTR em STR. Se POSI√á√ÉO for especificada, retorna a √∫ltima
+ocorr√™ncia at√© ou antes daquela posi√ß√£o.
 
 =item rmdir FILENAME
 
 =item rmdir
 
-Remove o diretÛrio especificado por FILENAME se aquele diretÛrio estiver vazio.
+Remove o diret√≥rio especificado por FILENAME se aquele diret√≥rio estiver vazio.
 Se conseguir retorna verdadeiro, em outro caso retorna falso e defini C<$!>
 (errno). Se FILENAME for omitido, usa C<$_>.
 
 =item s///
 
-O operador de substituiÁ„o. Veja L<perlop>.
+O operador de substitui√ß√£o. Veja L<perlop>.
 
 =item scalar EXPR
 
@@ -5021,68 +5024,68 @@ matched in a C<split()> will be set to C<undef> when returned:
 
 =item sprintf FORMATO, LISTA
 
-Retorna uma string formatada pelas usuais convenÁıes C<printf> da biblioteca de 
-funÁ„o C C<sprintf>. Veja abaixo para mais detalhes e veja L<sprintf(3)> ou 
-L<printf(3)> no seu sistema para uma explanaÁ„o dos princÌpios gerais.
+Retorna uma string formatada pelas usuais conven√ß√µes C<printf> da biblioteca de 
+fun√ß√£o C C<sprintf>. Veja abaixo para mais detalhes e veja L<sprintf(3)> ou 
+L<printf(3)> no seu sistema para uma explana√ß√£o dos princ√≠pios gerais.
 
 Por exemplo:
 
-        # Formatar n˙mero com 8 zeros sobrando no comeÁo
+        # Formatar n√∫mero com 8 zeros sobrando no come√ßo
         $result = sprintf("%08d", $number);
 
-        # Arredondar n˙mero para 3 dÌgitos depois do ponto decimal
+        # Arredondar n√∫mero para 3 d√≠gitos depois do ponto decimal
         $rounded = sprintf("%.3f", $number);
 
-Perl faz sua prÛpria formataÁ„o C<sprintf> -- emulando a funÁ„o C C<sprintf>, 
-mas a usa (exceto para n˙meros de ponto flutuante, e mesmo assim apenas os 
-modificadores padr„o s„o permitidos). Como resultado, qualquer extens„o n„o 
-padr„o em seu C<sprintf> local n„o est„o disponÌveis para Perl. 
+Perl faz sua pr√≥pria formata√ß√£o C<sprintf> -- emulando a fun√ß√£o C C<sprintf>, 
+mas a usa (exceto para n√∫meros de ponto flutuante, e mesmo assim apenas os 
+modificadores padr√£o s√£o permitidos). Como resultado, qualquer extens√£o n√£o 
+padr√£o em seu C<sprintf> local n√£o est√£o dispon√≠veis para Perl. 
 
-Diferente de C<printf>, C<sprintf> n„o faz o que provavelmente deseje quando 
-vocÍ passa um array como seu primeiro argumento. O array È tratado em contexto 
-escalar, e ao invÈs de utilizar o elemento 0 do array como um formato, Perl 
-usar· o quantidade de elementos no array como um formato, que quase nunca È 
-˙til. 
+Diferente de C<printf>, C<sprintf> n√£o faz o que provavelmente deseje quando 
+voc√™ passa um array como seu primeiro argumento. O array √© tratado em contexto 
+escalar, e ao inv√©s de utilizar o elemento 0 do array como um formato, Perl 
+usar√° o quantidade de elementos no array como um formato, que quase nunca √© 
+√∫til. 
 
-C<sprintf> do Perl permite as seguintes universalmente conhecidas converÁıes:
+C<sprintf> do Perl permite as seguintes universalmente conhecidas conver√ß√µes:
 
    %%         um sinal de porcentagem
-   %c         um caractere obtido de n˙mero
+   %c         um caractere obtido de n√∫mero
    %s         uma string
    %d         a signed integer, in decimal
    %u         um inteiro sem sinal, em decimal
    %o         um inteiro sem sinal, em octal
    %x         um inteiro sem sinal, em hexadecimal
-   %e         um n˙mero ponto flutuante, em notaÁ„o cientÌfica
-   %f         um n˙mero ponto flutuante, em notaÁ„o decimal fixa
-   %g         um inteiro ponto flutuante, em notaÁ„o %e ou %f
+   %e         um n√∫mero ponto flutuante, em nota√ß√£o cient√≠fica
+   %f         um n√∫mero ponto flutuante, em nota√ß√£o decimal fixa
+   %g         um inteiro ponto flutuante, em nota√ß√£o %e ou %f
 
-Em adiÁ„o, Perl permite as seguintes largamente suportadas converÁıes:
+Em adi√ß√£o, Perl permite as seguintes largamente suportadas conver√ß√µes:
 
-   %X         semelhante a %x, mas utilizando letras mai˙sculas
-   %E         semelhante a %e, mas utilizando um "E" mai˙sculo
-   %G         semelhante a %g, mas com "E" mai˙sculo (se aplic·vel)
-   %b         um inteiro sem sinal, em bin·rio
-   %p         um ponteiro (emite os endereÁos de valores do Perl em hexadecimal)
-   %n         especial: *armazena* o n˙mero de caracteres emitidos na saÌda na prÛxima vari·vel da lista de par‚metros
+   %X         semelhante a %x, mas utilizando letras mai√∫sculas
+   %E         semelhante a %e, mas utilizando um "E" mai√∫sculo
+   %G         semelhante a %g, mas com "E" mai√∫sculo (se aplic√°vel)
+   %b         um inteiro sem sinal, em bin√°rio
+   %p         um ponteiro (emite os endere√ßos de valores do Perl em hexadecimal)
+   %n         especial: *armazena* o n√∫mero de caracteres emitidos na sa√≠da na pr√≥xima vari√°vel da lista de par√¢metros
 
-Finalmente, para retro (e nÛs queremos dizer "para tr·s") compatibilidade, Perl 
-permite estas desnecess·rios mas largamente suportadas conversıes.
+Finalmente, para retro (e n√≥s queremos dizer "para tr√°s") compatibilidade, Perl 
+permite estas desnecess√°rios mas largamente suportadas convers√µes.
 
-   %i         um sinÙnimo para %d
-   %D         um sinÙnimo para %ld
-   %U         um sinÙnimo para %lu
-   %O         um sinÙnimo para %lo
-   %F         um sinÙnimo para %f
+   %i         um sin√¥nimo para %d
+   %D         um sin√¥nimo para %ld
+   %U         um sin√¥nimo para %lu
+   %O         um sin√¥nimo para %lo
+   %F         um sin√¥nimo para %f
 
-Note que o n˙mero de dÌgitos do expoente na notaÁ„o cientÌfica produzido por 
-C<%e>, C<%E>, C<%g> e C<%G> para n˙meros com os mÛdulos do expoente menos que 
-100 È dependente do sistema: pode ser trÍs ou menos (preenchido com zeos se 
-necess·rio). Em outras palavras, 1.23 vezes dez elevado a 99 pode ser "1.23e99" 
+Note que o n√∫mero de d√≠gitos do expoente na nota√ß√£o cient√≠fica produzido por 
+C<%e>, C<%E>, C<%g> e C<%G> para n√∫meros com os m√≥dulos do expoente menos que 
+100 √© dependente do sistema: pode ser tr√™s ou menos (preenchido com zeos se 
+necess√°rio). Em outras palavras, 1.23 vezes dez elevado a 99 pode ser "1.23e99" 
 ou "1.23e099".
 
-Entre o C<%> e a letra de formataÁ„o, vocÍ pode especificar um n˙mero de 
-atributos adicionais controlando a interpretaÁ„o do formato. Em ordem, s„o 
+Entre o C<%> e a letra de formata√ß√£o, voc√™ pode especificar um n√∫mero de 
+atributos adicionais controlando a interpreta√ß√£o do formato. Em ordem, s√£o 
 estes:
 
 =over 4
@@ -5567,51 +5570,51 @@ See L<perlsub> and L<perlref> for details about subroutines and
 references, and L<attributes> and L<Attribute::Handlers> for more
 information about attributes.
 
-=item substr EXPR,DESLOCAMENTO,COMPRIMENTO,SUBSTITUI«√O
+=item substr EXPR,DESLOCAMENTO,COMPRIMENTO,SUBSTITUI√á√ÉO
 
 =item substr EXPR,DESLOCAMENTO,COMPRIMENTO
 
 =item substr EXPR,DESLOCAMENTO
 
 Extrai uma sub string de EXPR e a retorna. O primeiro caractere do deslocamento 
-È C<0>, ou o que quer que vocÍ tenha definido em C<$[> (mas n„o faÁa isso). Se 
+√© C<0>, ou o que quer que voc√™ tenha definido em C<$[> (mas n√£o fa√ßa isso). Se 
 DESLOCAMENTO for negativo (ou mais precisamente, menor que C<$[>), inicia este 
-deslocamento do final da string. Se COMPRIMENTO for omitido, retorna tudo atÈ o 
+deslocamento do final da string. Se COMPRIMENTO for omitido, retorna tudo at√© o 
 final da string. Se COMPRIMENTO for negativo, deixa muitos caracteres fora do 
 final da string.
 
-VocÍ pode usar a funÁ„o substr() como um lvalue, caso no qual EXPR deve ser um 
-lvalue. Se vocÍ atribuir algo mais curto que COMPRIMENTO, a string ser· 
-contraÌda, e se vocÍ atribuir algo mais longo do que COMPRIMENTO, a string ir· 
-crescer para acomod·-lo. Para manter a string no mesmo comprimento vocÍ pode 
+Voc√™ pode usar a fun√ß√£o substr() como um lvalue, caso no qual EXPR deve ser um 
+lvalue. Se voc√™ atribuir algo mais curto que COMPRIMENTO, a string ser√° 
+contra√≠da, e se voc√™ atribuir algo mais longo do que COMPRIMENTO, a string ir√° 
+crescer para acomod√°-lo. Para manter a string no mesmo comprimento voc√™ pode 
 precisar preencher ou talhar sua valor usando C<sprintf>.
 
-Se DESLOCAMENTO e COMPRIMENTO especificam uma sub string que est· em parte fora 
-da string, somente a parte dentro da string È retornada. Se a sub string est· 
-alÈm das extremidades da string, substr() retorna um valor indefinido e produz 
-uma advertÍncia. Quando usado com um lvalue, especificando uma sub string que 
-est· inteiramente fora da string È um erro fatal. Aqui est· um exemplo 
+Se DESLOCAMENTO e COMPRIMENTO especificam uma sub string que est√° em parte fora 
+da string, somente a parte dentro da string √© retornada. Se a sub string est√° 
+al√©m das extremidades da string, substr() retorna um valor indefinido e produz 
+uma advert√™ncia. Quando usado com um lvalue, especificando uma sub string que 
+est√° inteiramente fora da string √© um erro fatal. Aqui est√° um exemplo 
 mostrando o comportamento em casos limite:
 
     my $name = 'fred';
-    substr($name, 4) = 'dy';            # $name agora È 'freddy'
-    my $null = substr $name, 6, 2;      # retorna '' (sem advertÍncia)
-    my $oops = substr $name, 7;         # retorna undef, com advertÍncia
+    substr($name, 4) = 'dy';            # $name agora √© 'freddy'
+    my $null = substr $name, 6, 2;      # retorna '' (sem advert√™ncia)
+    my $oops = substr $name, 7;         # retorna undef, com advert√™ncia
     substr($name, 7) = 'gap';           # erro fatal
 
-Uma alternativa a usar substr() como um lvalue È especificar a string de 
-substituiÁ„o como o quarto argumento. Isto lhe permite substituir pates da EXPR 
-e retornar o que havia antes em uma ˙nica operaÁ„o, exatamente como vocÍ 
+Uma alternativa a usar substr() como um lvalue √© especificar a string de 
+substitui√ß√£o como o quarto argumento. Isto lhe permite substituir pates da EXPR 
+e retornar o que havia antes em uma √∫nica opera√ß√£o, exatamente como voc√™ 
 consegue com splice().
 
-Se o lvalue retornado pelo substr È usado depois de EXPR È modificado de 
-qualquer forma, o comportamento pode n„o ser com oexperado e o est· sujeito a 
-modificaÁ„o. Este aviso inclui cÛdigo como C<print(substr($foo,$a,$b)=$bar)> ou 
-C<(substr($foo,$a,$b)=$bar)=$fud> (onde $foo È modificado via atribuiÁ„o de sub 
-string, e ent„o a substr È usada novamente), ou onde a substr() È apelidada via 
-laÁo C<foreach> ou passada como um par‚metro ou uma referÍncia para que receba 
-ent„o o apelido, par‚metro, ou referÍncia derreferida tambÈm È usada depois da 
-original EXPR foi alterada ou È atribuÌda e ent„o utilizada uma segunda vez.
+Se o lvalue retornado pelo substr √© usado depois de EXPR √© modificado de 
+qualquer forma, o comportamento pode n√£o ser com oexperado e o est√° sujeito a 
+modifica√ß√£o. Este aviso inclui c√≥digo como C<print(substr($foo,$a,$b)=$bar)> ou 
+C<(substr($foo,$a,$b)=$bar)=$fud> (onde $foo √© modificado via atribui√ß√£o de sub 
+string, e ent√£o a substr √© usada novamente), ou onde a substr() √© apelidada via 
+la√ßo C<foreach> ou passada como um par√¢metro ou uma refer√™ncia para que receba 
+ent√£o o apelido, par√¢metro, ou refer√™ncia derreferida tamb√©m √© usada depois da 
+original EXPR foi alterada ou √© atribu√≠da e ent√£o utilizada uma segunda vez.
 
 =item symlink OLDFILE,NEWFILE
 
@@ -6659,14 +6662,14 @@ This function should have been named wantlist() instead.
 
 =item warn LISTA
 
-Produz uma mensagem na STDER exatamente como C<die>, mas n„o aborta ou lanÁa um
-exceÁ„o.
+Produz uma mensagem na STDER exatamente como C<die>, mas n√£o aborta ou lan√ßa um
+exce√ß√£o.
 
-Se LISTA È nula e C<$@> j· contÈm um valor (tipicamente de um prÈvio eval) este
-valor È usado depois apensando C<"\t...caught"> ‡ C<$@>. Isto È ˙til para ficar
-quase, mas n„o completamente similar ao C<die>.
+Se LISTA √© nula e C<$@> j√° cont√©m um valor (tipicamente de um pr√©vio eval) este
+valor √© usado depois apensando C<"\t...caught"> √† C<$@>. Isto √© √∫til para ficar
+quase, mas n√£o completamente similar ao C<die>.
 
-Se C<$@> È nulo ent„o a strign C<"Warning: Something's wrong"> È usada.
+Se C<$@> √© nulo ent√£o a strign C<"Warning: Something's wrong"> √© usada.
 
 No message is printed if there is a C<$SIG{__WARN__}> handler
 installed.  It is the handler's responsibility to deal with the message
@@ -6731,7 +6734,7 @@ Note that write is I<not> the opposite of C<read>.  Unfortunately.
 
 =item y///
 
-O operado de transliteraÁ„o. O mesmo que C<tr///>. Veja L<perlop>.
+O operado de translitera√ß√£o. O mesmo que C<tr///>. Veja L<perlop>.
 
 =back
 
