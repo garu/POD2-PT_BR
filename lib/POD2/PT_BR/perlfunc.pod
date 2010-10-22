@@ -3271,242 +3271,234 @@ typeglob associated with the variable; this means that C<our $x : unique>
 also has the effect of C<our @x : unique; our %x : unique>. This may be
 subject to change.
 
-=item pack TEMPLATE,LIST
+=item pack MODELO, LISTA
 
-Takes a LIST of values and converts it into a string using the rules
-given by the TEMPLATE.  The resulting string is the concatenation of
-the converted values.  Typically, each converted value looks
-like its machine-level representation.  For example, on 32-bit machines
-a converted integer may be represented by a sequence of 4 bytes.
+Toma uma LISTA de valores e converte numa string usando as regras dadas pelo
+MODELO. A string resultante é a concatenação dos valores
+convertidos. Geralmente, cada um valor convertido se parece com sua representação a nível de
+máquina. Por exemplo, em máquinas de 32 bits, um número inteiro adaptado
+pode ser representado por uma seqüência de 4 bytes.
 
-The TEMPLATE is a sequence of characters that give the order and type
-of values, as follows:
+O MODELO é uma seqüência de caracteres que representam a ordem e o tipo de valores, como segue: 
 
-    a         A string with arbitrary binary data, will be null padded.
-    A         A text (ASCII) string, will be space padded.
-    Z         A null terminated (ASCIZ) string, will be null padded.
+  a      Uma string com dados binários arbitrários, será completada com valores nulos.
+  A      Uma string de texto (ASCII), será completada por espaços.
+  Z      Uma string terminada com nulo (ASCIZ), será completada.
 
-    b         A bit string (ascending bit order inside each byte, like vec()).
-    B         A bit string (descending bit order inside each byte).
-    h         A hex string (low nybble first).
-    H         A hex string (high nybble first).
+  b      Uma string de bits (em ordem de bit ascendente dentro de cada byte, como em vec()).
+  B      Um pouco string (em ordem de bit descendente dentro de cada byte).
+  H      Uma string hexadecimal (nybble baixo primeiro).
+  H      Uma string hexadecimal (nybble alto primeiro).
 
-    c         A signed char value.
-    C         An unsigned char value.  Only does bytes.  See U for Unicode.
+  c      Um valor signed char.
+  C      Um valor unsigned char. Utiliza apenas bytes. Veja U para Unicode.
 
-    s         A signed short value.
-    S         An unsigned short value.
-           (This 'short' is _exactly_ 16 bits, which may differ from
-            what a local C compiler calls 'short'.  If you want
-            native-length shorts, use the '!' suffix.)
+  s      Um valor signed short;
+  S      Um valor signed short ('short' significa _exatamente_ 16 bits, que
+         podem diferir do que um compilador local de C chama de 'short'. Se você quer
+         valores short de comprimento nativo, use o sufixo '!').
 
-    i         A signed integer value.
-    I         An unsigned integer value.
-           (This 'integer' is _at_least_ 32 bits wide.  Its exact
-           size depends on what a local C compiler calls 'int',
-           and may even be larger than the 'long' described in
-           the next item.)
+  i      Um valor signed integer.
 
-    l         A signed long value.
-    L         An unsigned long value.
-           (This 'long' is _exactly_ 32 bits, which may differ from
-            what a local C compiler calls 'long'.  If you want
-            native-length longs, use the '!' suffix.)
+  I      Um valor unsigned integer. (Este 'integer' tem _pelo_menos_ 32 bits de
+         largura. Seu tamanho exato depende do que um compilador local de C
+         chama de 'integer', e pode até ser maior que o 'long' descrito no próximo item).
 
-    n         An unsigned short in "network" (big-endian) order.
-    N         An unsigned long in "network" (big-endian) order.
-    v         An unsigned short in "VAX" (little-endian) order.
-    V         An unsigned long in "VAX" (little-endian) order.
-           (These 'shorts' and 'longs' are _exactly_ 16 bits and
-            _exactly_ 32 bits, respectively.)
+  l      Um valor signed long.
+  L      Um valor unsigned long. (Este 'long' tem _exatamente_ 32 bits, que
+         podem diferir do que um compilador local de C chama de 'long'. Se você
+         quiser comprimento nativo, use o sufixo '!').
 
-    q         A signed quad (64-bit) value.
-    Q         An unsigned quad value.
-           (Quads are available only if your system supports 64-bit
-            integer values _and_ if Perl has been compiled to support those.
-           Causes a fatal error otherwise.)
+  n      Um valor unsigned short em order de rede (big-endian).
+  N      Um valor unsigned long em ordem de rede (big-endian).
+  v      Um valor unsigned short em ordem "VAX" (little-endian).
+  V      Um valor unsigned long em ordem "VAX" (little-endian).
+           (Esses 'short' e 'long' possuem _exatamente_ 16 bits e
+            _exatamente_ 32 bits, respectivamente.)
 
-    j   A signed integer value (a Perl internal integer, IV).
-    J   An unsigned integer value (a Perl internal unsigned integer, UV).
+  q      Um valor signed quad (64-bit).
+  Q      Um unsigned quad value. (Quads estão disponíveis só se seu sistema tem
+         suporte a valores inteiros de 64 bit _e_ se Perl foi compilado com
+         suporte para os mesmos. (Ocasiona um erro fatal se não for).
 
-    f         A single-precision float in the native format.
-    d         A double-precision float in the native format.
+  j      Um valor signed integer (um integer interno do Perl, IV).
+  J      Um valor unsigned integer (um unsigned integer interno do Perl, UV).
 
-    F         A floating point value in the native native format
-           (a Perl internal floating point value, NV).
-    D         A long double-precision float in the native format.
-           (Long doubles are available only if your system supports long
-            double values _and_ if Perl has been compiled to support those.
-           Causes a fatal error otherwise.)
 
-    p         A pointer to a null-terminated string.
-    P         A pointer to a structure (fixed-length string).
+  f      Um float de simples-precisão no formato nativo.
+  d      Um float de dupla-precisãono formato nativo.
 
-    u         A uuencoded string.
-    U         A Unicode character number.  Encodes to UTF-8 internally
-         (or UTF-EBCDIC in EBCDIC platforms).
+  
+  F      Um valor de ponto flutuante no formato nativo (um float interno do Perl,
+         NV).
+  D      Um float de dupla-precisão no formato nativo. (valores de
+         dupla-precisão estão disponíveis apenas se seu sistema tem suporte a
+         valores longos de dobro _e_ se Perl foi compilado com suporte aos mesmos.
+         (Ocasiona um erro fatal se não for).
 
-    w         A BER compressed integer (not an ASN.1 BER, see perlpacktut for
-         details).  Its bytes represent an unsigned integer in base 128,
-         most significant digit first, with as few digits as possible.  Bit
-         eight (the high bit) is set on each byte except the last.
+  p      Um ponteiro para uma string terminada por null.
+  P      Um ponteiro para uma estrutura (string de comprimento fixo).
 
-    x         A null byte.
-    X         Back up a byte.
-    @         Null fill to absolute position, counted from the start of
-        the innermost ()-group.
-    (         Start of a ()-group.
+  u      Uma string uuencoded.
+  U      Um número de caractere Unicode. Codifica para UTF-8 internamente (ou
+         UTF-EBCDIC em plataformas  EBCDIC).
 
-The following rules apply:
+  w      Um inteiro com compressão BER (não um BER ASN.1, veja perlpacktut
+         para obter detalhes). Seus bytes representam um unsigned integer de
+         base 128, com o dígito mais significativo primeiro, com a quantidade
+         mínima de dígitos possível. O bit número oito (o bit  alto) é verdadeiro
+         em todos os bytes exceto o último.
+
+  x      Um byte null.
+  X      Voltar um byte.
+  @      Preencher com nulls até a posição absoluta, contado do início do
+         agrupamento-() mais interno. (Início de um agroupamento-()). 
+
+As seguintes regras se aplicam: 
 
 =over 8
 
 =item *
 
-Each letter may optionally be followed by a number giving a repeat
-count.  With all types except C<a>, C<A>, C<Z>, C<b>, C<B>, C<h>,
-C<H>, C<@>, C<x>, C<X> and C<P> the pack function will gobble up that
-many values from the LIST.  A C<*> for the repeat count means to use
-however many items are left, except for C<@>, C<x>, C<X>, where it is
-equivalent to C<0>, and C<u>, where it is equivalent to 1 (or 45, what
-is the same).  A numeric repeat count may optionally be enclosed in
-brackets, as in C<pack 'C[80]', @arr>.
+Cada letra opcionalmente pode ser seguida por um número dando um contagem de
+repetição. Com todos os tipos exceto C<a>, C<A>, C<Z>, C<b>, C<B>, C<h>, C<H>,
+C<@>, C<x>, C<X> e C<P> a função de pack consumirá essa quantidade de valores da
+LISTA. Um C<*> como contagem de repetição significa que serão utilizados todos
+os valores restantes, com exceção de C<@>, C<x>, C<X>, onde é equivalente a
+C<0>, e C<u>, onde é equivalente a 1 (ou 45, que é o mesmo). Uma contagem
+numérica de repetição pode ser opcionalmente apresentada dentro de colchetes,
+como em C<pack 'C[80]', @arr>.
 
-One can replace the numeric repeat count by a template enclosed in brackets;
-then the packed length of this template in bytes is used as a count.
-For example, C<x[L]> skips a long (it skips the number of bytes in a long);
-the template C<$t X[$t] $t> unpack()s twice what $t unpacks.
-If the template in brackets contains alignment commands (such as C<x![d]>),
-its packed length is calculated as if the start of the template has the maximal
-possible alignment.
+Pode-se substituir a contagem de repetição por um modelo entre colchetes; então
+o comprimento empacotado deste modelo em bytes será usado como contagem. Por
+exemplo, C<x[L]> pula um long (pula o número de bytes num long); o modelo C<$t
+X[$t] $t> é equivalente a invocar unpack() duas vezes em relação a
+unpack($t). Se o modelo em colchetes contiver comandos de alinhamento (tal como
+C<x![d]>), seu comprimento empacotado é calculado como se o início do modelo
+tivesse o máximo alinhamento possível.
 
-When used with C<Z>, C<*> results in the addition of a trailing null
-byte (so the packed result will be one longer than the byte C<length>
-of the item).
+Quando usado com C<Z>, C<*> resulta na adição de um byte null terminador (então
+o resultado empacotado será um mais longo que o byte C<length> do item).
 
-The repeat count for C<u> is interpreted as the maximal number of bytes
-to encode per line of output, with 0 and 1 replaced by 45.
+O contador de repetição para C<u> é interpretado como o número máximo de bytes
+codificados por linha de saída, com 0 e 1 substituído por 45.
 
-=item *
+=item * 
 
-The C<a>, C<A>, and C<Z> types gobble just one value, but pack it as a
-string of length count, padding with nulls or spaces as necessary.  When
-unpacking, C<A> strips trailing spaces and nulls, C<Z> strips everything
-after the first null, and C<a> returns data verbatim.  When packing,
-C<a>, and C<Z> are equivalent.
+O C<a>, C<A>, e C<Z> Os tipos consomem apenas um valor, mas o empacota como uma
+string utilizando a contagem de comprimento, completando com null ou espaça como
+necessário. Ao desembrulhar, C<A> as faixas arrastando-se espaços e null,
+C<Z> as faixas tudo depois do primeiro null, e C<a> retorna dados
+literalmente. Ao empacotar, C<a>, e C<Z> são equivalentes.
 
-If the value-to-pack is too long, it is truncated.  If too long and an
-explicit count is provided, C<Z> packs only C<$count-1> bytes, followed
-by a null byte.  Thus C<Z> always packs a trailing null byte under
-all circumstances.
+Se o valor a ser empacotado for longo demais, ele será truncado. Se for longo
+demais e uma contagem explícita for fornecida, C<Z> empacotará apenas
+C<$count-1> bytes, seguido por um byte null. Assim C<Z> sempre empacota um byte
+null terminador sob todas as circunstâncias.
 
-=item *
+=item * 
 
-Likewise, the C<b> and C<B> fields pack a string that many bits long.
-Each byte of the input field of pack() generates 1 bit of the result.
-Each result bit is based on the least-significant bit of the corresponding
-input byte, i.e., on C<ord($byte)%2>.  In particular, bytes C<"0"> and
-C<"1"> generate bits 0 and 1, as do bytes C<"\0"> and C<"\1">.
+E forma análoga, os campos C<b> e C<B> empacotam uma string com essa quantidade
+de bits. Cada byte do campo de entrada de pack() gera 1 bit do resultado. Cada
+bit resultante é baseado no bit menos significativo do byte correspondente de
+entrada, isto é, em C<ord($byte)%2>. Em particular, os bytes C<'0'> e C<'1'> geram
+bits 0 e 1, assim como os bytes C<'\0'> e C<'\1'>.
 
-Starting from the beginning of the input string of pack(), each 8-tuple
-of bytes is converted to 1 byte of output.  With format C<b>
-the first byte of the 8-tuple determines the least-significant bit of a
-byte, and with format C<B> it determines the most-significant bit of
-a byte.
+Começando do início da string de entrada de pack(), cada uma das 8-tuplas bytes
+são convertidas a 1 byte de saída. Como formato C<b> o primeiro byte da 8-tupla
+determina o bit menos significativo de um byte, e com formato C<B> determina o
+bit mais significativo de um byte.
 
-If the length of the input string is not exactly divisible by 8, the
-remainder is packed as if the input string were padded by null bytes
-at the end.  Similarly, during unpack()ing the "extra" bits are ignored.
+Se o comprimento da string de entrada não for exatamente divisível por 8, a
+sobra é empacotada como se a string de entrada fosse completada por bytes null
+no fim. Da mesma forma, durante unpack() os bits 'extras' são ignorados.
 
-If the input string of pack() is longer than needed, extra bytes are ignored.
-A C<*> for the repeat count of pack() means to use all the bytes of
-the input field.  On unpack()ing the bits are converted to a string
-of C<"0">s and C<"1">s.
+Se a string de entrada de pack() for mais longa que necessário, os bytes extras
+são ignorados. Um C<*> como contagem de repetição de pack() resulta na
+utilização de todos os bytes do campo de entrada. Ao invocar unpack() os bits
+são convertidos em uma string de C<'0'>s e C<'1'>s.
 
-=item *
+=item * 
 
-The C<h> and C<H> fields pack a string that many nybbles (4-bit groups,
-representable as hexadecimal digits, 0-9a-f) long.
+Os campos C<h> e C<H> empacotam uma string com essa quantidade de grupos
+(nybbles de 4 bits, representáveis por dígitos hexadecimais, 0-9a-f).
 
-Each byte of the input field of pack() generates 4 bits of the result.
-For non-alphabetical bytes the result is based on the 4 least-significant
-bits of the input byte, i.e., on C<ord($byte)%16>.  In particular,
-bytes C<"0"> and C<"1"> generate nybbles 0 and 1, as do bytes
-C<"\0"> and C<"\1">.  For bytes C<"a".."f"> and C<"A".."F"> the result
-is compatible with the usual hexadecimal digits, so that C<"a"> and
-C<"A"> both generate the nybble C<0xa==10>.  The result for bytes
-C<"g".."z"> and C<"G".."Z"> is not well-defined.
+Cada byte do campo de entrada de pack() gera 4 bits do resultado. No caso de
+bytes não-alfabéticos o resultado é baseado nos 4 bits menos-significativos do
+byte de entrada, isto é, em C<ord($byte)%16>. Em particular, os bytes C<'0'> e
+C<'1'> geram nybbles 0 e 1, assim como os bytes C<'\0'> e C<'\1'>. Para bytes
+C<'a'..'f'> e C<'A'..'F'> o resultado é compatível com os dígitos hexadecimais
+normais, de modo que C<'a'> e C<'A'> ambos geram o nybble C<0xa==10>. O
+resultado para bytes C<'g'..'z'> e C<'G'..'Z'> não é bem definido.
 
-Starting from the beginning of the input string of pack(), each pair
-of bytes is converted to 1 byte of output.  With format C<h> the
-first byte of the pair determines the least-significant nybble of the
-output byte, and with format C<H> it determines the most-significant
-nybble.
+A partir do início da string de entrada de pack(), cada par de bytes é
+convertido em 1 byte de saída. Com o formato C<h> o primeiro byte do par
+determina o nybble menos significativo do byte de saída, e com formato C<H>
+determina o nybble mais significativo.
 
-If the length of the input string is not even, it behaves as if padded
-by a null byte at the end.  Similarly, during unpack()ing the "extra"
-nybbles are ignored.
+Se o comprimento da string de entrada não for par, comporta-se como se
+completada por um byte null no fim. Da mesma forma, invocando-se unpack() os
+nybbles 'extras' são ignorados.
 
-If the input string of pack() is longer than needed, extra bytes are ignored.
-A C<*> for the repeat count of pack() means to use all the bytes of
-the input field.  On unpack()ing the bits are converted to a string
-of hexadecimal digits.
+Se a string de entrada de pack() for mais longa que necessário, os bytes extras
+são ignorados. Um C<*> como contagem de repetição de pack() resulta na
+utilização de todos os bytes do campo de entrada. Ao invocar unpack(), os bits
+são convertidos em uma string de dígitos hexadecimais.
 
-=item *
+=item * 
 
-The C<p> type packs a pointer to a null-terminated string.  You are
-responsible for ensuring the string is not a temporary value (which can
-potentially get deallocated before you get around to using the packed result).
-The C<P> type packs a pointer to a structure of the size indicated by the
-length.  A NULL pointer is created if the corresponding value for C<p> or
-C<P> is C<undef>, similarly for unpack().
+O tipo C<p> empacota um ponteiro a uma string terminada por null. Você é
+responsável por assegurar a string não é um valor temporário (que potencialmente
+pode ser desalocada antes que você utilize o resultado empacotado). O tipo C<P>
+empacota um ponteiro para uma estrutura do tamanho indicado pelo comprimento. um
+ponteiro null é criada se o valor correspondente para C<p> ou C<P> for C<undef>,
+O mesmo se aplica a unpack().
 
-=item *
 
-The C</> template character allows packing and unpacking of strings where
-the packed structure contains a byte count followed by the string itself.
-You write I<length-item>C</>I<string-item>.
+=item * 
 
-The I<length-item> can be any C<pack> template letter, and describes
-how the length value is packed.  The ones likely to be of most use are
-integer-packing ones like C<n> (for Java strings), C<w> (for ASN.1 or
-SNMP) and C<N> (for Sun XDR).
+O caráter de template C</> permite o empacotamento e desempacotamento de strings
+onde a estrutura empacotada contém uma contagem de bytes seguida pela própria
+string. Escreve-se I<length-item>C</>I<string-item>.
 
-For C<pack>, the I<string-item> must, at present, be C<"A*">, C<"a*"> or
-C<"Z*">. For C<unpack> the length of the string is obtained from the
-I<length-item>, but if you put in the '*' it will be ignored. For all other
-codes, C<unpack> applies the length value to the next item, which must not
-have a repeat count.
+O I<length-item> pode ser qualquer caracter de template C<pack>, e descreve como
+o valor de comprimento é empacotado. Dentre os mais úteis são os que empacotam
+números inteiros, como C<n> (para strings de Java), C<w> (para ASN.1 ou SNMP) e
+C<N> (Para Sun XDR).
 
-    unpack 'C/a', "\04Gurusamy";        gives 'Guru'
-    unpack 'a3/A* A*', '007 Bond  J ';  gives (' Bond','J')
-    pack 'n/a* w/a*','hello,','world';  gives "\000\006hello,\005world"
+Para C<pack>, o I<string-item> neste momento, de ser C<'A*'>, C<'a*'> ou
+C<'Z*'>. Para C<unpack> o comprimento da string é obtida do I<length-item>, Mas
+se você colocar '*', este será ignorado. Para todo os outros códigos, C<unpack>
+aplica o valor de comprimento ao próximo item, que não deve ter uma contagem de
+repetição.
 
-The I<length-item> is not returned explicitly from C<unpack>.
+    unpack 'C/a', "\04Gurusamy";        retorna 'Guru'
+    unpack 'a3/A* A*', '007 Bond  J ';  retorna (' Bond','J')
+    pack 'n/a* w/a*','hello,','world';  retorna "\000\006hello,\005world"
 
-Adding a count to the I<length-item> letter is unlikely to do anything
-useful, unless that letter is C<A>, C<a> or C<Z>.  Packing with a
-I<length-item> of C<a> or C<Z> may introduce C<"\000"> characters,
-which Perl does not regard as legal in numeric strings.
+O I<length-item> não é retornado explicitamente de C<unpack>. 
 
-=item *
+É improvável que a adição de uma contagem ao I<length-item> faça algo útil, a
+menos que sejam as letras C<A>, C<a> ou C<Z>. Empactor com um I<length-item> de
+C<a> ou C<Z> pode introduzir caracteres C<'\000'>, que não são válidos em
+strings numéricas em Perl.
 
-The integer types C<s>, C<S>, C<l>, and C<L> may be
-immediately followed by a C<!> suffix to signify native shorts or
-longs--as you can see from above for example a bare C<l> does mean
-exactly 32 bits, the native C<long> (as seen by the local C compiler)
-may be larger.  This is an issue mainly in 64-bit platforms.  You can
-see whether using C<!> makes any difference by
+=item * 
 
-         print length(pack("s")), " ", length(pack("s!")), "\n";
-         print length(pack("l")), " ", length(pack("l!")), "\n";
+Os tipos integer C<s>, C<S>, C<l>, e C<L> podem ser seguidos imediatamente por
+um C<!> para significar short nativo ou long -- como você pode ver acima, um
+C<l> signifca exatamente 32 bits, o C<long> nativo (Como visto pelo compilador
+local de C) pode ser maior. Isto é um problema principalmente em plataformas de
+64 bits. Você pode averiguar se a utilização de C<!> faz qualquer diferença com:
 
-C<i!> and C<I!> also work but only because of completeness;
-they are identical to C<i> and C<I>.
+    print length(pack("s")), " ", length(pack("s!")), "\n";
+    print length(pack("l")), " ", length(pack("l!")), "\n";
 
-The actual sizes (in bytes) of native shorts, ints, longs, and long
-longs on the platform where Perl was built are also available via
-L<Config>:
+C<i!> e C<I!> também funcionam mas só por conta de integralidade; eles são
+idênticos a C<i> e C<I>.
+
+Os tamanhos reais (em bytes) de short nativo, ints, long, e longs compridos na
+plataforma onde Perl foi compilado também estão disponíveis através de L<Config>:
 
        use Config;
        print $Config{shortsize},    "\n";
@@ -3514,145 +3506,142 @@ L<Config>:
        print $Config{longsize},     "\n";
        print $Config{longlongsize}, "\n";
 
-(The C<$Config{longlongsize}> will be undefined if your system does
-not support long longs.)
+(O C<$Config{longlongsize}> Será undef se seu sistema não tiver suporte a longs
+compridos).
 
-=item *
+=item * 
 
-The integer formats C<s>, C<S>, C<i>, C<I>, C<l>, C<L>, C<j>, and C<J>
-are inherently non-portable between processors and operating systems
-because they obey the native byteorder and endianness.  For example a
-4-byte integer 0x12345678 (305419896 decimal) would be ordered natively
-(arranged in and handled by the CPU registers) into bytes as
+Os formatos inteiros C<s>, C<S>, C<i>, C<I>, C<l>, C<L>, C<j>, e C<J> são
+intrinsecamente não-portáveis entre processadores e sistemas operacionais porque
+eles obedecem a ordem de byte "endianness" nativa. Por exemplo um número inteiro
+0x12345678 de 4 bytes (305419896 decimal) seria ordenado nativamente (arranjado
+e manejado pelos registros de CPU) em bytes como
 
-          0x12 0x34 0x56 0x78         # big-endian
-          0x78 0x56 0x34 0x12         # little-endian
+       0x12 0x34 0x56 0x78         # big-endian
+       0x78 0x56 0x34 0x12         # little-endian
 
-Basically, the Intel and VAX CPUs are little-endian, while everybody
-else, for example Motorola m68k/88k, PPC, Sparc, HP PA, Power, and
-Cray are big-endian.  Alpha and MIPS can be either: Digital/Compaq
-used/uses them in little-endian mode; SGI/Cray uses them in big-endian
-mode.
+Basicamente, o CPUS Intel e VAX CPUS little-endian, enquanto todos os outros,
+por exemplo Motorola m68k/88k, PPC, Sparc, HP PA, Power, e Cray são
+big-endian. Alpha e MIPS podem ser ambos: A Digital/Compaq os usou/usa em modo
+little-endian; SGI/Cray usa-os em modo big-endian.
 
-The names `big-endian' and `little-endian' are comic references to
-the classic "Gulliver's Travels" (via the paper "On Holy Wars and a
-Plea for Peace" by Danny Cohen, USC/ISI IEN 137, April 1, 1980) and
-the egg-eating habits of the Lilliputians.
+Os nomes 'big-endian' de 'little-endian' são referências cómicas ao clássico 'as
+Viagens do Gulliver (vide o paper "On Holy Wars and a Plea for Peace" por Danny
+Cohen, USC/ISI IEN 137, 1 de Abril 1, 1980) e os hábitos de consumo de ovos dos
+Lilliputians.
 
-Some systems may have even weirder byte orders such as
+Alguns sistemas podem ter ordens de byte até mesmo mais bizarras tal como:
 
-          0x56 0x78 0x12 0x34
-          0x34 0x12 0x78 0x56
+       0x56 0x78 0x12 0x34
+       0x34 0x12 0x78 0x56
 
-You can see your system's preference with
+Você pode ver sua preferência do sistema com:
 
-          print join(" ", map { sprintf "%#02x", $_ }
-                            unpack("C*",pack("L",0x12345678))), "\n";
+       print join(" ", map { sprintf "%#02x", $_ }
+                         unpack("C*",pack("L",0x12345678))), "\n";
 
-The byteorder on the platform where Perl was built is also available
-via L<Config>:
+A ordem de byte na plataforma onde Perl foi compilado também está disponível via
+L<Config>:
 
-         use Config;
-         print $Config{byteorder}, "\n";
+       use Config;
+       print $Config{byteorder}, "\n";
 
-Byteorders C<'1234'> and C<'12345678'> are little-endian, C<'4321'>
-and C<'87654321'> are big-endian.
+Ordens de byte C<'1234'> e C<'12345678'> são little-endian, C<'4321'> e
+C<'87654321'> são big-endian.
 
-If you want portable packed integers use the formats C<n>, C<N>,
-C<v>, and C<V>, their byte endianness and size are known.
-See also L<perlport>.
+Se você quer que números inteiros empacotados portáveis utilizem os formatos
+C<n>, C<N>, C<v>, e C<V>, seu "endianness" de byte e tamanho são
+conhecidos. Veja também L<perlport>.
 
-=item *
+=item * 
 
-Real numbers (floats and doubles) are in the native machine format only;
-due to the multiplicity of floating formats around, and the lack of a
-standard "network" representation, no facility for interchange has been
-made.  This means that packed floating point data written on one machine
-may not be readable on another - even if both use IEEE floating point
-arithmetic (as the endian-ness of the memory representation is not part
-of the IEEE spec).  See also L<perlport>.
+Numeros reais (float e double) estão no formato nativo de máquina apenas; devido
+à multiplicidade de formatos flutuantes que existem, e a falta de uma
+representação normal de 'rede', não existe nenhuma facilidade de
+intercâmbio. Isto quer dizer que empacotar dados de ponto flutuante escritos
+numa máquina podem não ser legíveis em outra - ainda que ambas utilizem
+aritmética de ponto flutuante IEEE (já que o "endianness" da representação em
+memória não é parte da especificação IEEE). Veja também L<perlport>.
 
-Note that Perl uses doubles internally for all numeric calculation, and
-converting from double into float and thence back to double again will
-lose precision (i.e., C<unpack("f", pack("f", $foo)>) will not in general
-equal $foo).
+Observe que Perl usa doubles internamente para todos os cálculos numéricos, e
+converter de double para float e de volta para double perderá precisão (isto é,
+C<unpack('f', pack('f', $foo)>) geralmente não será igual a $foo).
 
-=item *
+=item * 
 
-If the pattern begins with a C<U>, the resulting string will be
-treated as UTF-8-encoded Unicode. You can force UTF-8 encoding on in a
-string with an initial C<U0>, and the bytes that follow will be
-interpreted as Unicode characters. If you don't want this to happen,
-you can begin your pattern with C<C0> (or anything else) to force Perl
-not to UTF-8 encode your string, and then follow this with a C<U*>
-somewhere in your pattern.
+Se o padrão começa com um C<U>, a string resultante será tratada como
+UTF-8-encoded Unicode. Você pode forçar codificação UTF-8 em numa string com um
+C<U0> inicial, e os bytes seguintes serão interpretados como caracteres
+Unicode. Se você não quer que isto aconteça, você pode começar seu padrão com
+C<C0> (ou algo mais) para forçar Perl não a codicar sua estring para UTF-8, em
+seguida utilize C<U*> em algum lugar em seu padrão.
 
-=item *
+=item * 
 
-You must yourself do any alignment or padding by inserting for example
-enough C<'x'>es while packing.  There is no way to pack() and unpack()
-could know where the bytes are going to or coming from.  Therefore
-C<pack> (and C<unpack>) handle their output and input as flat
-sequences of bytes.
+Você mesmo deverá faz qualquer alinhamento ou compleição, inserindo, por
+exemplo, C<'x'>s suficientes ao empacotar. Não há nenhuma maneira pela qual
+C<pack()> e C<unpack()> saibam para onde os bytes estão indo nem de onde
+vieram. Portanto C<pack> (e C<unpack>) maneja sua saída e entrada como
+seqüências planas de bytes.
 
-=item *
+=item * 
 
-A ()-group is a sub-TEMPLATE enclosed in parentheses.  A group may
-take a repeat count, both as postfix, and for unpack() also via the C</>
-template character. Within each repetition of a group, positioning with
-C<@> starts again at 0. Therefore, the result of
+UM grupo-() é um sub-modelo dentro de parênteses. Um grupo pode tomar um
+contagem de repetição, ambos posfixos, e para unpack() também via o caracter de
+template C</> . Dentro de cada repetição de um grupo, o posicionamento com C<@>
+reinicia para em 0. Portanto, o resultado de:
 
     pack( '@1A((@2A)@3A)', 'a', 'b', 'c' )
 
-is the string "\0a\0\0bc".
+é a string "\0a\0\0bc". 
 
+=item * 
 
-=item *
+C<x> e C<X> aceitam o modificador C<!>. Neste caso eles agem da forma que o
+alinhamento determinar: saltam para frente/para trás à posição mais próxima
+alinhada num múltiplo de C<count> bytes. Por exemplo, para fazer pack() ou
+unpack() de C<struct {char c; double d; char cc[2]}> em C, pode ser preciso usar
+o modelo C<C x![d] d C[2]>; Isto supõe que doubles devem ser alinhados no
+tamanho do double.
 
-C<x> and C<X> accept C<!> modifier.  In this case they act as
-alignment commands: they jump forward/back to the closest position
-aligned at a multiple of C<count> bytes.  For example, to pack() or
-unpack() C's C<struct {char c; double d; char cc[2]}> one may need to
-use the template C<C x![d] d C[2]>; this assumes that doubles must be
-aligned on the double's size.
+Comandos de alinhamento C<count> de 0 são equivalentes a C<count> de 1; ambos
+resultam em no-ops.
 
-For alignment commands C<count> of 0 is equivalent to C<count> of 1;
-both result in no-ops.
+=item * 
 
-=item *
+Um comentário num MODELO inicia com C<#> e vai até o fim de linha. Espaços em
+branco podem ser usado para separar códigos de pack um do outro, mas um
+modificador C<!> modificador e um contador de repetição devem seguir
+imediatamente.
 
-A comment in a TEMPLATE starts with C<#> and goes to the end of line.
-White space may be used to separate pack codes from each other, but
-a C<!> modifier and a repeat count must follow immediately.
+=item * 
 
-=item *
-
-If TEMPLATE requires more arguments to pack() than actually given, pack()
-assumes additional C<""> arguments.  If TEMPLATE requires less arguments
-to pack() than actually given, extra arguments are ignored.
+Se MODELO exige mais argumentos de pack() do que os que estão presente, pack()
+supõe argumentos C<''> adicionais. Se MODELO exige menos argumentos pack() do
+que estão presentes, argumentos extras são ignorados.
 
 =back
 
-Examples:
+Exemplos:
 
     $foo = pack("CCCC",65,66,67,68);
     # foo eq "ABCD"
     $foo = pack("C4",65,66,67,68);
-    # same thing
+    # idem
     $foo = pack("U4",0x24b6,0x24b7,0x24b8,0x24b9);
-    # same thing with Unicode circled letters
+    # idem com letras cercadas por Unicode
 
     $foo = pack("ccxxcc",65,66,67,68);
     # foo eq "AB\0\0CD"
 
-    # note: the above examples featuring "C" and "c" are true
-    # only on ASCII and ASCII-derived systems such as ISO Latin 1
-    # and UTF-8.  In EBCDIC the first example would be
+    # observação: os exemplos acima utilizando "C" and "c" são verdadeiros
+    # apenas em sistems ASCII e derivados como ISO Latin 1
+    # and UTF-8.  Em EBCDIC o primeiro exemplo seria
     # $foo = pack("CCCC",193,194,195,196);
 
     $foo = pack("s2",1,2);
-    # "\1\0\2\0" on little-endian
-    # "\0\1\0\2" on big-endian
+    # "\1\0\2\0" little-endian
+    # "\0\1\0\2" big-endian
 
     $foo = pack("a4","abcd","x","y","z");
     # "abcd"
@@ -3664,11 +3653,11 @@ Examples:
     # "abcdefg\0\0\0\0\0\0\0"
 
     $foo = pack("i9pl", gmtime);
-    # a real struct tm (on my system anyway)
+    # uma estrutura real tm (no meu sistema)
 
     $utmp_template = "Z8 Z8 Z16 L";
     $utmp = pack($utmp_template, @utmp1);
-    # a struct utmp (BSDish)
+    # umaa struct utmp (BSD)
 
     @utmp2 = unpack($utmp_template, $utmp);
     # "@utmp1" eq "@utmp2"
@@ -3678,12 +3667,12 @@ Examples:
     }
 
     $foo = pack('sx2l', 12, 34);
-    # short 12, two zero bytes padding, long 34
+    # short 12, compleição com dois zeros, long 34
     $bar = pack('s@4l', 12, 34);
-    # short 12, zero fill to position 4, long 34
+    # short 12, compleição com 0 zeros até a posição 4, long 34
     # $foo eq $bar
 
-The same template may generally also be used in unpack().
+O mesmo modelo geralmente também pode ser usado em unpack().
 
 =item package NAMESPACE
 
