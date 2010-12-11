@@ -1,0 +1,521 @@
+=head1 NOME
+
+perlreftut - Tutorial Rápido sobre Referências do Mark
+
+=head1 DESCRIÇÃO
+
+Um dos mais importantes recursos adicionados no Perl 5 foi a capacidade de
+gerenciar estruturas de dados complexas, como matrizes multidimensionais e
+hashes encadeados. Para permitir isso, Perl 5 introduziu um recurso chamado
+‘referências’ , e usar referências é a chave para gerenciar complexas
+estruturas de dados em Perl. Infelizmente, existe uma sintaxe estranha
+para aprender e lendo nas páginas man principais pode ser difícil entender.
+Elas são muito completas e algumas vezes o leitor pode achar que isso é um
+problema, porque pode ser dificil dizer o que é importante, e o que não é.
+
+Felizmente, você precisa saber apenas 10% do que está no manual oficial
+para obter 90% do benefício, e esta pagina vai lhe mostrar os 10%
+necessários.
+
+=head1 Quem precisa de Estruturas de Dados Complexas?
+
+Um problema que apareceu no tempo da Perl 4 foi como representar um hash
+que os valores são listas. Claro que a Perl 4 tinha hashes, mas os valores
+tinham que ser escalares, não poderiam ser listas. Porque você quer um
+hash de listas? Vamos para um exemplo simples. Você tem um arquivo de
+cidades e nomes de paises, como esse:
+
+        Chicago, USA
+        Frankfurt, Germany
+        Berlin, Germany
+        Washington, USA
+        Helsinki, Finland
+        New York, USA
+
+e quer gerar uma saida para produzir alguma coisa como essa, com cada país
+mencionado uma vez, e também há uma lista alfabetica de cidades de cada país.
+
+        Finland: Helsinki.
+        Germany: Berlin, Frankfurt.
+        USA: Chicago, New York, Washington.
+
+A forma natural de fazer isso, é ter um hash com as chaves com os nomes
+dos paises. Associada com cada nome dos paises está uma lista das cidades
+em cada um. Cada vez que você lê uma linha da entrada, divida-a em pais e
+cidade, pegue a lista de cidades que está em cada pais e coloque ao final
+a cidade em seu respectivo pais. Quando voce terminar de ler a entrada,
+trabalhe com o hash normalmente, ordenando a lista de cidades antes de
+imprimi-la.
+
+Se os valores de um hash não podem ser listas, você se deu mal. Na Perl 4,
+os valores de um hash não podem ser listas, apenas podem ser strings. Assim
+nada feito. Você provavelmente terá que combinar todas as cidades em uma
+string de alguma forma, e depois quando elas forem para saida, você terá
+que dividir a string em uma lista, ordena-la e coloca-la novamente como
+string. Isso é uma gambiarra e sujeito a erros. E é frustrante, pois Perl
+já possui listas que perfeitamente podem resolver seu problema se você
+apenas puder usa-las.
+
+=head1 A Solução
+
+Na época em que a Perl 5 foi lançada, nós já estavamos cansados com essa
+caracteristica: Os valores de um hash precisam ser escalares. E a solução
+foi usar referências.
+
+A referência é um valor escalar que I<< se refere a >> um array inteiro
+ou todo um hash (ou a praticamente qualquer outra coisa). Nomes são um tipo
+de referência que já familiar á você. Pense no Presidente dos Estados
+Unidos: confuso, uma incoveniente mala de sangue e ossos. Mas podemos falar
+sobre ele, ou representa-lo em um programa de computador, e tudo o que
+precisamos é a facil e conveniente string escalar “Barack Obama”.
+
+Referências em Perl são como nomes para arrays e hashes. Eles são privados
+em Perl, nomes internos, assim você pode estar seguro que eles são
+desambuiguadores. Não como “Barack Obama”, uma referência apenas se refere
+a uma coisa, e você sempre sabe do que se trata. Se voce tem uma referência
+a um array, você pode recuperar o array inteiro. Se você tem uma referência
+a um hash, você pode recuperar esse hash inteiro. Mas a referência continua
+simples, apenas um valor escalar.
+
+Você não pode ter um hash cujo os valores são arrays, os valores dos hashes
+podem apenas serem escalares. Estamos cansados de saber disso. Mas uma
+simples referência é escalar, e voce pode ter um hash de referências para
+arrays, e ele vai ser como um hash de arrays, e vai ser util como um hash de
+arrays.
+
+Nós vamos voltar com o problema da cidade-país mais tarde, depois de vermos
+alguma sintaxe para gerenciar referências.
+
+=head1 Sintaxe
+
+Existem duas maneiras de se criar uma referência, e apenas duas maneiras de
+usar elas depois de criadas.
+
+=head2 Criando Referências
+
+=head3 B<Regra de Criação 1>
+
+Se você coloca um C<\> na frente da sua variável, você tem uma referência
+para aquela variável.
+
+         $aref = \@array;         # $aref agora é uma referência para @array
+         $href = \%hash;          # $href agora é uma referência para %hash
+
+Uma vez que a referência foi armazenada em uma variável como $aref ou $href,
+você pode copiar ou armazenar da mesma maneira em outra variável escalar:
+
+         $xy = $aref;             # $xy agora é uma referência para @array
+         $p[3] = $href;           # $p[3] agora é uma referência para %hash
+         $z = $p[3];              # $z agora é uma referência para %hash
+
+Estes exemplos mostram como fazer referências para variáveis com nomes.
+Algumas vezes você quer fazer um array ou um hash que não tem um nome.
+Isto é analogo a forma como você poderia estar habilitado para usar a
+string C<"\n"> ou o numero 80 sem ter armazenado eles em uma variável
+primeiro.
+
+=head3  B<Regra de Criação 2>
+
+C<[ ITEMS ]> cria um novo array anônimo, e retorna a referência para
+aquele array. C<{ ITEMS }> cria um novo hash anônimo, e retorna a
+referência para aquele hash.
+
+         $aref = [ 1, “foo”, undef, 13 ];
+         # $aref agora é uma referência para array
+
+         $href = { APR => 4, AUG => 8 };
+         # $href agora é uma referência para um hash
+
+
+As referências que você obtem via regra 2 são do mesmo tipo que as
+referências que você obtem da regra 1:
+
+         # Isso:
+         $aref = [ 1, 2, 3 ];
+
+         # faz a mesma coisa que:
+         @array = (1, 2, 3);
+         $aref = \@array;
+
+A primeira linha é uma abreviação do que segue nas outras duas, exceto
+pelo fato que ela não cria um array superfluo C<@array>.
+
+Se você apenas escreve C<[]>, você tem um novo e vazio array.
+Se você apenas escreve C<{}>, você tem um novo e vazio hash.
+
+=head2 Usando Referências
+
+O que você pode fazer com uma referência quando você a obtem? Ela é um
+valor escalar, e nós vimos que você pode armazenar um escalar e ler
+novamente ele como qualquer escalar. Existem duas maneiras de usa-las:
+
+=head3 B<Regra de Uso 1>
+
+Você sempre pode usar uma referência para um array, entre chaves, no lugar
+do nome do array. Como por exemplo, C<@{$aref}> em vez de C<@array>.
+
+Aqui vemos alguns exemplos disso:
+
+Arrays:
+
+     @a              @{$aref}              Um array
+     reverse @a      reverse @{$aref}      Inverso the array
+     $a[3]           ${$aref}[3]           Um elemento de um array
+     $a[3] = 17      ${$aref}[3] = 17      Atribuindo um elemento
+
+Cada par de expressões fazem a mesma coisa. No lado esquerdo são expressões
+que operam o array C<@a>. O lado direito são versões que operam com o array
+que é referenciado por C<§aref>. Quando ele acha o array em que está
+operando, ambas versões fazem as mesmas coisas com o array.
+
+Usando uma referência para um hash, é a I<exatamente> a mesma coisa:
+
+     %h                %{$href}                 Um hash
+     keys %h           keys %{$href}            Pegando as chaves do hash.
+     $h{’red’}         ${$href}{’red’}          Um elemento de um hash
+     $h{’red’} = 17    ${$href}{’red’} = 17     Atribuindo um elemento
+
+Sempre que você quiser usar uma referência, B<Usando a regra1> lhe diz como
+fazer. Você apenas escreve o codigo Perl que você teria escrito para fazer
+a mesma coisa com um array regular um ou hash, e ele substitui o nome do
+array ou o hash com C<{$referencia}>. “Como eu faço um loop sobre todo
+array se ele é uma referencia?”. Bem, para iterar sobre um array, você
+escreveria
+
+     for my $element (@array) {
+         ...
+     }
+
+então substitua o nome do array, C<@array>, pela referência:
+
+     for my $element (@{$aref}) {
+         ...
+     }
+
+“Como eu imprimo o conteúdo de um hash quando tudo que eu tenho é uma
+referência?¨ Primeiro escreva o código para imprimir todo um hash:
+
+     for my $key (keys %hash) {
+         print “$key => $hash{$key}\n”;
+     }
+
+E então substitua o nome do hash pela referência:
+
+     for my $key (keys %{$href}) {
+         print “$key => ${$href}{$key}\n”;
+     }
+
+=head3 B<Regra de Uso 2>
+
+B<Regra de Uso 1> é tudo o que você realmente precisa, porque ela lhe
+diz como fazer absolutamente tudo que precisará fazer com referências.
+Mas a coisa mais comum a se fazer com um array ou um hash é extrair um
+simples elemento, e a notação usada na B é estranha. Então aqui segue
+uma abreviação.
+
+C<${$aref}[3]> é muito dificil de ler, então você pode escrever
+C<< $aref->[3] >> no lugar.
+
+C<${$href}{red}> é muito dificil de ler, então você pode escrever
+C<< $href->{red} >> no lugar.
+
+Se C<$aref> contém uma referência para um array, então C<< $aref->[3] >>
+se refere ao quarto elemento do array. Não confunda isso com C<$aref[3]>,
+que é o quarto elemento de um array completamente diferente, enganosamente
+denominado C<@array>. C<$aref> e C<@aref> não são relacionados, da mesma
+forma que C<$item> e <@item>.
+
+Similarmente, C<< $href->{’red’} >> é parte de um hash referenciado pela
+variável escalar C<$href>, perhaps even one with no name. C<$href{'red'}>
+é parte de um hash enganosamente denominado chamado C<%href>. É fácil
+esquecer e deixar de fora o C<< -> >>, e se você fizer isso, terá
+resultados bizarros quando seu programa obter os elementos do hash ou
+array do conteúdo da memória que você não quer.
+
+=head2 Um Exemplo
+
+Vamos ver um rápido exemplo de como isso tudo é util.
+
+Primeiro lembre-se que C<[1, 2, 3]> cria um array anônimo contendo
+C<(1, 2, 3)>, e lhe devolve uma referência para ele.
+
+Agora pense sobre
+
+    @a = ( [1, 2, 3],
+           [4, 5, 6],
+           [7, 8, 9]
+    );
+
+@a é um array com três elementos, e cada um é uma referência para outro
+array.
+
+C<$a[1]> é uma dessas referências. Ela se refere a um array, um array
+contendo C<(4, 5, 6)>, e por causa disso é uma referência para um array.
+B diz que nós podemos escrever C<< $a[1]->[2] >> para obter o terceiro
+elemento do daquele array. C<< $a[1]->[2] >> é o 6.
+Similarmente, C<< $a[0]->[2] >> é o numero 2. O que nós temos aqui é
+como um array bidimensional, você pode escrever C<< $a[LINHA]->[COLUNA] >>
+para obter ou definir em qualquer linha ou coluna do array.
+
+Esta notação ainda está um pouco confusa, então aqui vai mais uma
+abreviação:
+
+=head2 Regra da Seta
+
+Em B<sub-referências>, a seta é opcional.
+
+Ao invés de C<< $a[1]->[2] >>, nós podemos escrever C<$a[1][2]>; ele
+faz a mesma coisa. Ao invés de C<< $a[0]->[1] = 23 >>, podemos escrever
+C<$a[0][1] = 23>; que ele faz a mesma coisa.
+
+Agora finalmente parece com um array bidimensional!
+
+Você pode ver porque as setas são importantes. Sem elas, nós temos que
+escrever C<${$a[1]}[2]> ao invés de C<$a[1][2]>. Para arrays
+tridimensionais, podemos escrever C<$x[2][3][5]> ao invés do ilegivel
+C<${${$x[2]}[3]}[5]>.
+
+=head1 Solução
+
+Aqui vai a solução do problema que propus anteriormente, de reorganizar
+um arquivo com nomes de cidades e paises.
+
+    1   my %table;
+
+    2   while (<>) {
+    3     chomp;
+    4     my ($city, $country) = split /, /;
+    5     $table{$country} = [] unless exists $table{$country};
+    6     push @{$table{$country}}, $city;
+    7   }
+
+    8   foreach $country (sort keys %table) {
+    9     print “$country: “;
+   10     my @cities = @{$table{$country}};
+   11     print join ‘, ‘, sort @cities;
+   12     print “.\n”;
+   13   }
+
+O programa está dividido em dois pedaços: As linhas 2 a 7 leem a entrada
+e constroem a informação, e as linhas 8 a 13 analisam a informação e
+imprimem-na. Nós estamos obtendo um hash, C<%table>, o qual as chaves
+são os nomes dos paises e os valores são referências para arrays com
+os nomes das cidades. A estrutura de dados vai se parecer com isso:
+
+           %table
+        +-------+---+
+        |       |   |   +-----------+--------+
+        |Germany| *---->| Frankfurt | Berlin |
+        |       |   |   +-----------+--------+
+        +-------+---+
+        |       |   |   +----------+
+        |Finland| *---->| Helsinki |
+        |       |   |   +----------+
+        +-------+---+
+        |       |   |   +---------+------------+----------+
+        |  USA  | *---->| Chicago | Washington | New York |
+        |       |   |   +---------+------------+----------+
+        +-------+---+
+
+Vamos ver a saida agora. Supondo que nós já temos esta estrutura, como
+vamos imprimi-la?
+
+    8   foreach $country (sort keys %table) {
+    9     print "$country: ";
+   10     my @cities = @{$table{$country}};
+   11     print join ', ', sort @cities;
+   12     print ".\n";
+   13	}
+
+
+C<%table> é um hash comum, e nós obtemos uma lista de chaves dele,
+as ordenamos e fizemos um loop para cada elemento como o usual. O único
+uso de referências é na linha 10. C<$table{$country}> procura a chave
+C<{$country}> no hash e pega seu valor, que é uma referência para um array
+de cidades em cada país. A B<Regra de Uso 1> diz que nós podemos recuperar
+o array escrevendo C<@{$table{$country}}>. A linha 10 é como essa:
+
+    @cities = @array;
+
+exceto que o nome C<array> foi substituido pela referência
+C<$table{$country}>. O C<@> diz a Perl para obter o array todo.
+Tendo obtido a lista de cidades toda, nós a ordenamos, juntamos,
+e imprimimos como o de costume.
+
+As linhas de 2 a 7 são responsaveis por construir a estrutura em
+primeiro lugar. Aqui esta ela denovo:
+
+    2   while (<>) {
+    3    chomp;
+    4     my ($city, $country) = split /, /;
+    5     $table{$country} = [] unless exists $table{$country};
+    6     push @{$table{$country}}, $city;
+    7   }
+
+As linhas de 2 a 4 obtem o nome da cidade e do pais. A linha 5 procura
+verificar se o pais já existe como uma chave do hash. Se não, o
+programa usa a notação C<[]> (B<Regra de Criação 2>) para fabricar um
+array de cidades novo, anônimo e vazio, e coloca a referência dentro do
+hash na chave apropriada.
+
+A linha 6 coloca o nome da cidade no array apropriado.
+C<$table{$country}> agora tem a referência para o array de cidades
+encontradas até o momento naquele país. A linha 6 é exatamente como:
+
+    push @array, $city;
+
+exceto que o nome C<array> foi substituido pela referência
+C<{$table{$country}}>. O C<push> adiciona o nome da cidade para o fim
+do referido array.
+
+Há um ponto interessante que eu pulei. A linha 5 é desnecessária e
+nós podemos nos livrar dela.
+
+    2   while (<>) {
+    3    chomp;
+    4     my ($city, $country) = split /, /;
+    5   ####  $table{$country} = [] unless exists $table{$country};
+    6     push @{$table{$country}}, $city;
+    7   }
+
+Se já existe uma entrada em C<%table> para o <$country> atual, não
+acontece nada de diferente. A linha 6 vai colocar o valor de
+C<$table{$country}>, que é uma referência para um array, e empilhar
+C<$city> no array. Mas o que ele faz quando C<$country> contém uma
+chave, como C<Greece>, que não está em C<%table>?
+
+Isto é Perl, então ele faz a coisa certa. Ele entende que você quer
+empilhar C<Athens> em um array que não existe, então ela automaticamente
+cria um array novo, vazio e anônimo para você, o coloca em C<%table>,
+e assim empilha C<Athens> nele. Isso é chamado `autovivification’
+(autovivificação) -- trazendo as coisas à vida automaticamente. Perl
+viu que a chave não estava no hash, então criou uma nova entrada no
+hash automaticamente. A Perl viu que você procurava usar o valor do hash
+como um array, então criou um array novo e vazio e o colocou como uma
+referência no hash de forma automática. E como de costume, Perl fez o
+array um elemento maior para acomodar o nome da nova cidade.
+
+=head1 O Resto
+
+Eu prometi lhe dar o 90% do benefício com 10% dos detalhes, e isso
+significa que faltam ainda 90% dos detalhes. Agora que você tem
+uma ideia geral das partes importantes, será mais facil ler a
+pagina man L<perlref>, que discute 100% dos detalhes.
+
+Alguns dos pontos de destaque da L<perlref>:
+
+=over 4
+
+=item *
+
+Você pode criar referências para qualquer coisa, incluindo escalares,
+funções e outras referências.
+
+=item *
+
+No caso da B<Regra de Uso 1>, você pode omitir as chaves sempre que
+dentro delas estiver um escalar unico como C<$aref>. Como exemplo,
+C<@$aref> é o mesmo que C<@{$aref}>, e C<$$aref[1]> é o mesmo que
+C<${$aref}[1]>. Se você está apenas começando agora, você pode
+querer adotar o hábito de sempre incluir as chaves.
+
+=item *
+
+Isto não copia todo o array:
+
+    $aref2 = $aref1;
+
+O que você tem são duas referências para o mesmo array.
+Se você modificar C<< $aref1->[23] >> e olhar depois em
+C<< $aref2->[23] >>, você verá a modificação.
+
+Para copiar o array, use:
+
+$aref2 = [@{$aref1}];
+
+Isto usa a notação C<[...]> para criar um novo e anônimo array, e
+C<$aref2> é alocado como uma referência para um novo aray. O novo
+array é iniciado com o conteudo do array referenciado por C<$aref1>.
+
+De forma similar, para copiar um hash anônimo, você pode usar:
+
+$href2 = {%{$href1}};
+
+=item *
+
+Para ver se uma variável contem uma referência, use a função C<ref>.
+Ela retorna verdadeiro se o argumento é uma referência. Na verdade
+ela é um pouco melhor que isso: Ela retorna C<HASH> para referências
+a hashes e C<ARRAY> para referências de array.
+
+=item *
+
+Se você tenta usar uma referência como uma string, você obterá
+strings como essa:
+
+    ARRAY(0×80f5dec)   or   HASH(0×826afc0)
+
+Se você encontrar uma string como essa, você saberá que imprimiu
+uma referência por engano.
+
+Um efeito colateral dessa representação é que você pode usar C<eq>
+para ver se duas referências se referem a mesma coisa. (Mas você
+deve normalmente usar C<==> porque é muito mais rápido.)
+
+=item *
+
+Você pode usar uma string como se fosse uma referência. Se você usa
+uma string C<"foo"> como uma referência para um array, ele é pega
+como uma referência para um array C<@foo>. Isso é chamado
+I<referência suave> ou I<referência simbólica>. A declaração
+C<use strict 'refs'> desativa este recurso, que pode causar todos
+os tipos de problemas se você usar por acidente.
+
+=back
+
+Você pode preferir ler agora L<perllol> em vez de L<perlref>; ele
+discute listas de listas e arrays multidimensionais em detalhes.
+Depois disso, você deve ir para L<perldsc> ; que é o Data Structure
+Cookbook e mostra como preparar, usar e imprimir arrays de hashes,
+hashes de arrays, e outros tipos de estruturas.
+
+=head1 Sumário
+
+Todo mundo precisa de estruturas de dados complexas, e em Perl a
+maneira de se fazer isso é usando referências. Existem quatro
+importantes regras para gerenciar referências: Duas para criar
+referências e duas para usa-las. Se você conhece essas regras você
+pode fazer as coisas mais importantes que você precisa fazer com elas.
+
+=head1 Créditos
+
+Autor: Mark Jason Dominus, Plover Systems (C<mjd-perl-ref+@plover.com>)
+
+Este artigo foi publicado originalmente em I<The Perl Journal>
+( http://www.tpj.com/ ) volume 3, #2. Republicado com permissão.
+
+O titulo original era I<Understand References Today>.
+
+=head1 TRADUÇÃO
+
+Joênio Costa
+
+Frederico Recksy
+
+Nelson Ferraz
+
+
+=head2 Condições para a Distribuição
+
+Copyright 1998 The Perl Journal.
+
+Esta documentação é livre, você pode redistribuir ou modifica-la sobre
+os mesmos termos da Perl.
+
+Independente da distribuição, todos os exemplos de código destes arquivos
+são colocados em domínio público. É permitido e encorajado usar esse código
+em seus programas por diversão ou beneficio como você achar melhor. Um
+simples comentario dando o crédito será generoso mas não é requerido.
+=cut
+
+

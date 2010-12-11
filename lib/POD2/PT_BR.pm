@@ -16,6 +16,7 @@ sub pod_info {
     perlboot     => '5.10.1',
     perldsc      => '5.8.7',
     perlintro    => '5.10.1',
+    perlreftut   => '5.10.1',
     perlstyle    => '5.10.1',
     perlutil     => '5.8.7',
 }
@@ -89,6 +90,8 @@ Tradutores (em ordem alfabética):
 =item * Daniel Mantovani
 
 =item * Eden Cardim
+
+=item * Frederico Recksy
 
 =item * Igor Sutton
 
