@@ -12,12 +12,12 @@ sub search_perlfunc_re {
 }
 
 sub pod_info {
-    perlintro    => '5.10.1',
-    perlutil     => '5.8.7',
-    perlboot     => '5.10.1',
     perlbook     => '5.10.1',
+    perlboot     => '5.10.1',
     perldsc      => '5.8.7',
+    perlintro    => '5.10.1',
     perlstyle    => '5.10.1',
+    perlutil     => '5.8.7',
 }
 
 42;
