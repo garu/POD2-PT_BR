@@ -1182,9 +1182,9 @@ C<do BLOCK> does I<not> count as a loop, so the loop control statements
 C<next>, C<last>, or C<redo> cannot be used to leave or restart the block.
 See L<perlsyn> for alternative strategies.
 
-=item do SUBROUTINE(LIST)
+=item do SUBROTINA(LISTA)
 
-A deprecated form of subroutine call.  See L<perlsub>.
+Uma forma obsoleta de realiza uma chamada a uma subrotina. Veja L<perlsub>.
 
 =item do EXPR
 
