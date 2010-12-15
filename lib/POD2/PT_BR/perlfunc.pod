@@ -831,11 +831,11 @@ to check the condition at the top of the loop.
 
 =item cos
 
-Returns the cosine of EXPR (expressed in radians).  If EXPR is omitted,
-takes cosine of C<$_>.
+Retorna o coseno de EXPR (em radianos). Se EXPR for omitido, retorna o
+coseno de C<$_>.
 
-For the inverse cosine operation, you may use the C<Math::Trig::acos()>
-function, or use this relation:
+Para o inverso do coseno, você pode utilizar a função C<Math::Trig::acos()>
+ou utilizar a seguinte relação:
 
     sub acos { atan2( sqrt(1 - $_[0] * $_[0]), $_[0] ) }
 
