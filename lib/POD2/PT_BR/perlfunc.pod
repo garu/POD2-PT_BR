@@ -428,10 +428,10 @@ For more information see L<perlipc>.
 
 =item atan2 Y,X
 
-Returns the arctangent of Y/X in the range -PI to PI.
+Retorna o arco tangente de Y/X no intervalo -PI a PI.
 
-For the tangent operation, you may use the C<Math::Trig::tan>
-function, or use the familiar relation:
+Para calcular a tangente, você pode usar a função C<Math::Trig::tan>
+ou a seguinte relação:
 
     sub tan { sin($_[0]) / cos($_[0])  }
 
