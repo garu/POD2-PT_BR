@@ -5019,47 +5019,48 @@ L<printf(3)> no seu sistema para uma explanação dos princípios gerais.
 
 Por exemplo:
 
-        # Formatar número com 8 zeros sobrando no começo
+        # Formatar número com até 8 zeros à esquerda
         $result = sprintf("%08d", $number);
 
         # Arredondar número para 3 dígitos depois do ponto decimal
         $rounded = sprintf("%.3f", $number);
 
-Perl faz sua própria formatação C<sprintf> -- emulando a função C C<sprintf>, 
-mas a usa (exceto para números de ponto flutuante, e mesmo assim apenas os 
-modificadores padrão são permitidos). Como resultado, qualquer extensão não 
-padrão em seu C<sprintf> local não estão disponíveis para Perl. 
+Perl faz sua própria formatação C<sprintf> -- emulando a função C sprintf(3), 
+mas não a utilizando exceto para números de ponto flutuante, e mesmo assim
+apenas os modificadores padrão são permitidos. Como resultado, extensões
+fora do padrão em seu C<sprintf> local não estão disponíveis via Perl. 
 
-Diferente de C<printf>, C<sprintf> não faz o que provavelmente deseje quando 
-você passa um array como seu primeiro argumento. O array é tratado em contexto 
-escalar, e ao invés de utilizar o elemento 0 do array como um formato, Perl 
-usará o quantidade de elementos no array como um formato, que quase nunca é 
-útil. 
+Diferente de C<printf>, C<sprintf> não faz o que você provavelmente deseja
+quando passa um array como seu primeiro argumento. O array é tratado em
+contexto escalar, e em vez de usar o elemento 0 do array como formato, Perl 
+usará o quantidade de elementos no array como um formato, o que quase
+nunca é útil. 
 
-C<sprintf> do Perl permite as seguintes universalmente conhecidas converções:
+O C<sprintf> do Perl permite as seguintes conversões universalmente conhecidas:
 
    %%         um sinal de porcentagem
    %c         um caractere obtido de número
    %s         uma string
-   %d         a signed integer, in decimal
+   %d         um inteiro com sinal, em decimal
    %u         um inteiro sem sinal, em decimal
    %o         um inteiro sem sinal, em octal
    %x         um inteiro sem sinal, em hexadecimal
-   %e         um número ponto flutuante, em notação científica
-   %f         um número ponto flutuante, em notação decimal fixa
-   %g         um inteiro ponto flutuante, em notação %e ou %f
+   %e         um número com ponto flutuante, em notação científica
+   %f         um número com ponto flutuante, em notação decimal fixa
+   %g         um número com ponto flutuante, em notação %e ou %f
 
-Em adição, Perl permite as seguintes largamente suportadas converções:
+Além disso, Perl permite as seguintes conversões largamente suportadas:
 
    %X         semelhante a %x, mas utilizando letras maiúsculas
    %E         semelhante a %e, mas utilizando um "E" maiúsculo
    %G         semelhante a %g, mas com "E" maiúsculo (se aplicável)
    %b         um inteiro sem sinal, em binário
    %p         um ponteiro (emite os endereços de valores do Perl em hexadecimal)
-   %n         especial: *armazena* o número de caracteres emitidos na saída na próxima variável da lista de parâmetros
+   %n         especial: *armazena* o número de caracteres emitidos até o momento
+             na próxima variável da lista de parâmetros
 
-Finalmente, para retro (e nós queremos dizer "para trás") compatibilidade, Perl 
-permite estas desnecessários mas largamente suportadas conversões.
+Finalmente, para retro-compatibilidade (realmente "retro"), Perl 
+permite essas conversões desnecessárias mas largamente suportadas.
 
    %i         um sinônimo para %d
    %D         um sinônimo para %ld
@@ -5068,218 +5069,268 @@ permite estas desnecessários mas largamente suportadas conversões.
    %F         um sinônimo para %f
 
 Note que o número de dígitos do expoente na notação científica produzido por 
-C<%e>, C<%E>, C<%g> e C<%G> para números com os módulos do expoente menos que 
-100 é dependente do sistema: pode ser três ou menos (preenchido com zeos se 
-necessário). Em outras palavras, 1.23 vezes dez elevado a 99 pode ser "1.23e99" 
-ou "1.23e099".
+C<%e>, C<%E>, C<%g> e C<%G> para números com módulo do expoente menor que 
+100 é dependente do sistema: pode ser três ou menos (preenchido com zeros
+conforme necessário). Em outras palavras, 1.23 vezes dez elevado a 99
+pode ser "1.23e99" ou "1.23e099".
 
-Entre o C<%> e a letra de formatação, você pode especificar um número de 
-atributos adicionais controlando a interpretação do formato. Em ordem, são 
-estes:
+Entre o C<%> e a letra de formatação, você pode especificar uma série de 
+atributos adicionais controlando a interpretação do formato. Em ordem,
+são eles:
 
 =over 4
 
-=item format parameter index
+=item índice do parâmetro de formato
 
-An explicit format parameter index, such as C<2$>. By default sprintf
-will format the next unused argument in the list, but this allows you
-to take the arguments out of order. Eg:
+Um índice explícito do parâmetro de formato, como C<2$>. Por padrão
+o sprintf irá formatar o próximo argumento não utilizado na lista,
+mas isso permite que você obtenha os argumentos fora de ordem. Por
+exemplo:
 
-  printf '%2$d %1$d', 12, 34;      # prints "34 12"
-  printf '%3$d %d %1$d', 1, 2, 3;  # prints "3 1 1"
+  printf '%2$d %1$d', 12, 34;      # exibe "34 12"
+  printf '%3$d %d %1$d', 1, 2, 3;  # exibe "3 1 1"
 
 =item flags
 
-one or more of:
-   space   prefix positive number with a space
-   +       prefix positive number with a plus sign
-   -       left-justify within the field
-   0       use zeros, not spaces, to right-justify
-   #       prefix non-zero octal with "0", non-zero hex with "0x",
-           non-zero binary with "0b"
+uma ou mais das seguintes:
 
-For example:
+   espaço   prefixa número não-negativo com espaço
+   +        prefixa número não-negativo com um sinal de adição
+   -        alinha à esquerda dentro do campo
+   0        usa zeros, não espaços, para alinhar à direita
+   #        força prefixo "0" para todos os octais,
+            prefixa hexadecimais não-zero com "0x" ou "0X",
+            prefixa binários não-zero com "0b" ou "0B"
 
-  printf '<% d>', 12;   # prints "< 12>"
-  printf '<%+d>', 12;   # prints "<+12>"
-  printf '<%6s>', 12;   # prints "<    12>"
-  printf '<%-6s>', 12;  # prints "<12    >"
-  printf '<%06s>', 12;  # prints "<000012>"
-  printf '<%#x>', 12;   # prints "<0xc>"
+Por exemplo:
 
-=item vector flag
+   printf '<% d>',  12;   # exibe "< 12>"
+   printf '<%+d>',  12;   # exibe "<+12>"
+   printf '<%6s>',  12;   # exibe "< 12>"
+   printf '<%-6s>', 12;   # exibe "<12 >"
+   printf '<%06s>', 12;   # exibe "<000012>"
+   printf '<%#o>',  12;   # exibe "<014>"
+   printf '<%#x>',  12;   # exibe "<0xc>"
+   printf '<%#X>',  12;   # exibe "<0XC>"
+   printf '<%#b>',  12;   # exibe "<0b1100>"
+   printf '<%#B>',  12;   # exibe "<0B1100>"
 
-The vector flag C<v>, optionally specifying the join string to use.
-This flag tells perl to interpret the supplied string as a vector
-of integers, one for each character in the string, separated by
-a given string (a dot C<.> by default). This can be useful for
-displaying ordinal values of characters in arbitrary strings:
+Quando um espaço e um sinal de adição são dados ao mesmo tempo como flags,
+o sinal de adição é usado como prefixo para números positivos.
 
-  printf "version is v%vd\n", $^V;     # Perl's version
+  printf '<%+ d>', 12;   # exibe "<+12>"
+  printf '<% +d>', 12;   # exibe "<+12>"
 
-Put an asterisk C<*> before the C<v> to override the string to
-use to separate the numbers:
+Quando a flag # e uma precisão são fornecidos em uma conversão %o,
+a precisão é incrementada caso necessário para o prefixo "0".
 
-  printf "address is %*vX\n", ":", $addr;   # IPv6 address
-  printf "bits are %0*v8b\n", " ", $bits;   # random bitstring
+  printf '<%#.5o>', 012;      # exibe "<00012>"
+  printf '<%#.5o>', 012345;   # exibe "<012345>"
+  printf '<%#.0o>', 0;        # exibe "<0>"
 
-You can also explicitly specify the argument number to use for
-the join string using eg C<*2$v>:
+=item flag de vetor
 
-  printf '%*4$vX %*4$vX %*4$vX', @addr[1..3], ":";   # 3 IPv6 addresses
+Esta flag diz ao Perl para interpretar a string fornecida como um vetor
+de inteiros, um para cada caractere na string. Perl aplica o formato
+para cada inteiro por vez, e então junta as strings resultantes com
+um separador (por padrão, um ponto C<.>). Isso pode ser útil para
+exibir valores ordinais de caracteres em strings arbitrárias:
 
-=item (minimum) width
+  printf "%vd", "AB\x{100}";           # exibe "65.66.256"
+  printf "version is v%vd\n", $^V;     # a versão do Perl
 
-Arguments are usually formatted to be only as wide as required to
-display the given value. You can override the width by putting
-a number here, or get the width from the next argument (with C<*>)
-or from a specified argument (with eg C<*2$>):
+Coloque um asterisco C<*> antes do C<v> para substituir a string usada
+para separar os números:
 
-  printf '<%s>', "a";       # prints "<a>"
-  printf '<%6s>', "a";      # prints "<     a>"
-  printf '<%*s>', 6, "a";   # prints "<     a>"
-  printf '<%*2$s>', "a", 6; # prints "<     a>"
-  printf '<%2s>', "long";   # prints "<long>" (does not truncate)
+  printf "address is %*vX\n", ":", $addr;   # endereço IPv6
+  printf "bits are %0*v8b\n", " ", $bits;   # string aleatória de bits
 
-If a field width obtained through C<*> is negative, it has the same
-effect as the C<-> flag: left-justification.
+Você também pode especificar explicitamente o número do argumento a ser
+utilizado para a junção das strings usando algo como C<*2$v>; por exemplo:
 
-=item precision, or maximum width
+  printf '%*4$vX %*4$vX %*4$vX', @addr[1..3], ":";   # 3 endereços IPv6
 
-You can specify a precision (for numeric conversions) or a maximum
-width (for string conversions) by specifying a C<.> followed by a number.
-For floating point formats, with the exception of 'g' and 'G', this specifies
-the number of decimal places to show (the default being 6), eg:
+=item largura (mínima)
 
-  # these examples are subject to system-specific variation
-  printf '<%f>', 1;    # prints "<1.000000>"
-  printf '<%.1f>', 1;  # prints "<1.0>"
-  printf '<%.0f>', 1;  # prints "<1>"
-  printf '<%e>', 10;   # prints "<1.000000e+01>"
-  printf '<%.1e>', 10; # prints "<1.0e+01>"
+Os argumentos geralmente são formatados para serem largos apenas o
+suficiente para exibir o valor dado. Você pode substituir a largura
+colocando um número aqui, ou obter a largura do próximo argumento
+(com C<*>) ou a partir de um argumento especificado (por exemplo, com C<*2$>):
 
-For 'g' and 'G', this specifies the maximum number of digits to show,
-including prior to the decimal point as well as after it, eg:
+  printf '<%s>', "a";       # exibe "<a>"
+  printf '<%6s>', "a";      # exibe "<     a>"
+  printf '<%*s>', 6, "a";   # exibe "<     a>"
+  printf '<%*2$s>', "a", 6; # exibe "<     a>"
+  printf '<%2s>', "long";   # exibe "<long>" (não truncado)
 
-  # these examples are subject to system-specific variation
-  printf '<%g>', 1;        # prints "<1>"
-  printf '<%.10g>', 1;     # prints "<1>"
-  printf '<%g>', 100;      # prints "<100>"
-  printf '<%.1g>', 100;    # prints "<1e+02>"
-  printf '<%.2g>', 100.01; # prints "<1e+02>"
-  printf '<%.5g>', 100.01; # prints "<100.01>"
-  printf '<%.4g>', 100.01; # prints "<100>"
+Se a largura do campo obtida via C<*> for negativa, ela terá o mesmo
+efeito que a flag C<->: alinhar à esquerda.
 
-For integer conversions, specifying a precision implies that the
-output of the number itself should be zero-padded to this width:
+=item precisão, ou largura máxima
+X<precisão>
 
-  printf '<%.6x>', 1;      # prints "<000001>"
-  printf '<%#.6x>', 1;     # prints "<0x000001>"
-  printf '<%-10.6x>', 1;   # prints "<000001    >"
+Você pode especificar uma precisão (para conversões numéricas) ou a
+largura máxima (para conversões de strings) especificando um C<.>
+seguido de um número. Para os formatos de ponto flutuante, exceto
+'g' e 'G', isso especifica quantas casas à direita do ponto decimal
+deverão ser exibidas (o padrão são 6). Por exemplo:
 
-For string conversions, specifying a precision truncates the string
-to fit in the specified width:
+  # esses exemplos estão sujeitos a variações especificas de sistema
+  printf '<%f>', 1;    # exibe "<1.000000>"
+  printf '<%.1f>', 1;  # exibe "<1.0>"
+  printf '<%.0f>', 1;  # exibe "<1>"
+  printf '<%e>', 10;   # exibe "<1.000000e+01>"
+  printf '<%.1e>', 10; # exibe "<1.0e+01>"
 
-  printf '<%.5s>', "truncated";   # prints "<trunc>"
-  printf '<%10.5s>', "truncated"; # prints "<     trunc>"
+Para "g" e "G", isso especifica o número máximo de dígitos a serem
+exibidos, incluindo os que vem antes do ponto decimal e os depois;
+por exemplo:
 
-You can also get the precision from the next argument using C<.*>:
+  # esses exemplos estão sujeitos a variações especificas de sistema
+  printf '<%g>', 1;        # exibe "<1>"
+  printf '<%.10g>', 1;     # exibe "<1>"
+  printf '<%g>', 100;      # exibe "<100>"
+  printf '<%.1g>', 100;    # exibe "<1e+02>"
+  printf '<%.2g>', 100.01; # exibe "<1e+02>"
+  printf '<%.5g>', 100.01; # exibe "<100.01>"
+  printf '<%.4g>', 100.01; # exibe "<100>"
 
-  printf '<%.6x>', 1;       # prints "<000001>"
-  printf '<%.*x>', 6, 1;    # prints "<000001>"
+Para conversões de números inteiros, especificar uma precisão implica
+que a saída do número em si deve ser preenchida com zeros à esquerda
+até a largura especificada, em que a flag 0 é ignorada:
 
-You cannot currently get the precision from a specified number,
-but it is intended that this will be possible in the future using
-eg C<.*2$>:
+  printf '<%.6d>', 1;      # exibe "<000001>"
+  printf '<%+.6d>', 1;     # exibe "<+000001>"
+  printf '<%-10.6d>', 1;   # exibe "<000001    >"
+  printf '<%10.6d>', 1;    # exibe "<    000001>"
+  printf '<%010.6d>', 1;   # exibe "<    000001>"
+  printf '<%+10.6d>', 1;   # exibe "<   +000001>"
 
-  printf '<%.*2$x>', 1, 6;   # INVALID, but in future will print "<000001>"
+  printf '<%.6x>', 1;      # exibe "<000001>"
+  printf '<%#.6x>', 1;     # exibe "<0x000001>"
+  printf '<%-10.6x>', 1;   # exibe "<000001    >"
+  printf '<%10.6x>', 1;    # exibe "<    000001>"
+  printf '<%010.6x>', 1;   # exibe "<    000001>"
+  printf '<%#10.6x>', 1;   # exibe "<  0x000001>"
 
-=item size
+Para conversões de strings, especificar uma precisão trunca a string
+para que ocupe a largura especificada:
 
-For numeric conversions, you can specify the size to interpret the
-number as using C<l>, C<h>, C<V>, C<q>, C<L>, or C<ll>. For integer
-conversions (C<d u o x X b i D U O>), numbers are usually assumed to be
-whatever the default integer size is on your platform (usually 32 or 64
-bits), but you can override this to use instead one of the standard C types,
-as supported by the compiler used to build Perl:
+  printf '<%.5s>', "truncated";   # exibe "<trunc>"
+  printf '<%10.5s>', "truncated"; # exibe "<     trunc>"
 
-   l           interpret integer as C type "long" or "unsigned long"
-   h           interpret integer as C type "short" or "unsigned short"
-   q, L or ll  interpret integer as C type "long long", "unsigned long long".
-               or "quads" (typically 64-bit integers)
+Você também pode obter a precisão do próximo argumento usando C<.*>:
 
-The last will produce errors if Perl does not understand "quads" in your
-installation. (This requires that either the platform natively supports quads
-or Perl was specifically compiled to support quads.) You can find out
-whether your Perl supports quads via L<Config>:
+  printf '<%.6x>', 1;       # exibe "<000001>"
+  printf '<%.*x>', 6, 1;    # exibe "<000001>"
 
-         use Config;
-         ($Config{use64bitint} eq 'define' || $Config{longsize} >= 8) &&
-                  print "quads\n";
+Se a precisão obtida através do C<*> for negativa, conta como se
+não houvesse precisão definida.
 
-For floating point conversions (C<e f g E F G>), numbers are usually assumed
-to be the default floating point size on your platform (double or long double),
-but you can force 'long double' with C<q>, C<L>, or C<ll> if your
-platform supports them. You can find out whether your Perl supports long
-doubles via L<Config>:
+  printf '<%.*s>',  7, "string";   # exibe "<string>"
+  printf '<%.*s>',  3, "string";   # exibe "<str>"
+  printf '<%.*s>',  0, "string";   # exibe "<>"
+  printf '<%.*s>', -1, "string";   # exibe "<string>"
 
-         use Config;
-         $Config{d_longdbl} eq 'define' && print "long doubles\n";
+  printf '<%.*d>',  1, 0;   # exibe "<0>"
+  printf '<%.*d>',  0, 0;   # exibe "<>"
+  printf '<%.*d>', -1, 0;   # exibe "<0>"
 
-You can find out whether Perl considers 'long double' to be the default
-floating point size to use on your platform via L<Config>:
+Atualmente não é possível obter a precisão de um número específico,
+mas pretende-se permitir isso no futuro, por exemplo usando C<.*2$>:
 
-        use Config;
-        ($Config{uselongdouble} eq 'define') &&
-                print "long doubles by default\n";
+  printf "<%.*2$x>", 1, 6;   # INVÁLIDO, mas no futuro vai exibir "<000001>"
 
-It can also be the case that long doubles and doubles are the same thing:
+=item tamanho 
+
+Para conversões numéricas, você pode especificar o tamanho para interpretar
+o número usando C<l>, C<h>, C<V>, C<q>, C<L>, ou C<ll>. Para conversões
+de inteiro (C<d u o x X b i D U O>), os números são normalmente assumidos
+com o tamanho padrão de inteiros em sua plataforma (geralmente 32 ou 64
+bits), mas você pode substituir isso para usar um dos tipos padrão de C,
+conforme suportados pelo compilador usado para compilar o seu Perl:
+
+   l           interpreta inteiro como os tipos "long" ou "unsigned long" do C
+   h           interpreta inteiro como os tipos "short" ou "unsigned short" do C
+   q, L or ll  interpreta inteiro como os tipos "long long", "unsigned long long" do C.
+               ou "quads" (geralmente inteiros de 64 bits)
+
+Esse último irá gerar uma exceção se o Perl não entende "quads" na sua
+instalação. (Isso exige que a plataforma suporte quads nativamente, ou
+que o Perl tenha sido compilado especificamente para suportar quads.)
+Você pode descobrir se o seu Perl suporta quads via L<Config>:
+
+    use Config;
+    if ($Config{use64bitint} eq "define" || $Config{longsize} >= 8) {
+        print "Nice quads!\n";
+    }
+
+Para conversões de ponto flutuante (C<e f g E F G>), os números são
+normalmente assumidos com o tamanho de ponto flutuante da sua plataforma
+("double" on "long double"), mas você pode forçar o "long double"
+com C<q>, C<L>, ou C<ll> se sua plataforma os suporta. Você pode
+descobrir se o seu Perl suporta "long double" através do L<Config>:
+
+    use Config;
+    print "long doubles\n" if $Config{d_longdbl} eq "define";
+
+Você pode descobrir se o Perl considera "long double" como o padrão para
+o tamanho de ponto flutuante a ser usado em sua plataforma via L<Config>:
+
+    use Config;
+    if ($Config{uselongdouble} eq "define") {
+    print "long doubles by default\n";
+    }
+
+Também pode ser que "long double" e "double" sejam a mesma coisa:
 
         use Config;
         ($Config{doublesize} == $Config{longdblsize}) &&
                 print "doubles are long doubles\n";
 
-The size specifier C<V> has no effect for Perl code, but it is supported
-for compatibility with XS code; it means 'use the standard size for
-a Perl integer (or floating-point number)', which is already the
-default for Perl code.
+O especificador de tamanho C<V> não tem efeito para código Perl, mas é
+suportado para compatibilidade com código XS. Ele significa "use o
+tamanho padrão para números inteiros ou pontos flutuantes do Perl",
+que é o padrão.
 
-=item order of arguments
+=item ordem dos argumentos
 
-Normally, sprintf takes the next unused argument as the value to
-format for each format specification. If the format specification
-uses C<*> to require additional arguments, these are consumed from
-the argument list in the order in which they appear in the format
-specification I<before> the value to format. Where an argument is
-specified using an explicit index, this does not affect the normal
-order for the arguments (even when the explicitly specified index
-would have been the next argument in any case).
+Normalmente, o sprintf() recebe o próximo argumento não utilizado
+como o valor a ser formatado para cada especificação de formato.
+Se a especificação do formato usa C<*> para exigir argumentos
+adicionais, estes são consumidos a partir da lista de argumentos
+na ordem em que aparecerem na especificação do formato I<antes>
+do valor a ser formatado. Quando um argumento é especificado por
+um índice explícito, isso não afeta a ordem normal dos argumentos,
+mesmo quando o índice fornecido explicitamente teria sido o
+argumento seguinte.
 
-So:
+Assim: 
 
-  printf '<%*.*s>', $a, $b, $c;
+    printf "<%*.*s>", $a, $b, $c;
 
-would use C<$a> for the width, C<$b> for the precision and C<$c>
-as the value to format, while:
+usa C<$a> para largura, C<$b> para precisão, e C<$c>
+como o valor a ser formatado; enquanto:
 
-  print '<%*1$.*s>', $a, $b;
+  printf "<%*1$.*s>", $a, $b;
 
-would use C<$a> for the width and the precision, and C<$b> as the
-value to format.
+utilizaria C<$a> para largura e precisão, e C<$b> como valor
+a ser formatado.
 
-Here are some more examples - beware that when using an explicit
-index, the C<$> may need to be escaped:
+Aqui estão alguns outros exemplos; tenha em mente que ao utilizar
+índices explícitos, pode ser necessário escapar o C<$>:
 
-  printf "%2\$d %d\n",    12, 34;                  # will print "34 12\n"
-  printf "%2\$d %d %d\n", 12, 34;                  # will print "34 12 34\n"
-  printf "%3\$d %d %d\n", 12, 34, 56;                  # will print "56 12 34\n"
-  printf "%2\$*3\$d %d\n", 12, 34, 3;                  # will print " 34 12\n"
+  printf "%2\$d %d\n",    12, 34;        # vai exibir "34 12\n"
+  printf "%2\$d %d %d\n", 12, 34;        # vai exibir "34 12 34\n"
+  printf "%3\$d %d %d\n", 12, 34, 56;    # vai exibir "56 12 34\n"
+  printf "%2\$*3\$d %d\n", 12, 34, 3;    # vai exibir " 34 12\n"
 
 =back
 
-If C<use locale> is in effect, the character used for the decimal
-point in formatted real numbers is affected by the LC_NUMERIC locale.
-See L<perllocale>.
+Se C<use locale> estiver em vigor e POSIX::setlocale() tiver sido
+chamado, o caractere usado como separador decimal em números de
+ponto flutuante formatados é afetado pelo locale LC_NUMERIC.
+Veja L<perllocale> e L<POSIX>.
 
 =item sqrt EXPR
 
