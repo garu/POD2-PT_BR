@@ -1632,8 +1632,8 @@ See L<perlmod> for details.
 
 =item exp
 
-Returns I<e> (the natural logarithm base) to the power of EXPR.
-If EXPR is omitted, gives C<exp($_)>.
+Retorna I<e> (o logaritmo natural) elevado a potência EXPR.
+Se EXPR for omitido, retorna C<exp($_)>.
 
 =item fcntl FILEHANDLE,FUNCTION,SCALAR
 
