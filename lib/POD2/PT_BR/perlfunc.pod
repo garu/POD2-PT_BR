@@ -754,10 +754,10 @@ Fecha o arquivo ou pipe associado ao file handle, retornando verdadeiro somente
 se a área de memória de E/S for limpa e fechado o descritor de arquivo com
 sucesso. Fecha o filehandle corrente selecionado se o argumento é omitido.
 
-You don't have to close FILEHANDLE if you are immediately going to do
-another C<open> on it, because C<open> will close it for you.  (See
-C<open>.)  However, an explicit C<close> on an input file resets the line
-counter (C<$.>), while the implicit close done by C<open> does not.
+Você não precia fechar o FILEHANDLE se você vai realizar imediatamente outro
+C<open> utilizando um FILEHANDLE já aberto, pois o C<open> irá fechar ele para
+você. (Veja C<open>.) De qualquer jeito, um C<close> explícito em um arquivo de entrada
+reinicia o contador de linha (C<$.>), enquanto um close implícito feito pelo C<open> não.
 
 If the file handle came from a piped open, C<close> will additionally
 return false if one of the other system calls involved fails, or if the
