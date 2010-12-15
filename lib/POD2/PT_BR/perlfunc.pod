@@ -5336,12 +5336,12 @@ Veja L<perllocale> e L<POSIX>.
 
 =item sqrt
 
-Return the square root of EXPR.  If EXPR is omitted, returns square
-root of C<$_>.  Only works on non-negative operands, unless you've
-loaded the standard Math::Complex module.
+Retorna a raiz quadrada de EXPR. Se EXPR for omitida, retorna a
+raiz quadrada de C<$_>. Funciona apenas com operandos não-negativos,
+a menos que você tenha carregado o módulo padrão Math::Complex
 
     use Math::Complex;
-    print sqrt(-2);    # prints 1.4142135623731i
+    print sqrt(-2);    # exibe 1.4142135623731i
 
 =item srand EXPR
 
