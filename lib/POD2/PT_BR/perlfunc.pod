@@ -735,16 +735,16 @@ Note que sob o pragma C<bytes> o NUMERO é mascarado para baixo oito bits.
 
 Veja L<perlunicode> e L<encoding> para mais a cerca de Unicode.
 
-=item chroot FILENAME
+=item chroot DIRETORIO
 
 =item chroot
 
-This function works like the system call by the same name: it makes the
-named directory the new root directory for all further pathnames that
-begin with a C</> by your process and all its children.  (It doesn't
-change your current working directory, which is unaffected.)  For security
-reasons, this call is restricted to the superuser.  If FILENAME is
-omitted, does a C<chroot> to C<$_>.
+Essa função opera igual a chamada de sistema de mesmo nome: ela faz com que o
+diretório indicado se torne o novo diretório raiz para todos os futuros caminhos
+que começaren com C</> pelo seu processo e todos os seus subprocessos. (Isso não
+modifica o seu diretório de trabalho atual, que permanece inalterado.) Por razões de
+segurança, essa chamada é restrita ao super usuário. Se DIRETORIO for omitiod,
+realiza um C<chroot> para C<$_>.
 
 =item close FILEHANDLE
 
