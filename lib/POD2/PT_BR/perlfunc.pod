@@ -4624,11 +4624,11 @@ processes.
 
 =item sin
 
-Returns the sine of EXPR (expressed in radians).  If EXPR is omitted,
-returns sine of C<$_>.
+Retorna o seno de EXPR (em radianos). Se EXPR for omitido,
+retorna o seno de C<$_>.
 
-For the inverse sine operation, you may use the C<Math::Trig::asin>
-function, or use this relation:
+Para a função inversa do sena, você pode usar a função C<Math::Trig::asin>
+ou então a relação:
 
     sub asin { atan2($_[0], sqrt(1 - $_[0] * $_[0])) }
 
