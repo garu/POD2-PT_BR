@@ -909,9 +909,9 @@ C<Wide character in crypt>.
 
 =item dbmclose HASH
 
-[This function has been largely superseded by the C<untie> function.]
+[Essa função tem sido amplamente substituída pela função C<untie>.]
 
-Breaks the binding between a DBM file and a hash.
+Quebra a ligação entre um arquivo DBM e um hash.
 
 =item dbmopen HASH,DBNAME,MASK
 
