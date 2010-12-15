@@ -2580,17 +2580,17 @@ keyword.) See L<threads>.
 
 =item log
 
-Returns the natural logarithm (base I<e>) of EXPR.  If EXPR is omitted,
-returns log of C<$_>.  To get the log of another base, use basic algebra:
-The base-N log of a number is equal to the natural log of that number
-divided by the natural log of N.  For example:
+Retorna o logaritmo natural (base I<e>) de EXPR. Se EXPR for omitido,
+retorna log de C<$_>. Para obter o log de outra base, utilize algebra básica:
+O log em uma base N de um número é igual ao log natural deste número dividido pelo
+log natural de N. Por exemplo:
 
     sub log10 {
          my $n = shift;
          return log($n)/log(10);
     }
 
-See also L</exp> for the inverse operation.
+Veja também L</exp> para a operação inversa.
 
 =item lstat EXPR
 
