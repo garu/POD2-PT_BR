@@ -99,58 +99,48 @@ I<lib> com as bibliotecas.)
 Quando você usa Perl em C, seu programa em C irá --usualmente-- allocar,
 executar ("run"), e desalocar um objeto I<PerlInterpreter>, definido na biblioteca perl.
 
-If your copy of Perl is recent enough to contain this documentation
-(version 5.002 or later), then the perl library (and I<EXTERN.h> and
-I<perl.h>, which you'll also need) will reside in a directory
-that looks like this:
+Se a sua cópia do perl é recente (versão 5.002 ou posterior) então as bibliotecas <EXTERN.h> e <perl.h> que você vai precisar incluir em seu programa em C, devem estar em um local como: 
 
     /usr/local/lib/perl5/your_architecture_here/CORE
 
-or perhaps just
+ou talvez
 
     /usr/local/lib/perl5/CORE
 
-or maybe something like
+ou ainda
 
     /usr/opt/perl5/CORE
 
-Execute this statement for a hint about where to find CORE:
+Use a declaração abaixo para achar o local do perl CORE em seu sistema:
 
     perl -MConfig -e 'print $Config{archlib}'
 
-Here's how you'd compile the example in the next section,
-L<Adding a Perl interpreter to your C program>, on my Linux box:
+Aqui está como você poderá compilar o exemplo da próxima sessão L<Acrescentando um interpretador Perl em seu programa em C>, em um Linux:
 
     % gcc -O2 -Dbool=char -DHAS_BOOL -I/usr/local/include
     -I/usr/local/lib/perl5/i586-linux/5.003/CORE
     -L/usr/local/lib/perl5/i586-linux/5.003/CORE
     -o interp interp.c -lperl -lm
 
-(That's all one line.)  On my DEC Alpha running old 5.003_05, the 
-incantation is a bit different:
+(Tudo na mesma linha.) Num DEC Alpha a mágica poderá ser realizada de uma forma um pouco diferente:
 
     % cc -O2 -Olimit 2900 -DSTANDARD_C -I/usr/local/include
     -I/usr/local/lib/perl5/alpha-dec_osf/5.00305/CORE
     -L/usr/local/lib/perl5/alpha-dec_osf/5.00305/CORE -L/usr/local/lib
     -D__LANGUAGE_C__ -D_NO_PROTO -o interp interp.c -lperl -lm
 
-How can you figure out what to add?  Assuming your Perl is post-5.001,
-execute a C<perl -V> command and pay special attention to the "cc" and
-"ccflags" information.
+Como você pode saber o que usar? Assumindo que sua versão do perl é posterior à 5.001, execute o comando <perl -V> e preste atenção às informações sobre "cc" e "ccflags".
 
-You'll have to choose the appropriate compiler (I<cc>, I<gcc>, et al.) for
-your machine: C<perl -MConfig -e 'print $Config{cc}'> will tell you what
-to use.
+Você precisará escolher o compilador (I<cc>, I<gcc>, etc) ideal para sua máquina: C<perl -MConfig -e 'print $Config{cc}'> vai lhe mostrar o que usar.
 
-You'll also have to choose the appropriate library directory
-(I</usr/local/lib/...>) for your machine.  If your compiler complains
-that certain functions are undefined, or that it can't locate
-I<-lperl>, then you need to change the path following the C<-L>.  If it
-complains that it can't find I<EXTERN.h> and I<perl.h>, you need to
-change the path following the C<-I>.
+Você também vai precisar escolher o diretório apropriado 
+(I</usr/local/lib/...>) para sua máquina. Se o seu compilador reclamar que certas funções não estão definidas ou que não é possível encontrar
+I<-lperl>, então você precisa trocar o caminho em frente C<-L>. Se ele 
+reclamar que não pode achar I<EXTERN.h> e/ou I<perl.h>, você precisa
+mudar o nome de diretório que acompanha C<-I>.
 
-You may have to add extra libraries as well.  Which ones?
-Perhaps those printed by
+Você poderá precisar adicionar outras bibliotecas extras. Mas quais?
+Quem estas impressas por: 
 
    perl -MConfig -e 'print $Config{libs}'
 
