@@ -140,32 +140,31 @@ reclamar que não pode achar I<EXTERN.h> e/ou I<perl.h>, você precisa
 mudar o nome de diretório que acompanha C<-I>.
 
 Você poderá precisar adicionar outras bibliotecas extras. Mas quais?
-Quem estas impressas por: 
+Quem sabe estas impressas por: 
 
    perl -MConfig -e 'print $Config{libs}'
 
-Provided your perl binary was properly configured and installed the
-B<ExtUtils::Embed> module will determine all of this information for
-you:
+COnsiderando que o seu binário perl está propriamente configurado e instalado, o
+módulo B<ExtUtils::Embed> determinará toda esta informação a você:
 
    % cc -o interp interp.c `perl -MExtUtils::Embed -e ccopts -e ldopts`
 
-If the B<ExtUtils::Embed> module isn't part of your Perl distribution,
-you can retrieve it from
-http://www.perl.com/perl/CPAN/modules/by-module/ExtUtils/
-(If this documentation came from your Perl distribution, then you're
-running 5.004 or better and you already have it.)
+Se o módulo B<ExtUtils::Embed> não faz parte da sua distribuição Perl
+você poderá obtê-lo em:
+        http://www.perl.com/perl/CPAN/modules/by-module/ExtUtils/
+(Se o seu Perl for posterior ao 5.004 este módulo deve estar instalado.)
 
-The B<ExtUtils::Embed> kit on CPAN also contains all source code for
-the examples in this document, tests, additional examples and other
-information you may find useful.
+O kit B<ExtUtils::Embed> no CPAN também contém os fontes dos
+exemplos deste documento, testes, examplos adicionais e outras
+informações úteis.
 
-=head2 Adding a Perl interpreter to your C program
+=head2 Acrescentando um interpretador Perl ao se programa em C
 
-In a sense, perl (the C program) is a good example of embedding Perl
-(the language), so I'll demonstrate embedding with I<miniperlmain.c>,
-included in the source distribution.  Here's a bastardized, non-portable
-version of I<miniperlmain.c> containing the essentials of embedding:
+De certa forma 'perl' (o executável escrito em C) é um bom exemplo de 
+embarcar Perl (a linguagem), então iremos demonstrar o embarque com o
+I<miniperlmain.c>, incluido nos fontes da distrubuição. Aqui está uma
+versão bastarda e não portável do I<miniperlmain.c> contendo apenas
+o essencial para o embarque:
 
     #include <EXTERN.h>               /* from the Perl distribution     */
     #include <perl.h>                 /* from the Perl distribution     */
@@ -185,20 +184,18 @@ version of I<miniperlmain.c> containing the essentials of embedding:
 	PERL_SYS_TERM();
     }
 
-Notice that we don't use the C<env> pointer.  Normally handed to
-C<perl_parse> as its final argument, C<env> here is replaced by
-C<NULL>, which means that the current environment will be used.  The macros
-PERL_SYS_INIT3() and PERL_SYS_TERM() provide system-specific tune up 
-of the C runtime environment necessary to run Perl interpreters; since
-PERL_SYS_INIT3() may change C<env>, it may be more appropriate to provide
-C<env> as an argument to perl_parse().
+Aviso que não usamos o ponteiro C<env>.  Normalmente entregue a
+C<perl_parse> como argumento final, C<env> aqui é substituído por
+C<NULL>, significando que será usado o ambiente atual.  Os macros
+PERL_SYS_INIT3() e PERL_SYS_TERM() fornecem as sintonias específicas em tempo de execução do C para o sistema necessárias para rodar interpretadores Perl.
+Desde que PERL_SYS_INIT3() pode modificar C<env>, pode ser mais apropriadofornecer C<env> como um argumento de perl_parse().
 
-Now compile this program (I'll call it I<interp.c>) into an executable:
+Agora compilamos o programa (aqui apontado como I<interp.c>) num executável:
 
     % cc -o interp interp.c `perl -MExtUtils::Embed -e ccopts -e ldopts`
 
-After a successful compilation, you'll be able to use I<interp> just
-like perl itself:
+Depois de comilar com sucesso você poderá usar o novo I<interp> como
+o se fosse o próprio perl:
 
     % interp
     print "Pretty Good Perl \n";
@@ -207,14 +204,12 @@ like perl itself:
     Pretty Good Perl
     10890 - 9801 is 1089
 
-or
+ou ainda
 
     % interp -e 'printf("%x", 3735928559)'
     deadbeef
 
-You can also read and execute Perl statements from a file while in the
-midst of your C program, by placing the filename in I<argv[1]> before
-calling I<perl_run>.
+Você também poderá ler e executar declarações de um aquivo de dentro de seu programa em C colocando o nome do arquivo em I<argv[1]> anter de chamar I<perl_run>.
 
 =head2 Calling a Perl subroutine from your C program
 
