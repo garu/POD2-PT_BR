@@ -1,13 +1,12 @@
-
 =head1 NAME
 
-perlref - Perl references and nested data structures
+perlref - Perl referencias e estrutura de dados aninhadas
 
 =head1 NOTE
 
-This is complete documentation about all aspects of references.
-For a shorter, tutorial introduction to just the essential features,
-see L<perlreftut>.
+Esta é a documentação completa sobre todos os aspectos das referencias. 
+Para algo menor, como um tutorial de introdução sobre as principais 
+características, veja L<perlreftut>.
 
 =head1 DESCRIPTION
 
