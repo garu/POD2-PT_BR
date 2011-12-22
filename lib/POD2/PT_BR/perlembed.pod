@@ -158,7 +158,7 @@ O kit B<ExtUtils::Embed> no CPAN também contém os fontes dos
 exemplos deste documento, testes, examplos adicionais e outras
 informações úteis.
 
-=head2 Acrescentando um interpretador Perl ao se programa em C
+=head2 Acrescentando um interpretador Perl ao seu programa em C
 
 De certa forma 'perl' (o executável escrito em C) é um bom exemplo de 
 embarcar Perl (a linguagem), então iremos demonstrar o embarque com o
@@ -211,7 +211,7 @@ ou ainda
 
 Você também poderá ler e executar declarações de um aquivo de dentro de seu programa em C colocando o nome do arquivo em I<argv[1]> anter de chamar I<perl_run>.
 
-=head2 Chamando uma subrotina Perl dose programa em C
+=head2 Chamando uma subrotina Perl do seu programa em C
 
 Para chamar rotinas individuais em Perl, você pode usar as chamadas B<call_*>
 documentadas em L<perlcall>.
@@ -243,11 +243,11 @@ Isto é mostrado abaixo, num programa que nomeamos I<showtime.c>.
 	PERL_SYS_TERM();
     }
 
-where I<showtime> is a Perl subroutine that takes no arguments (that's the
-I<G_NOARGS>) and for which I'll ignore the return value (that's the
-I<G_DISCARD>).  Those flags, and others, are discussed in L<perlcall>.
+Onde I<showtime> é uma subrotina em Perl sem argumentos (isto está no
+I<G_NOARGS>) e por isso nós ignoramos o valor retornado (isto está no
+I<G_DISCARD>). Estas 'flags' e outras aão disvcutidas em L<perlcall>.
 
-I'll define the I<showtime> subroutine in a file called I<showtime.pl>:
+Vamos definir a subrotina I<showtime> no arquivo I<showtime.pl>:
 
     print "I shan't be printed.";
 
@@ -255,16 +255,16 @@ I'll define the I<showtime> subroutine in a file called I<showtime.pl>:
         print time;
     }
 
-Simple enough.  Now compile and run:
+Simples assim. Agora basta compilar e executar:
 
     % cc -o showtime showtime.c `perl -MExtUtils::Embed -e ccopts -e ldopts`
 
     % showtime showtime.pl
     818284590
 
-yielding the number of seconds that elapsed between January 1, 1970
-(the beginning of the Unix epoch), and the moment I began writing this
-sentence.
+produzindo o número de segundos entre January 1, 1970
+(o início da época Unix), e o momento em que comecei a escrever esta
+frase.
 
 In this particular case we don't have to call I<perl_run>, as we set 
 the PL_exit_flag PERL_EXIT_DESTRUCT_END which executes END blocks in
@@ -276,7 +276,7 @@ I<call_argv>.  For other data types, or to examine return values,
 you'll need to manipulate the Perl stack.  That's demonstrated in
 L<Fiddling with the Perl stack from your C program>.
 
-=head2 Evaluating a Perl statement from your C program
+=head2 Calculando uma declaração em Perl do seu programa em C
 
 Perl provides two API functions to evaluate pieces of Perl code.
 These are L<perlapi/eval_sv> and L<perlapi/eval_pv>.
