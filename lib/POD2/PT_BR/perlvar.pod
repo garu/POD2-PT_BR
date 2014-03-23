@@ -1,3 +1,8 @@
+
+=pod
+
+=encoding utf8
+
 =head1 NAME
 
 perlvar - Variáveis especiais do Perl

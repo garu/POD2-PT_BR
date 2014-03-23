@@ -1,4 +1,8 @@
 
+=pod
+
+=encoding utf8
+
 =head1 NAME
 
 perlfunc - Funções internas do Perl

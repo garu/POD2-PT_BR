@@ -1,3 +1,8 @@
+
+=pod
+
+=encoding utf8
+
 =head1 NOME
 
 perlreftut - Tutorial Rápido sobre Referências do Mark
