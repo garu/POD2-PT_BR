@@ -1,6 +1,6 @@
 =encoding utf8
 
-=head1 NOME
+=head1 NAME/NOME
 
 perlintro - uma breve introdução ao Perl
 
