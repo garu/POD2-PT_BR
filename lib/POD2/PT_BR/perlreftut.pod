@@ -3,7 +3,7 @@
 
 =encoding utf8
 
-=head1 NOME
+=head1 NAME/NOME
 
 perlreftut - Tutorial Rápido sobre Referências do Mark
 
